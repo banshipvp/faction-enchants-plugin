@@ -1,0 +1,48 @@
+name: FactionEnchants
+version: 1.0
+main: com.factionenchants.FactionEnchantsPlugin
+api-version: 1.13
+commands:
+  enchanter:
+    description: Opens the enchanter interface to purchase enchant books.
+    usage: /<command>
+  enchants:
+    description: Opens the enchantments browser to view all available enchants.
+    usage: /<command>
+  alchemist:
+    description: Combines two identical enchant books to create a higher-level book.
+    usage: /<command>
+  tinkerer:
+    description: Recycle enchant books into dust or enchanted gear into XP.
+    usage: /<command>
+  xpshop:
+    description: Opens the XP Shop to buy special items.
+    usage: /<command>
+  fegive:
+    description: Gives a specific enchant book to a player.
+    usage: /<command> [player] <enchant_id> <level>
+  fegiverandomgear:
+    description: Gives random custom-enchanted gear to a player.
+    usage: /<command> <player> <material> [minEnchants] [maxEnchants]
+permissions:
+  factionenchants.enchanter:
+    description: Allows access to the enchanter command.
+    default: true
+  factionenchants.enchants:
+    description: Allows access to the enchants browser command.
+    default: true
+  factionenchants.alchemist:
+    description: Allows access to the alchemist command.
+    default: true
+  factionenchants.tinkerer:
+    description: Allows access to the tinkerer command.
+    default: true
+  factionenchants.xpshop:
+    description: Allows access to the XP shop command.
+    default: true
+  factionenchants.give:
+    description: Allows giving enchant books via /fegive.
+    default: op
+  factionenchants.randomgear:
+    description: Allows giving random custom-enchanted gear.
+    default: op

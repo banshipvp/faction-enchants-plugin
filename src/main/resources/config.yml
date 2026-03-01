@@ -1,0 +1,105 @@
+enchanter:
+  simple-cost: 5
+  unique-cost: 8
+  elite-cost: 12
+  ultimate-cost: 18
+  legendary-cost: 25
+  soul-cost: 35
+  heroic-cost: 45
+  mastery-cost: 60
+
+alchemist:
+  combine-cost: 10
+  level-multiplier: 5
+  tier-base:
+    SIMPLE: 5
+    UNIQUE: 10
+    ELITE: 20
+    ULTIMATE: 35
+    LEGENDARY: 55
+    SOUL: 80
+    HEROIC: 110
+    MASTERY: 150
+
+book-rates:
+  SIMPLE:
+    success-min: 85
+    success-max: 100
+    destroy-min: 0
+    destroy-max: 5
+  UNIQUE:
+    success-min: 80
+    success-max: 95
+    destroy-min: 2
+    destroy-max: 10
+  ELITE:
+    success-min: 70
+    success-max: 90
+    destroy-min: 5
+    destroy-max: 15
+  ULTIMATE:
+    success-min: 60
+    success-max: 85
+    destroy-min: 8
+    destroy-max: 20
+  LEGENDARY:
+    success-min: 50
+    success-max: 80
+    destroy-min: 10
+    destroy-max: 25
+  SOUL:
+    success-min: 45
+    success-max: 75
+    destroy-min: 12
+    destroy-max: 30
+  HEROIC:
+    success-min: 40
+    success-max: 70
+    destroy-min: 15
+    destroy-max: 35
+  MASTERY:
+    success-min: 35
+    success-max: 65
+    destroy-min: 20
+    destroy-max: 40
+
+random-dust:
+  dud-chance: 30
+  percent-cap: 15
+  base-percent:
+    SIMPLE: 1
+    UNIQUE: 2
+    ELITE: 3
+    ULTIMATE: 4
+    LEGENDARY: 5
+    SOUL: 7
+    HEROIC: 8
+    MASTERY: 10
+
+tinkerer:
+  gear-base-xp: 100
+  vanilla-enchant-point: 75
+
+xpshop:
+  detonate-pickaxe: 10000
+  lava-fat-bucket: 15000
+  water-fat-bucket: 15000
+  sell-wand: 50000
+  tnt-wand: 50000
+  simplefactions:
+    enabled: true
+    sell-wand-command: "f sellwand"
+    tnt-wand-command: "f tnt wand"
+
+random-gear:
+  min-enchants: 1
+  max-enchants: 4
+  tier-weights:
+    SIMPLE: 35
+    UNIQUE: 25
+    ELITE: 16
+    ULTIMATE: 10
+    LEGENDARY: 7
+    SOUL: 4
+    HEROIC: 2
+    MASTERY: 1

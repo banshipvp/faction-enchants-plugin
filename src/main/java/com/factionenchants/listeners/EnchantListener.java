@@ -1,0 +1,194 @@
+package com.factionenchants.listeners;
+
+import com.factionenchants.FactionEnchantsPlugin;
+import com.factionenchants.enchantments.CustomEnchantment;
+import com.factionenchants.enchantments.abilities.armor.*;
+import com.factionenchants.enchantments.abilities.tool.*;
+import org.bukkit.GameMode;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemDamageEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
+
+public class EnchantListener implements Listener {
+
+    private final FactionEnchantsPlugin plugin;
+
+    public EnchantListener(FactionEnchantsPlugin plugin) {
+        this.plugin = plugin;
+    }
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onBlockBreak(BlockBreakEvent event) {
+        Player player = event.getPlayer();
+        ItemStack tool = player.getInventory().getItemInMainHand();
+        Block block = event.getBlock();
+        Map<CustomEnchantment, Integer> enchants = plugin.getEnchantmentManager().getEnchantmentsOnItem(tool);
+
+        boolean hasDetonate = false;
+        boolean hasAutoSmelt = false;
+        boolean hasTelepathy = false;
+        int detonateLevel = 1;
+        int autoSmeltLevel = 1;
+
+        for (Map.Entry<CustomEnchantment, Integer> entry : enchants.entrySet()) {
+            if (entry.getKey() instanceof Detonate) { hasDetonate = true; detonateLevel = entry.getValue(); }
+            else if (entry.getKey() instanceof AutoSmelt) { hasAutoSmelt = true; autoSmeltLevel = entry.getValue(); }
+            else if (entry.getKey() instanceof Telepathy) { hasTelepathy = true; }
+            else if (entry.getKey() instanceof TokenBoost tb) { tb.onActivate(player, entry.getValue(), tool); }
+            // New generic hooks
+            else if (entry.getKey() instanceof Oxygenate o && player.isInWater()) { o.tryRefill(player); }
+            else if (entry.getKey() instanceof Experience e) { e.tryGiveExp(player, entry.getValue()); }
+            else if (entry.getKey() instanceof Inquisitive i) { i.onBlockBreak(player, event, entry.getValue()); }
+            else if (entry.getKey() instanceof Blacksmith b) { b.onBlockBreak(player, event, entry.getValue()); }
+            else if (entry.getKey() instanceof MasterInquisitive mi) { mi.onBlockBreak(player, event, entry.getValue()); }
+        }
+
+        // Detonate: mines an area, respecting AutoSmelt and Telepathy
+        if (hasDetonate) {
+            event.setCancelled(true);
+            Block target = player.getTargetBlockExact(5);
+            if (target != null && target.getType() != Material.AIR) {
+                int radius = detonateLevel;
+                for (int dx = -radius; dx <= radius; dx++) {
+                    for (int dy = -radius; dy <= radius; dy++) {
+                        for (int dz = -radius; dz <= radius; dz++) {
+                            Block b = target.getRelative(dx, dy, dz);
+                            Material bType = b.getType();
+                            if (bType == Material.AIR || bType == Material.BEDROCK) continue;
+                            if (bType == Material.WATER || bType == Material.LAVA) { b.setType(Material.AIR); continue; }
+                            if (hasAutoSmelt) {
+                                Material smelt = AutoSmelt.getSmeltResult(bType);
+                                if (smelt != null) { b.setType(Material.AIR); player.getInventory().addItem(new ItemStack(smelt)); continue; }
+                                Collection<ItemStack> rawDrops = b.getDrops(tool);
+                                boolean smelted = false;
+                                for (ItemStack drop : rawDrops) {
+                                    Material s = AutoSmelt.getSmeltResult(drop.getType());
+                                    if (s != null) { b.setType(Material.AIR); player.getInventory().addItem(new ItemStack(s, drop.getAmount())); smelted = true; break; }
+                                }
+                                if (smelted) continue;
+                            }
+                            if (hasTelepathy) {
+                                Collection<ItemStack> drops = b.getDrops(tool);
+                                b.setType(Material.AIR);
+                                drops.forEach(d -> player.getInventory().addItem(d.clone()));
+                                continue;
+                            }
+                            if (player.getGameMode() == GameMode.CREATIVE) b.setType(Material.AIR);
+                            else b.breakNaturally(tool);
+                        }
+                    }
+                }
+            }
+            return;
+        }
+
+        // AutoSmelt: smelt the block drop and add to inventory
+        if (hasAutoSmelt) {
+            Material smeltResult = AutoSmelt.getSmeltResult(block.getType());
+            if (smeltResult != null) {
+                event.setDropItems(false);
+                player.getInventory().addItem(new ItemStack(smeltResult, 1));
+                // Also check raw drops (e.g. deepslate copper drops raw copper which can also be smelted)
+            } else {
+                // Check raw drops from this block
+                Collection<ItemStack> rawDrops = block.getDrops(tool);
+                boolean anySmelted = false;
+                for (ItemStack drop : rawDrops) {
+                    Material smelted = AutoSmelt.getSmeltResult(drop.getType());
+                    if (smelted != null) {
+                        event.setDropItems(false);
+                        player.getInventory().addItem(new ItemStack(smelted, drop.getAmount()));
+                        anySmelted = true;
+                    }
+                }
+                // If telepathy also active, handle remaining drops
+                if (hasTelepathy && !anySmelted) {
+                    event.setDropItems(false);
+                    for (ItemStack drop : rawDrops) {
+                        player.getInventory().addItem(drop.clone());
+                    }
+                }
+            }
+            return;
+        }
+
+        // Telepathy: sends drops directly to inventory
+        if (hasTelepathy) {
+            Collection<ItemStack> drops = block.getDrops(tool);
+            event.setDropItems(false);
+            for (ItemStack drop : drops) {
+                player.getInventory().addItem(drop.clone());
+            }
+        }
+    }
+
+    private static final Set<Material> OBSIDIAN_TYPES = Set.of(
+            Material.OBSIDIAN, Material.CRYING_OBSIDIAN, Material.RESPAWN_ANCHOR
+    );
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onLeftClick(PlayerInteractEvent event) {
+        if (event.getAction() != Action.LEFT_CLICK_BLOCK) return;
+        Block block = event.getClickedBlock();
+        if (block == null || !OBSIDIAN_TYPES.contains(block.getType())) return;
+        Player player = event.getPlayer();
+        ItemStack tool = player.getInventory().getItemInMainHand();
+        Map<CustomEnchantment, Integer> enchants = plugin.getEnchantmentManager().getEnchantmentsOnItem(tool);
+        boolean hasObsidianBreaker = enchants.keySet().stream().anyMatch(e -> e instanceof ObsidianBreaker);
+        if (!hasObsidianBreaker) return;
+        event.setCancelled(true);
+        if (player.getGameMode() == org.bukkit.GameMode.CREATIVE) {
+            block.setType(Material.AIR);
+        } else {
+            block.breakNaturally(tool);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent event) {
+        Player player = event.getPlayer();
+        // Armor passive effects
+        for (ItemStack armor : player.getInventory().getArmorContents()) {
+            if (armor == null) continue;
+            for (Map.Entry<CustomEnchantment, Integer> e : plugin.getEnchantmentManager().getEnchantmentsOnItem(armor).entrySet()) {
+                e.getKey().onTickPassive(player, e.getValue(), armor);
+            }
+        }
+        // Held tool passive effects (Haste, etc.)
+        ItemStack held = player.getInventory().getItemInMainHand();
+        for (Map.Entry<CustomEnchantment, Integer> e : plugin.getEnchantmentManager().getEnchantmentsOnItem(held).entrySet()) {
+            e.getKey().onTickPassive(player, e.getValue(), held);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerItemDamage(PlayerItemDamageEvent event) {
+        Player player = event.getPlayer();
+        ItemStack item = event.getItem();
+        Map<CustomEnchantment, Integer> enchants = plugin.getEnchantmentManager().getEnchantmentsOnItem(item);
+        for (Map.Entry<CustomEnchantment, Integer> e : enchants.entrySet()) {
+            if (e.getKey() instanceof Hardened h && h.shouldCancelDamage(e.getValue())) {
+                event.setCancelled(true);
+                return;
+            }
+            if (e.getKey() instanceof Reforged r && r.shouldCancelDamage(e.getValue())) {
+                event.setCancelled(true);
+                return;
+            }
+        }
+    }
+}
+
