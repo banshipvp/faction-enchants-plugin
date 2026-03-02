@@ -10,7 +10,7 @@ public class Overload extends CustomEnchantment {
 
     public Overload() {
         super("overload", "Overload", 3, EnchantTier.LEGENDARY,
-                ApplicableGear.HELMET, ApplicableGear.CHESTPLATE, ApplicableGear.LEGGINGS, ApplicableGear.BOOTS);
+                ApplicableGear.CHESTPLATE);
     }
 
     @Override

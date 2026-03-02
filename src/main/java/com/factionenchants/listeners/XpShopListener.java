@@ -27,6 +27,7 @@ public class XpShopListener implements Listener {
         if (!event.getView().getTitle().equals(XpShopCommand.GUI_TITLE)) return;
 
         event.setCancelled(true);
+        event.setResult(org.bukkit.event.inventory.InventoryClickEvent.Result.DENY);
 
         ItemStack clicked = event.getCurrentItem();
         String itemId = XpShopCommand.getShopItemId(clicked);
@@ -60,7 +61,11 @@ public class XpShopListener implements Listener {
             return;
         }
 
-        player.getInventory().addItem(purchasedItem);
+        // Ensure exactly 1 item
+        if (purchasedItem != null) {
+            purchasedItem.setAmount(1);
+            player.getInventory().addItem(purchasedItem);
+        }
         player.sendMessage("§aPurchased item for §e" + format(cost) + " XP§a.");
     }
 

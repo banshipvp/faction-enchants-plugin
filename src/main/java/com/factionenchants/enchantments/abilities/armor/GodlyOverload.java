@@ -9,7 +9,7 @@ import org.bukkit.potion.PotionEffectType;
 public class GodlyOverload extends CustomEnchantment {
 
     public GodlyOverload() {
-        super("godly_overload", "Godly Overload", 3, EnchantTier.HEROIC, ApplicableGear.ARMOR);
+        super("godly_overload", "Godly Overload", 3, EnchantTier.HEROIC, ApplicableGear.CHESTPLATE);
     }
 
     @Override

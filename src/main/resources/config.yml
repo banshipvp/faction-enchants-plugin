@@ -88,8 +88,8 @@ xpshop:
   tnt-wand: 50000
   simplefactions:
     enabled: true
-    sell-wand-command: "f sellwand"
-    tnt-wand-command: "f tnt wand"
+    sell-wand-command: "f givewand {player} sell"
+    tnt-wand-command: "f givewand {player} tnt"
 
 random-gear:
   min-enchants: 1

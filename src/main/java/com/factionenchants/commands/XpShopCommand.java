@@ -17,6 +17,7 @@ import org.bukkit.persistence.PersistentDataType;
 import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.Random;
 
 public class XpShopCommand implements CommandExecutor {
 
@@ -26,6 +27,10 @@ public class XpShopCommand implements CommandExecutor {
     public static final String ITEM_WATER_FAT_BUCKET = "water_fat_bucket";
     public static final String ITEM_SELL_WAND = "sell_wand";
     public static final String ITEM_TNT_WAND = "tnt_wand";
+    public static final String ITEM_BLACK_SCROLL = "black_scroll";
+    public static final String ITEM_REROLL_SCROLL = "reroll_scroll";
+    public static final String ITEM_COLLECTION_CHEST = "collection_chest";
+    public static final String ITEM_TRAPPED_COLLECTION_CHEST = "trapped_collection_chest";
 
     private static NamespacedKey SHOP_ITEM_ID_KEY;
     private static NamespacedKey SHOP_ITEM_COST_KEY;
@@ -51,6 +56,7 @@ public class XpShopCommand implements CommandExecutor {
     public void openShop(Player player) {
         Inventory gui = Bukkit.createInventory(null, 27, GUI_TITLE);
 
+        // Row 1: Utility Items
         gui.setItem(10, createShopDisplayItem(Material.DIAMOND_PICKAXE, "§e§lDetonate Pickaxe", ITEM_DETONATE_PICKAXE,
                 getCost("xpshop.detonate-pickaxe", 10_000),
                 "§7Comes with §5Detonate I"));
@@ -63,6 +69,7 @@ public class XpShopCommand implements CommandExecutor {
                 getCost("xpshop.water-fat-bucket", 15_000),
                 "§7Useful for fast water placement"));
 
+        // Row 2: Wands
         gui.setItem(14, createShopDisplayItem(Material.BLAZE_ROD, "§a§lSell Wand", ITEM_SELL_WAND,
                 getCost("xpshop.sell-wand", 50_000),
                 "§7Right-click containers to sell"));
@@ -70,6 +77,23 @@ public class XpShopCommand implements CommandExecutor {
         gui.setItem(15, createShopDisplayItem(Material.STICK, "§c§lTNT Wand", ITEM_TNT_WAND,
                 getCost("xpshop.tnt-wand", 50_000),
                 "§7Right-click TNT storage blocks"));
+
+        gui.setItem(16, createShopDisplayItem(Material.INK_SAC, "§8§l⚫ Black Scroll", ITEM_BLACK_SCROLL,
+                getCost("xpshop.black-scroll", 20_000),
+                "§7Extract enchants from gear"));
+
+        // Row 3: Scrolls & Chests
+        gui.setItem(19, createShopDisplayItem(Material.PAPER, "§b§l✦ Reroll Scroll", ITEM_REROLL_SCROLL,
+                getCost("xpshop.reroll-scroll", 25_000),
+                "§7Reroll enchant percentages"));
+
+        gui.setItem(20, createShopDisplayItem(Material.CHEST, "§a§lCollection Chest", ITEM_COLLECTION_CHEST,
+                getCost("xpshop.collection-chest", 100_000),
+                "§7Auto-collect mob drops"));
+
+        gui.setItem(21, createShopDisplayItem(Material.TRAPPED_CHEST, "§c§lTrapped Collection Chest", ITEM_TRAPPED_COLLECTION_CHEST,
+                getCost("xpshop.trapped-collection-chest", 110_000),
+                "§7Auto-collect with pressure"));
 
         ItemStack border = makeBorder(Material.BLACK_STAINED_GLASS_PANE);
         for (int i = 0; i < gui.getSize(); i++) {
@@ -90,6 +114,10 @@ public class XpShopCommand implements CommandExecutor {
             case ITEM_WATER_FAT_BUCKET -> createCustomItem(Material.WATER_BUCKET, "§b§lWater Fat Bucket", "§7Purchased from XP Shop");
             case ITEM_SELL_WAND -> null;
             case ITEM_TNT_WAND -> null;
+            case ITEM_BLACK_SCROLL -> createBlackScroll();
+            case ITEM_REROLL_SCROLL -> createRerollScroll();
+            case ITEM_COLLECTION_CHEST -> createCustomItem(Material.CHEST, "§a§lCollection Chest", "§7Place to collect mob drops");
+            case ITEM_TRAPPED_COLLECTION_CHEST -> createCustomItem(Material.TRAPPED_CHEST, "§c§lTrapped Collection Chest", "§7Place to collect mob drops");
             default -> null;
         };
     }
@@ -104,11 +132,16 @@ public class XpShopCommand implements CommandExecutor {
     }
 
     private ItemStack createCustomItem(Material material, String displayName, String loreLine) {
-        ItemStack item = new ItemStack(material);
+        ItemStack item = new ItemStack(material, 1);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(displayName);
-        meta.setLore(Arrays.asList(loreLine));
-        item.setItemMeta(meta);
+        if (meta == null) {
+            meta = Bukkit.getItemFactory().getItemMeta(material);
+        }
+        if (meta != null) {
+            meta.setDisplayName(displayName);
+            meta.setLore(Arrays.asList(loreLine));
+            item.setItemMeta(meta);
+        }
         return item;
     }
 
@@ -134,6 +167,61 @@ public class XpShopCommand implements CommandExecutor {
         meta.setDisplayName(" ");
         pane.setItemMeta(meta);
         return pane;
+    }
+
+    private ItemStack createBlackScroll() {
+        int successRate = 25 + new Random().nextInt(76); // 25-100%
+        ItemStack scroll = new ItemStack(Material.INK_SAC);
+        ItemMeta meta = scroll.getItemMeta();
+
+        meta.setDisplayName("§8§l⚫ Black Scroll §l⚫");
+        meta.setLore(Arrays.asList(
+                "§8▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬",
+                "§7Extract an enchant from",
+                "§7enchanted gear or armor",
+                "§7",
+                "§eSuccess Rate: §f" + successRate + "%",
+                "§cDestroy Rate: §f100%",
+                "§7",
+                "§eRight-click gear to extract",
+                "§8▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"
+        ));
+
+        NamespacedKey blackScrollKey = new NamespacedKey(plugin, "black_scroll");
+        NamespacedKey blackScrollSuccessKey = new NamespacedKey(plugin, "black_scroll_success");
+        meta.getPersistentDataContainer().set(blackScrollKey, PersistentDataType.BYTE, (byte) 1);
+        meta.getPersistentDataContainer().set(blackScrollSuccessKey, PersistentDataType.INTEGER, successRate);
+
+        scroll.setItemMeta(meta);
+        return scroll;
+    }
+
+    private ItemStack createRerollScroll() {
+        ItemStack scroll = new ItemStack(Material.PAPER);
+        ItemMeta meta = scroll.getItemMeta();
+
+        String tier = "ELITE";
+        String color = "§b";
+        
+        meta.setDisplayName(color + "§l✦ " + tier + " Reroll Scroll §l✦");
+        meta.setLore(Arrays.asList(
+                "§8▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬",
+                "§7Reroll success/destroy rates",
+                "§7on enchanted books",
+                "§7",
+                "§eTarget: " + color + tier + " §eor lower",
+                "§7",
+                "§eRight-click on a book to apply",
+                "§8▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"
+        ));
+
+        NamespacedKey rerollScrollKey = new NamespacedKey(plugin, "reroll_scroll");
+        NamespacedKey rerollTierKey = new NamespacedKey(plugin, "reroll_tier");
+        meta.getPersistentDataContainer().set(rerollScrollKey, PersistentDataType.BYTE, (byte) 1);
+        meta.getPersistentDataContainer().set(rerollTierKey, PersistentDataType.STRING, tier);
+
+        scroll.setItemMeta(meta);
+        return scroll;
     }
 
     public static String getShopItemId(ItemStack item) {

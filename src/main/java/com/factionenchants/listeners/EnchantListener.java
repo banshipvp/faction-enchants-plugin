@@ -17,6 +17,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.Collection;
 import java.util.Map;
@@ -160,10 +161,15 @@ public class EnchantListener implements Listener {
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
+        boolean hasOverload = false;
+
         // Armor passive effects
         for (ItemStack armor : player.getInventory().getArmorContents()) {
             if (armor == null) continue;
             for (Map.Entry<CustomEnchantment, Integer> e : plugin.getEnchantmentManager().getEnchantmentsOnItem(armor).entrySet()) {
+                if ("overload".equals(e.getKey().getId())) {
+                    hasOverload = true;
+                }
                 e.getKey().onTickPassive(player, e.getValue(), armor);
             }
         }
@@ -171,6 +177,10 @@ public class EnchantListener implements Listener {
         ItemStack held = player.getInventory().getItemInMainHand();
         for (Map.Entry<CustomEnchantment, Integer> e : plugin.getEnchantmentManager().getEnchantmentsOnItem(held).entrySet()) {
             e.getKey().onTickPassive(player, e.getValue(), held);
+        }
+
+        if (!hasOverload && player.hasPotionEffect(PotionEffectType.HEALTH_BOOST)) {
+            player.removePotionEffect(PotionEffectType.HEALTH_BOOST);
         }
     }
 

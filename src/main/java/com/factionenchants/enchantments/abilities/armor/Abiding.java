@@ -14,12 +14,11 @@ public class Abiding extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "Grants increased max health and permanent resistance.";
+        return "Grants permanent resistance while worn.";
     }
 
     @Override
     public void onTickPassive(Player player, int level, ItemStack equipment) {
         player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 60, 0, true, false));
-        player.addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, 60, level - 1, true, false));
     }
 }
