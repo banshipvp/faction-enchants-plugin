@@ -11,7 +11,8 @@ import org.bukkit.potion.PotionEffectType;
 public class Rage extends CustomEnchantment {
 
     public Rage() {
-        super("rage", "Rage", 5, EnchantTier.LEGENDARY, ApplicableGear.AXE);
+        super("rage", "Rage", 5, EnchantTier.LEGENDARY,
+                ApplicableGear.SWORD, ApplicableGear.AXE, ApplicableGear.BOW);
     }
 
     @Override
@@ -19,11 +20,22 @@ public class Rage extends CustomEnchantment {
         return "Gain stacking strength with every hit.";
     }
 
+    /** Applies stacking Strength on melee hits (sword / axe). */
     @Override
     public void onHitEntity(Player attacker, LivingEntity target, int level, EntityDamageByEntityEvent event) {
-        int currentAmp = attacker.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE)
-                ? attacker.getPotionEffect(PotionEffectType.INCREASE_DAMAGE).getAmplifier() : -1;
+        applyRage(attacker, level);
+    }
+
+    /** Applies stacking Strength on arrow hits (bow). */
+    @Override
+    public void onArrowHit(Player shooter, LivingEntity target, int level, EntityDamageByEntityEvent event) {
+        applyRage(shooter, level);
+    }
+
+    private void applyRage(Player player, int level) {
+        int currentAmp = player.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE)
+                ? player.getPotionEffect(PotionEffectType.INCREASE_DAMAGE).getAmplifier() : -1;
         int newAmp = Math.min(currentAmp + 1, level);
-        attacker.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 80, newAmp, true, true));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 80, newAmp, true, true));
     }
 }

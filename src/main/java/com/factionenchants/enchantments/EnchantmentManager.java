@@ -175,6 +175,7 @@ public class EnchantmentManager {
         register(new Lifesteal());
         register(new Rage());
         register(new Silence());
+        register(new Deepwounds());
         register(new Armored());
         register(new Exterminator());
         register(new Blacksmith());
@@ -188,7 +189,6 @@ public class EnchantmentManager {
         // Soul tier
         register(new Rogue());
         register(new Sabotage());
-        register(new DivineImmolation());
 
         // Heroic tier
         register(new PolymorphicMetaphysical());
