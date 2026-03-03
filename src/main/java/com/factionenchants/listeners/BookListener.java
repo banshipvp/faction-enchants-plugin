@@ -23,6 +23,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
@@ -148,6 +149,42 @@ public class BookListener implements Listener {
         ItemStack current = event.getCurrentItem();
         if (cursor == null || cursor.getType().isAir()) return;
         if (current == null || current.getType().isAir()) return;
+
+        if (isBlackScroll(cursor)) {
+            event.setCancelled(true);
+
+            Map<CustomEnchantment, Integer> enchants = plugin.getEnchantmentManager().getEnchantmentsOnItem(current);
+            if (enchants.isEmpty()) {
+                player.sendMessage("§cThat item has no custom enchants to extract.");
+                return;
+            }
+
+            List<Map.Entry<CustomEnchantment, Integer>> entries = new ArrayList<>(enchants.entrySet());
+            Map.Entry<CustomEnchantment, Integer> extracted = entries.get(ThreadLocalRandom.current().nextInt(entries.size()));
+
+            ItemStack updatedTarget = current.clone();
+            plugin.getEnchantmentManager().removeEnchantment(updatedTarget, extracted.getKey());
+            if (event.getClickedInventory() != null) {
+                event.getClickedInventory().setItem(event.getSlot(), updatedTarget);
+            } else {
+                event.getView().setItem(event.getRawSlot(), updatedTarget);
+            }
+
+            ItemStack extractedBook = EnchantBook.createSpecificBook(extracted.getKey(), extracted.getValue(), 100, 0);
+            player.getInventory().addItem(extractedBook).values().forEach(leftover ->
+                    player.getWorld().dropItemNaturally(player.getLocation(), leftover));
+
+            if (cursor.getAmount() > 1) {
+                cursor.setAmount(cursor.getAmount() - 1);
+                event.getView().setCursor(cursor);
+            } else {
+                event.getView().setCursor(null);
+            }
+
+            player.updateInventory();
+            player.sendMessage("§aBlack Scroll extracted §e" + extracted.getKey().getDisplayName() + " " + EnchantmentManager.toRoman(extracted.getValue()) + "§a.");
+            return;
+        }
 
         DustManager dustManager = plugin.getDustManager();
         if (dustManager.isMysteryDust(cursor)) {
@@ -381,5 +418,19 @@ public class BookListener implements Listener {
         if (item == null || item.getType().isAir()) return;
         var leftovers = player.getInventory().addItem(item);
         leftovers.values().forEach(left -> player.getWorld().dropItemNaturally(player.getLocation(), left));
+    }
+
+    private boolean isBlackScroll(ItemStack item) {
+        if (item == null || !item.hasItemMeta()) {
+            return false;
+        }
+
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null || !meta.hasDisplayName()) {
+            return false;
+        }
+
+        String strippedName = meta.getDisplayName().replaceAll("§[0-9a-fk-or]", "").trim().toLowerCase();
+        return strippedName.contains("black scroll");
     }
 }

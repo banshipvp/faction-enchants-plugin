@@ -5,6 +5,7 @@ import com.factionenchants.enchantments.CustomEnchantment;
 import com.factionenchants.enchantments.abilities.armor.*;
 import com.factionenchants.enchantments.abilities.tool.*;
 import org.bukkit.GameMode;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -15,7 +16,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
@@ -29,6 +29,7 @@ public class EnchantListener implements Listener {
 
     public EnchantListener(FactionEnchantsPlugin plugin) {
         this.plugin = plugin;
+        Bukkit.getScheduler().runTaskTimer(plugin, this::tickPassiveEffects, 1L, 20L);
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -158,29 +159,62 @@ public class EnchantListener implements Listener {
         }
     }
 
-    @EventHandler
-    public void onPlayerMove(PlayerMoveEvent event) {
-        Player player = event.getPlayer();
-        boolean hasOverload = false;
+    private void tickPassiveEffects() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            boolean hasOverload = false;
+            boolean hasGears = false;
+            boolean hasDrunk = false;
+            boolean hasImplants = false;
+            boolean hasLowHpAdrenaline = false;
 
-        // Armor passive effects
-        for (ItemStack armor : player.getInventory().getArmorContents()) {
-            if (armor == null) continue;
-            for (Map.Entry<CustomEnchantment, Integer> e : plugin.getEnchantmentManager().getEnchantmentsOnItem(armor).entrySet()) {
-                if ("overload".equals(e.getKey().getId())) {
-                    hasOverload = true;
+            for (ItemStack armor : player.getInventory().getArmorContents()) {
+                if (armor == null || armor.getType().isAir()) continue;
+
+                for (Map.Entry<CustomEnchantment, Integer> e : plugin.getEnchantmentManager().getEnchantmentsOnItem(armor).entrySet()) {
+                    String id = e.getKey().getId();
+                    if ("overload".equals(id) || "godly_overload".equals(id)) {
+                        hasOverload = true;
+                    }
+                    if ("gears".equals(id)) {
+                        hasGears = true;
+                    }
+                    if ("drunk".equals(id)) {
+                        hasDrunk = true;
+                    }
+                    if ("implants".equals(id)) {
+                        hasImplants = true;
+                    }
+                    if ("adrenaline".equals(id) && player.getHealth() < player.getMaxHealth() * 0.3) {
+                        hasLowHpAdrenaline = true;
+                    }
+
+                    e.getKey().onTickPassive(player, e.getValue(), armor);
                 }
-                e.getKey().onTickPassive(player, e.getValue(), armor);
             }
-        }
-        // Held tool passive effects (Haste, etc.)
-        ItemStack held = player.getInventory().getItemInMainHand();
-        for (Map.Entry<CustomEnchantment, Integer> e : plugin.getEnchantmentManager().getEnchantmentsOnItem(held).entrySet()) {
-            e.getKey().onTickPassive(player, e.getValue(), held);
-        }
 
-        if (!hasOverload && player.hasPotionEffect(PotionEffectType.HEALTH_BOOST)) {
-            player.removePotionEffect(PotionEffectType.HEALTH_BOOST);
+            ItemStack held = player.getInventory().getItemInMainHand();
+            for (Map.Entry<CustomEnchantment, Integer> e : plugin.getEnchantmentManager().getEnchantmentsOnItem(held).entrySet()) {
+                e.getKey().onTickPassive(player, e.getValue(), held);
+            }
+
+            if (!hasOverload && player.hasPotionEffect(PotionEffectType.HEALTH_BOOST)) {
+                player.removePotionEffect(PotionEffectType.HEALTH_BOOST);
+            }
+            if (!hasGears && !hasLowHpAdrenaline && player.hasPotionEffect(PotionEffectType.SPEED)) {
+                player.removePotionEffect(PotionEffectType.SPEED);
+            }
+            if (!hasDrunk && !hasLowHpAdrenaline && player.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE)) {
+                player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
+            }
+            if (!hasDrunk && player.hasPotionEffect(PotionEffectType.CONFUSION)) {
+                player.removePotionEffect(PotionEffectType.CONFUSION);
+            }
+            if (!hasImplants && player.hasPotionEffect(PotionEffectType.REGENERATION)) {
+                player.removePotionEffect(PotionEffectType.REGENERATION);
+            }
+            if (!hasImplants && player.hasPotionEffect(PotionEffectType.SATURATION)) {
+                player.removePotionEffect(PotionEffectType.SATURATION);
+            }
         }
     }
 

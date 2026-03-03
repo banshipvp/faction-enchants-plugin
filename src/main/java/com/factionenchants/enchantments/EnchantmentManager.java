@@ -264,6 +264,29 @@ public class EnchantmentManager {
         return item;
     }
 
+    public ItemStack removeEnchantment(ItemStack item, CustomEnchantment enchant) {
+        if (item == null || enchant == null || !item.hasItemMeta()) return item;
+
+        ItemMeta meta = item.getItemMeta();
+        if (!meta.hasLore()) return item;
+
+        String enchantName = enchant.getDisplayName().replaceAll("\u00a7[0-9a-fk-or]", "").trim();
+        List<String> lore = new ArrayList<>(meta.getLore());
+        lore.removeIf(line -> {
+            String stripped = line.replaceAll("\u00a7[0-9a-fk-or]", "").trim();
+            return stripped.startsWith(enchantName + " ");
+        });
+
+        if (lore.isEmpty()) {
+            meta.setLore(null);
+        } else {
+            meta.setLore(lore);
+        }
+
+        item.setItemMeta(meta);
+        return item;
+    }
+
     public static String toRoman(int number) {
         return switch (number) {
             case 1 -> "I"; case 2 -> "II"; case 3 -> "III"; case 4 -> "IV";
