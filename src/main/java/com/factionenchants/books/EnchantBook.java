@@ -56,7 +56,7 @@ public class EnchantBook {
     }
 
     public static ItemStack createSpecificBook(CustomEnchantment enchant, int level, int successRate, int destroyRate) {
-        ItemStack book = new ItemStack(Material.ENCHANTED_BOOK);
+        ItemStack book = new ItemStack(Material.BOOK);
         ItemMeta meta = book.getItemMeta();
         String color = "\u00a7" + enchant.getTier().getColor();
         String name = enchant.getDisplayName();
