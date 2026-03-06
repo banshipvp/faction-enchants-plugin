@@ -2,6 +2,7 @@ name: FactionEnchants
 version: 1.0
 main: com.factionenchants.FactionEnchantsPlugin
 api-version: 1.13
+softdepend: [SimpleFactions]
 commands:
   enchanter:
     description: Opens the enchanter interface to purchase enchant books.

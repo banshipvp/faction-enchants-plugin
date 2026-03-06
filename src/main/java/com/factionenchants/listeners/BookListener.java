@@ -275,8 +275,7 @@ public class BookListener implements Listener {
             }
             player.updateInventory();
             String color = "\u00a7" + enchant.getTier().getColor();
-            player.sendMessage("\u00a7aApplied " + color + enchant.getDisplayName() + " " + EnchantmentManager.toRoman(level) + " \u00a7ato your item!");
-        } else {
+            player.sendMessage("\u00a7aApplied " + color + enchant.getDisplayName() + " " + EnchantmentManager.toRoman(level) + " \u00a7ato your item!");            callSFChallenge(player, local.simplefactions.ChallengeManager.TrackerType.ENCHANT_APPLY);        } else {
             boolean destroy = ThreadLocalRandom.current().nextInt(100) < destroyRate;
             if (destroy) {
                 event.getView().setItem(event.getRawSlot(), null);
@@ -314,7 +313,18 @@ public class BookListener implements Listener {
         if (revealed != null) {
             player.getInventory().addItem(revealed);
             player.sendMessage("\u00a7aYou revealed your enchant book!");
+            callSFChallenge(player, local.simplefactions.ChallengeManager.TrackerType.BOOK_OPEN);
         }
+    }
+
+    // ── SimpleFactions challenge hook ─────────────────────────────────────────
+
+    private void callSFChallenge(org.bukkit.entity.Player player,
+                                  local.simplefactions.ChallengeManager.TrackerType type) {
+        org.bukkit.plugin.Plugin sfPlugin = org.bukkit.Bukkit.getPluginManager().getPlugin("SimpleFactions");
+        if (!(sfPlugin instanceof local.simplefactions.SimpleFactionsPlugin sfp)) return;
+        local.simplefactions.ChallengeManager cm = sfp.getChallengeManager();
+        if (cm != null) cm.increment(player.getUniqueId(), player.getName(), type);
     }
 
     @EventHandler
