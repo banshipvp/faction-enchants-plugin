@@ -18,6 +18,7 @@ public class Curse extends CustomEnchantment {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onTickPassive(Player player, int level, ItemStack equipment) {
         if (player.getHealth() < player.getMaxHealth() * 0.35) {
             int dur = 80;

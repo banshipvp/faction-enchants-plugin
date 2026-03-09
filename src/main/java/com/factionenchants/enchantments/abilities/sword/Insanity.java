@@ -5,29 +5,28 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
-import java.util.Random;
-
+/**
+ * Insanity — Axe enchantment.
+ * Multiplies damage against players who are wielding a sword at the time they are hit.
+ */
 public class Insanity extends CustomEnchantment {
 
-    private final Random random = new Random();
-
     public Insanity() {
-        super("insanity", "Insanity", 5, EnchantTier.LEGENDARY, ApplicableGear.SWORD);
+        super("insanity", "Insanity", 8, EnchantTier.LEGENDARY, ApplicableGear.AXE);
     }
 
     @Override
     public String getDescription() {
-        return "Drives enemies insane with random negative effects.";
+        return "You swing your axe like a maniac. Multiplies damage against players who are wielding a sword at the time they are hit.";
     }
 
     @Override
     public void onHitEntity(Player attacker, LivingEntity target, int level, EntityDamageByEntityEvent event) {
-        target.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, level * 60, 0));
-        target.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, level * 40, 0));
-        if (random.nextBoolean()) target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, level * 40, level - 1));
-        if (random.nextBoolean()) target.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, level * 40, 0));
+        if (!(target instanceof Player p)) return;
+        ItemStack held = p.getInventory().getItemInMainHand();
+        if (held == null || !held.getType().name().endsWith("_SWORD")) return;
+        // Each level adds 8% bonus damage (up to 1.64x at level 8)
+        event.setDamage(event.getDamage() * (1.0 + level * 0.08));
     }
 }

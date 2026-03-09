@@ -17,6 +17,7 @@ public class AlchemistCommand implements CommandExecutor {
 
     public static final String GUI_TITLE = "\u00a75\u00a7lAlchemist";
 
+    @SuppressWarnings("unused")
     private final FactionEnchantsPlugin plugin;
 
     public AlchemistCommand(FactionEnchantsPlugin plugin) {

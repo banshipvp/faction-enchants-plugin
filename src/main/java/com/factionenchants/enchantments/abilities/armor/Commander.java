@@ -1,18 +1,12 @@
 package com.factionenchants.enchantments.abilities.armor;
 
 import com.factionenchants.enchantments.CustomEnchantment;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.Random;
-
 public class Commander extends CustomEnchantment {
-
-    private final Random random = new Random();
 
     public Commander() {
         super("commander", "Commander", 5, EnchantTier.UNIQUE, ApplicableGear.ARMOR);

@@ -4,38 +4,50 @@ import com.factionenchants.enchantments.CustomEnchantment;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
+/**
+ * Rage — Weapon (sword/axe/bow) enchantment.
+ * Tracks consecutive "combo" hits. For every hit you land in succession
+ * (within 3.5 seconds of the last hit) your outgoing damage is multiplied by an extra 1.1x.
+ * Combo resets after 3.5 seconds of no hits or on death.
+ */
 public class Rage extends CustomEnchantment {
 
+    /** Maps attacker UUID → [comboCount, lastHitMs]. */
+    private static final Map<UUID, long[]> comboData = new ConcurrentHashMap<>();
+    private static final long WINDOW_MS = 3500L;
+
     public Rage() {
-        super("rage", "Rage", 5, EnchantTier.LEGENDARY,
+        super("rage", "Rage", 6, EnchantTier.LEGENDARY,
                 ApplicableGear.SWORD, ApplicableGear.AXE, ApplicableGear.BOW);
     }
 
     @Override
     public String getDescription() {
-        return "Gain stacking strength with every hit.";
+        return "For every combo hit you land your damage is multiplied by 1.1x. Combo resets after 3.5 seconds.";
     }
 
-    /** Applies stacking Strength on melee hits (sword / axe). */
     @Override
     public void onHitEntity(Player attacker, LivingEntity target, int level, EntityDamageByEntityEvent event) {
-        applyRage(attacker, level);
+        applyRage(attacker, level, event);
     }
 
-    /** Applies stacking Strength on arrow hits (bow). */
     @Override
     public void onArrowHit(Player shooter, LivingEntity target, int level, EntityDamageByEntityEvent event) {
-        applyRage(shooter, level);
+        applyRage(shooter, level, event);
     }
 
-    private void applyRage(Player player, int level) {
-        int currentAmp = player.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE)
-                ? player.getPotionEffect(PotionEffectType.INCREASE_DAMAGE).getAmplifier() : -1;
-        int newAmp = Math.min(currentAmp + 1, level);
-        player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 80, newAmp, true, true));
+    private void applyRage(Player player, int level, EntityDamageByEntityEvent event) {
+        UUID id = player.getUniqueId();
+        long now = System.currentTimeMillis();
+        long[] data = comboData.getOrDefault(id, new long[]{0L, 0L});
+        long combo = (now - data[1] <= WINDOW_MS) ? Math.min(data[0] + 1, level * 2L) : 1L;
+        comboData.put(id, new long[]{combo, now});
+        // Each combo hit multiplies damage by 1.1
+        event.setDamage(event.getDamage() * Math.pow(1.1, combo));
     }
 }

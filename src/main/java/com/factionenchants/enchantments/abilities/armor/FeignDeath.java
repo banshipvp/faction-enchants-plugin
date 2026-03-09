@@ -2,7 +2,6 @@ package com.factionenchants.enchantments.abilities.armor;
 
 import com.factionenchants.enchantments.CustomEnchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 public class FeignDeath extends CustomEnchantment {
 
@@ -16,6 +15,7 @@ public class FeignDeath extends CustomEnchantment {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onHurtBy(Player defender, org.bukkit.entity.Entity attacker, int level, org.bukkit.event.entity.EntityDamageByEntityEvent event) {
         if (defender.getHealth() - event.getFinalDamage() < defender.getMaxHealth() * 0.1) {
             defender.setHealth(0.5);

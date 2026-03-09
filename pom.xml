@@ -36,7 +36,8 @@
             <groupId>local.simplefactions</groupId>
             <artifactId>SimpleFactions</artifactId>
             <version>1.0.0</version>
-            <scope>provided</scope>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../SimpleFactions/build/libs/SimpleFactions-1.0.0.jar</systemPath>
         </dependency>
     </dependencies>
 

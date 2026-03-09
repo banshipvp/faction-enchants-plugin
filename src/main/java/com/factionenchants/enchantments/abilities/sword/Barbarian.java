@@ -5,23 +5,32 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
+/**
+ * Barbarian — Axe enchantment.
+ * Multiplies damage against players who are wielding an axe at the time they are hit.
+ */
 public class Barbarian extends CustomEnchantment {
 
     public Barbarian() {
-        super("barbarian", "Barbarian", 5, EnchantTier.LEGENDARY, ApplicableGear.AXE);
+        super("barbarian", "Barbarian", 4, EnchantTier.LEGENDARY, ApplicableGear.AXE);
     }
 
     @Override
     public String getDescription() {
-        return "Gain strength and resistance when going berserk (swinging rapidly).";
+        return "Multiplies damage against players who are wielding an AXE at the time they are hit.";
     }
 
     @Override
     public void onHitEntity(Player attacker, LivingEntity target, int level, EntityDamageByEntityEvent event) {
-        attacker.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 60, level - 1, true, false));
-        attacker.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 60, 0, true, false));
+        if (!(target instanceof Player p)) return;
+        ItemStack held = p.getInventory().getItemInMainHand();
+        if (held == null) return;
+        String typeName = held.getType().name();
+        boolean holdsAxe = typeName.endsWith("_AXE");
+        if (!holdsAxe) return;
+        // Each level adds 15% bonus damage (up to 1.60x at level 4)
+        double multiplier = 1.0 + level * 0.15;
+        event.setDamage(event.getDamage() * multiplier);
     }
 }

@@ -20,7 +20,7 @@ public class EnderShift extends CustomEnchantment {
 
     @Override
     public void onTickPassive(Player player, int level, ItemStack equipment) {
-        if (player.getHealth() < player.getMaxHealth() * 0.4) {
+        if (player.getHealth() < player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() * 0.4) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 80, level, true, false));
             player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 80, level - 1, true, false));
         }

@@ -41,6 +41,23 @@ public abstract class CustomEnchantment {
     public void onTickPassive(Player player, int level, ItemStack equipment) {}
 
     /**
+     * Soul charges consumed each time this enchant procs via an event  
+     * (onHitEntity, onHurtBy, onKillEntity, onArrowHit).  Only applies
+     * to SOUL-tier enchants; 0 = no soul cost.
+     */
+    public int getSoulCostPerProc() {
+        return tier == EnchantTier.SOUL ? 3 : 0;
+    }
+
+    /**
+     * Soul charges consumed every second this enchant's onTickPassive fires.
+     * Only applies to SOUL-tier enchants; 0 = no soul cost.
+     */
+    public int getSoulCostPerTick() {
+        return tier == EnchantTier.SOUL ? 1 : 0;
+    }
+
+    /**
      * Heroic enchants may require a prerequisite enchant on the item.
      * Return the enchant ID string, or null if there is no prerequisite.
      */

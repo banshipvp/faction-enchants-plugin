@@ -6,7 +6,10 @@ import com.factionenchants.commands.AlchemistCommand;
 import com.factionenchants.commands.EnchanterCommand;
 import com.factionenchants.commands.EnchantsCommand;
 import com.factionenchants.commands.GiveEnchantCommand;
+import com.factionenchants.commands.BlessCommand;
+import com.factionenchants.commands.GiveItemsCommand;
 import com.factionenchants.commands.GiveRandomGearCommand;
+import com.factionenchants.commands.SplitSoulsCommand;
 import com.factionenchants.commands.TinkererCommand;
 import com.factionenchants.commands.XpShopCommand;
 import com.factionenchants.enchantments.EnchantmentManager;
@@ -14,7 +17,12 @@ import com.factionenchants.gear.RandomGearManager;
 import com.factionenchants.listeners.BookListener;
 import com.factionenchants.listeners.CombatListener;
 import com.factionenchants.listeners.EnchantListener;
+import com.factionenchants.listeners.NameTagListener;
 import com.factionenchants.listeners.TinkererListener;
+import com.factionenchants.listeners.SoulGemListener;
+import com.factionenchants.listeners.ExtendedLootingListener;
+import com.factionenchants.listeners.WhiteScrollListener;
+import com.factionenchants.listeners.BlessedEffectBlocker;
 import com.factionenchants.listeners.XpShopListener;
 import com.factionenchants.utils.ConfigUtil;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -27,6 +35,7 @@ public class FactionEnchantsPlugin extends JavaPlugin {
     private BookManager bookManager;
     private DustManager dustManager;
     private ConfigUtil configUtil;
+    private SoulManager soulManager;
 
     @Override
     public void onEnable() {
@@ -39,6 +48,7 @@ public class FactionEnchantsPlugin extends JavaPlugin {
         bookManager = new BookManager(this);
         dustManager = new DustManager(this);
         DustManager.init(this);
+        soulManager = new SoulManager(this);
         enchantmentManager.registerEnchantments();
         getCommand("enchanter").setExecutor(new EnchanterCommand(this));
         getCommand("enchants").setExecutor(new EnchantsCommand(this));
@@ -50,11 +60,21 @@ public class FactionEnchantsPlugin extends JavaPlugin {
         getCommand("fegive").setExecutor(giveCmd);
         getCommand("fegive").setTabCompleter(giveCmd);
         getCommand("fegiverandomgear").setExecutor(new GiveRandomGearCommand(this));
+        GiveItemsCommand giveItemsCmd = new GiveItemsCommand(this);
+        getCommand("fegiveitem").setExecutor(giveItemsCmd);
+        getCommand("fegiveitem").setTabCompleter(giveItemsCmd);
+        getCommand("bless").setExecutor(new BlessCommand(this));
+        getCommand("splitsouls").setExecutor(new SplitSoulsCommand(this));
         getServer().getPluginManager().registerEvents(new EnchantListener(this), this);
         getServer().getPluginManager().registerEvents(new CombatListener(this), this);
         getServer().getPluginManager().registerEvents(new BookListener(this), this);
         getServer().getPluginManager().registerEvents(new TinkererListener(this), this);
         getServer().getPluginManager().registerEvents(new XpShopListener(this, xpShopCommand), this);
+        getServer().getPluginManager().registerEvents(new NameTagListener(this), this);
+        getServer().getPluginManager().registerEvents(new WhiteScrollListener(this), this);
+        getServer().getPluginManager().registerEvents(new BlessedEffectBlocker(), this);
+        getServer().getPluginManager().registerEvents(new SoulGemListener(this), this);
+        getServer().getPluginManager().registerEvents(new ExtendedLootingListener(this), this);
         getLogger().info("FactionEnchants has been enabled!");
     }
 
@@ -69,4 +89,5 @@ public class FactionEnchantsPlugin extends JavaPlugin {
     public BookManager getBookManager() { return bookManager; }
     public DustManager getDustManager() { return dustManager; }
     public ConfigUtil getConfigUtil() { return configUtil; }
+    public SoulManager getSoulManager() { return soulManager; }
 }

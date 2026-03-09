@@ -18,6 +18,7 @@ public class Adrenaline extends CustomEnchantment {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onTickPassive(Player player, int level, ItemStack equipment) {
         if (player.getHealth() < player.getMaxHealth() * 0.3) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 100, level, true, false));

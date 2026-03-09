@@ -25,6 +25,15 @@ commands:
   fegiverandomgear:
     description: Gives random custom-enchanted gear to a player.
     usage: /<command> <player> <material> [minEnchants] [maxEnchants]
+  fegiveitem:
+    description: Admin command to give FactionEnchants custom items (dust/xp/scrolls/books/nametag).
+    usage: /<command> <dust|xp|blackscroll|rerollscroll|randombook|nametag> <player> [args...]
+  bless:
+    description: Removes Slowness and Mining Fatigue. Available to rank 4+ (warlord/sovereign).
+    usage: /<command>
+  splitsouls:
+    description: Split charges from a held Soul Gem into a new gem.
+    usage: /<command> <amount>
 permissions:
   factionenchants.enchanter:
     description: Allows access to the enchanter command.
@@ -46,4 +55,7 @@ permissions:
     default: op
   factionenchants.randomgear:
     description: Allows giving random custom-enchanted gear.
+    default: op
+  factionenchants.admin:
+    description: Allows use of admin give commands (fegiveitem).
     default: op

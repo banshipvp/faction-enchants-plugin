@@ -3,6 +3,7 @@ package com.factionenchants.listeners;
 import com.factionenchants.FactionEnchantsPlugin;
 import com.factionenchants.books.DustManager;
 import com.factionenchants.books.EnchantBook;
+import com.factionenchants.items.WhiteScrollItem;
 import com.factionenchants.commands.AlchemistCommand;
 import com.factionenchants.commands.EnchanterCommand;
 import com.factionenchants.enchantments.CustomEnchantment;
@@ -19,6 +20,7 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -47,6 +49,36 @@ public class BookListener implements Listener {
             ItemStack clicked = event.getCurrentItem();
             if (clicked == null || !clicked.hasItemMeta()) return;
             var pdc = clicked.getItemMeta().getPersistentDataContainer();
+
+            // ── Vanilla enchant book purchase ─────────────────────────────────────────
+            if (EnchanterCommand.VANILLA_ENCH_KEY != null
+                    && pdc.has(EnchanterCommand.VANILLA_ENCH_KEY, PersistentDataType.STRING)) {
+                String enchKey = pdc.get(EnchanterCommand.VANILLA_ENCH_KEY, PersistentDataType.STRING);
+                int level = (EnchanterCommand.VANILLA_ENCH_LEVEL_KEY != null
+                        && pdc.has(EnchanterCommand.VANILLA_ENCH_LEVEL_KEY, PersistentDataType.INTEGER))
+                        ? pdc.get(EnchanterCommand.VANILLA_ENCH_LEVEL_KEY, PersistentDataType.INTEGER) : 1;
+                int cost = plugin.getConfig().getInt("enchanter.vanilla." + enchKey + "-cost", 25);
+                if (player.getLevel() < cost) {
+                    player.sendMessage("\u00a7cYou need \u00a7e" + cost + " XP levels \u00a7cto buy this book!");
+                    return;
+                }
+                org.bukkit.enchantments.Enchantment ench =
+                        org.bukkit.enchantments.Enchantment.getByKey(
+                                org.bukkit.NamespacedKey.minecraft(enchKey));
+                if (ench == null) return;
+                player.setLevel(player.getLevel() - cost);
+                ItemStack vBook = new ItemStack(Material.ENCHANTED_BOOK);
+                EnchantmentStorageMeta esm = (EnchantmentStorageMeta) vBook.getItemMeta();
+                esm.addStoredEnchant(ench, level, true);
+                vBook.setItemMeta(esm);
+                player.getInventory().addItem(vBook);
+                player.sendMessage("\u00a7aYou received a \u00a7f"
+                        + EnchanterCommand.prettyKey(enchKey) + " "
+                        + EnchanterCommand.toRoman(level) + " \u00a7abook!");
+                return;
+            }
+
+            // ── Custom tier mystery book purchase ──────────────────────────────
             if (!pdc.has(EnchantBook.BOOK_TIER_KEY, PersistentDataType.STRING)) return;
             String tierStr = pdc.get(EnchantBook.BOOK_TIER_KEY, PersistentDataType.STRING);
             CustomEnchantment.EnchantTier tier;
@@ -150,6 +182,35 @@ public class BookListener implements Listener {
         if (cursor == null || cursor.getType().isAir()) return;
         if (current == null || current.getType().isAir()) return;
 
+        // ---- Apply White Scroll: hold scroll on cursor, click gear ----
+        if (WhiteScrollItem.isWhiteScroll(plugin, cursor)) {
+            event.setCancelled(true);
+            if (!isApplicableGear(current)) {
+                player.sendMessage("§cYou can only apply a White Scroll to gear!");
+                return;
+            }
+            if (WhiteScrollItem.isProtected(plugin, current)) {
+                player.sendMessage("§cThat item is already §fPROTECTED§c!");
+                return;
+            }
+            ItemStack updatedGear = current.clone();
+            WhiteScrollItem.applyProtection(plugin, updatedGear);
+            if (event.getClickedInventory() != null) {
+                event.getClickedInventory().setItem(event.getSlot(), updatedGear);
+            } else {
+                event.getView().setItem(event.getRawSlot(), updatedGear);
+            }
+            if (cursor.getAmount() > 1) {
+                cursor.setAmount(cursor.getAmount() - 1);
+                event.getView().setCursor(cursor);
+            } else {
+                event.getView().setCursor(null);
+            }
+            player.sendMessage("§f❆ §aYour item is now §fPROTECTED §aby a White Scroll!");
+            player.updateInventory();
+            return;
+        }
+
         if (isBlackScroll(cursor)) {
             event.setCancelled(true);
 
@@ -189,8 +250,11 @@ public class BookListener implements Listener {
         DustManager dustManager = plugin.getDustManager();
         if (dustManager.isMysteryDust(cursor)) {
             event.setCancelled(true);
+            ItemStack savedDust = cursor.clone();
 
             if (!EnchantBook.isEnchantBook(current) || EnchantBook.isRandomBook(current)) {
+                event.getView().setCursor(savedDust);
+                player.updateInventory();
                 player.sendMessage("§cYou can only apply dust to a revealed enchant book.");
                 return;
             }
@@ -198,12 +262,16 @@ public class BookListener implements Listener {
             CustomEnchantment.EnchantTier dustTier = dustManager.getDustTier(cursor);
             CustomEnchantment.EnchantTier bookTier = EnchantBook.getTier(current);
             if (dustTier == null || bookTier == null || dustTier != bookTier) {
+                event.getView().setCursor(savedDust);
+                player.updateInventory();
                 player.sendMessage("§cDust tier must match the enchant book tier.");
                 return;
             }
 
             DustManager.DustApplyResult result = dustManager.applyDustToBook(cursor, current);
             if (result == null) {
+                event.getView().setCursor(savedDust);
+                player.updateInventory();
                 player.sendMessage("§cFailed to apply dust to this book.");
                 return;
             }
@@ -221,7 +289,69 @@ public class BookListener implements Listener {
                 event.getView().setCursor(null);
             }
 
+            player.updateInventory();
             player.sendMessage("§aDust applied! §e+" + result.getAppliedBoost() + "% §asuccess (now §e" + result.getNewSuccessRate() + "%§a).");
+            return;
+        }
+
+        // ---- Apply vanilla enchanted book onto gear (drag/click) ----
+        if (cursor.getType() == Material.ENCHANTED_BOOK
+                && !EnchantBook.isEnchantBook(cursor)
+                && cursor.getItemMeta() instanceof EnchantmentStorageMeta storageMeta
+                && !storageMeta.getStoredEnchants().isEmpty()
+                && isGear(current)) {
+
+            event.setCancelled(true);
+
+            // Check each stored enchantment can apply to the target
+            Map<org.bukkit.enchantments.Enchantment, Integer> stored = storageMeta.getStoredEnchants();
+            boolean anyApplicable = stored.keySet().stream()
+                    .anyMatch(e -> e.canEnchantItem(current));
+            if (!anyApplicable) {
+                player.sendMessage("\u00a7cNone of the enchantments in that book can be applied to this item.");
+                return;
+            }
+
+            ItemStack result = current.clone();
+            List<String> applied = new ArrayList<>();
+            List<String> skipped = new ArrayList<>();
+
+            for (var entry : stored.entrySet()) {
+                org.bukkit.enchantments.Enchantment ench = entry.getKey();
+                int lvl = entry.getValue();
+                if (!ench.canEnchantItem(result)) {
+                    skipped.add(ench.getKey().getKey());
+                    continue;
+                }
+                // Combine levels if same enchant already present
+                int existing = result.getEnchantmentLevel(ench);
+                int newLvl = (existing == lvl) ? Math.min(lvl + 1, ench.getMaxLevel()) : Math.max(existing, lvl);
+                result.addUnsafeEnchantment(ench, newLvl);
+                applied.add(prettyEnchantName(ench.getKey().getKey()) + " " + EnchantmentManager.toRoman(newLvl));
+            }
+
+            if (applied.isEmpty()) {
+                player.sendMessage("\u00a7cNo enchantments from that book could be applied to this item.");
+                return;
+            }
+
+            if (event.getClickedInventory() != null) {
+                event.getClickedInventory().setItem(event.getSlot(), result);
+            } else {
+                event.getView().setItem(event.getRawSlot(), result);
+            }
+
+            if (cursor.getAmount() > 1) {
+                cursor.setAmount(cursor.getAmount() - 1);
+                event.getView().setCursor(cursor);
+            } else {
+                event.getView().setCursor(null);
+            }
+            player.updateInventory();
+            player.sendMessage("\u00a7aApplied: \u00a7f" + String.join("\u00a77, \u00a7f", applied));
+            if (!skipped.isEmpty()) {
+                player.sendMessage("\u00a7eSkipped (incompatible): \u00a77" + String.join(", ", skipped));
+            }
             return;
         }
 
@@ -232,8 +362,11 @@ public class BookListener implements Listener {
         int level = EnchantBook.getEnchantLevel(cursor);
         CustomEnchantment enchant = plugin.getEnchantmentManager().getEnchantment(enchantId);
         if (enchant == null) return;
+        ItemStack savedBook = cursor.clone();
         if (!enchant.canApplyTo(current)) {
             event.setCancelled(true);
+            event.getView().setCursor(savedBook);
+            player.updateInventory();
             player.sendMessage("\u00a7cThis enchant cannot be applied to that item!");
             return;
         }
@@ -246,24 +379,43 @@ public class BookListener implements Listener {
             boolean hasPrereq = existing.keySet().stream().anyMatch(e -> e.getId().equals(prereq));
             if (!hasPrereq) {
                 event.setCancelled(true);
+                event.getView().setCursor(savedBook);
+                player.updateInventory();
                 player.sendMessage("\u00a7cThis enchant requires \u00a7e" + prereq + " \u00a7cto be applied first!");
                 return;
             }
         }
         if (!existing.containsKey(enchant) && existing.size() >= EnchantBook.MAX_ENCHANTS_PER_ITEM) {
             event.setCancelled(true);
+            event.getView().setCursor(savedBook);
+            player.updateInventory();
             player.sendMessage("\u00a7cThis item already has the maximum of \u00a7e" + EnchantBook.MAX_ENCHANTS_PER_ITEM + " \u00a7cenchants!");
             return;
         }
         if (existing.containsKey(enchant) && existing.get(enchant) >= enchant.getMaxLevel()) {
             event.setCancelled(true);
+            event.getView().setCursor(savedBook);
+            player.updateInventory();
             player.sendMessage("\u00a7cThis enchant is already at max level!");
             return;
         }
 
         event.setCancelled(true);
-        int successRate = Math.max(0, Math.min(100, EnchantBook.getSuccessRate(cursor)));
+        int baseSuccessRate = Math.max(0, Math.min(100, EnchantBook.getSuccessRate(cursor)));
         int destroyRate = Math.max(0, Math.min(100, EnchantBook.getDestroyRate(cursor)));
+
+        // Apply faction success rate upgrade bonus
+        int factionBonus = 0;
+        try {
+            org.bukkit.plugin.Plugin sfPlugin = org.bukkit.Bukkit.getPluginManager().getPlugin("SimpleFactions");
+            if (sfPlugin instanceof local.simplefactions.SimpleFactionsPlugin sfp) {
+                local.simplefactions.FactionManager.Faction playerFaction =
+                        sfp.getFactionManager().getFaction(player.getUniqueId());
+                if (playerFaction != null) factionBonus = playerFaction.getSuccessRateBonus();
+            }
+        } catch (Exception ignored) {}
+
+        int successRate = Math.min(100, baseSuccessRate + factionBonus);
         boolean success = ThreadLocalRandom.current().nextInt(100) < successRate;
 
         if (success) {
@@ -278,12 +430,34 @@ public class BookListener implements Listener {
             player.sendMessage("\u00a7aApplied " + color + enchant.getDisplayName() + " " + EnchantmentManager.toRoman(level) + " \u00a7ato your item!");            callSFChallenge(player, local.simplefactions.ChallengeManager.TrackerType.ENCHANT_APPLY);        } else {
             boolean destroy = ThreadLocalRandom.current().nextInt(100) < destroyRate;
             if (destroy) {
-                event.getView().setItem(event.getRawSlot(), null);
+                // Check if gear has whitescroll protection — absorb the hit instead
+                if (WhiteScrollItem.isProtected(plugin, current)) {
+                    ItemStack saved = current.clone();
+                    WhiteScrollItem.removeProtection(plugin, saved);
+                    if (event.getClickedInventory() != null) {
+                        event.getClickedInventory().setItem(event.getSlot(), saved);
+                    } else {
+                        event.getView().setItem(event.getRawSlot(), saved);
+                    }
+                    player.sendMessage("§f✦ §cYour §fWhite Scroll §cabsorbed the destruction! Protection consumed.");
+                } else {
+                if (event.getClickedInventory() != null) {
+                    event.getClickedInventory().setItem(event.getSlot(), null);
+                } else {
+                    event.getView().setItem(event.getRawSlot(), null);
+                }
                 player.sendMessage("\u00a7cEnchant failed and your gear was destroyed!");
+                }
             } else {
+                // Explicitly re-set the item to prevent client-server desync / gear duplication
+                if (event.getClickedInventory() != null) {
+                    event.getClickedInventory().setItem(event.getSlot(), current);
+                } else {
+                    event.getView().setItem(event.getRawSlot(), current);
+                }
                 player.sendMessage("\u00a7cEnchant failed! Your gear survived.");
             }
-        }
+        } // end else (destroy block)
 
         // Consume one book from cursor
         if (cursor.getAmount() > 1) {
@@ -292,6 +466,7 @@ public class BookListener implements Listener {
         } else {
             event.getView().setCursor(null);
         }
+        player.updateInventory();
     }
 
     @EventHandler
@@ -428,6 +603,53 @@ public class BookListener implements Listener {
         if (item == null || item.getType().isAir()) return;
         var leftovers = player.getInventory().addItem(item);
         leftovers.values().forEach(left -> player.getWorld().dropItemNaturally(player.getLocation(), left));
+    }
+
+    /**
+     * Gear items that can have White Scroll protection applied
+     * (armor, weapons, tools — excludes books).
+     */
+    private boolean isApplicableGear(ItemStack item) {
+        if (item == null || item.getType() == Material.AIR) return false;
+        String name = item.getType().name();
+        if (name.endsWith("_HELMET") || name.endsWith("_CHESTPLATE")
+                || name.endsWith("_LEGGINGS") || name.endsWith("_BOOTS")) return true;
+        if (name.endsWith("_SWORD") || name.endsWith("_AXE")) return true;
+        if (name.endsWith("_PICKAXE") || name.endsWith("_SHOVEL") || name.endsWith("_HOE")) return true;
+        Material m = item.getType();
+        return m == Material.BOW || m == Material.CROSSBOW || m == Material.TRIDENT
+                || m == Material.FISHING_ROD || m == Material.SHIELD || m == Material.ELYTRA;
+    }
+
+    /** True for any wearable/wieldable item that can receive enchantments. */
+    private boolean isGear(ItemStack item) {
+        if (item == null || item.getType() == Material.AIR) return false;
+        String n = item.getType().name();
+        return n.endsWith("_SWORD") || n.endsWith("_AXE") || n.endsWith("_PICKAXE")
+                || n.endsWith("_SHOVEL") || n.endsWith("_HOE")
+                || n.endsWith("_HELMET") || n.endsWith("_CHESTPLATE")
+                || n.endsWith("_LEGGINGS") || n.endsWith("_BOOTS")
+                || item.getType() == Material.BOW
+                || item.getType() == Material.CROSSBOW
+                || item.getType() == Material.TRIDENT
+                || item.getType() == Material.FISHING_ROD
+                || item.getType() == Material.SHIELD
+                || item.getType() == Material.ELYTRA
+                || item.getType() == Material.BOOK
+                || item.getType() == Material.ENCHANTED_BOOK;
+    }
+
+    /** Converts a snake_case enchantment key to a display-friendly Title Case string. */
+    private String prettyEnchantName(String key) {
+        String[] parts = key.split("_");
+        StringBuilder sb = new StringBuilder();
+        for (String p : parts) {
+            if (!p.isEmpty()) {
+                if (!sb.isEmpty()) sb.append(' ');
+                sb.append(Character.toUpperCase(p.charAt(0))).append(p.substring(1).toLowerCase());
+            }
+        }
+        return sb.toString();
     }
 
     private boolean isBlackScroll(ItemStack item) {

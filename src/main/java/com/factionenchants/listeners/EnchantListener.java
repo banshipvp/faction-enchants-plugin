@@ -3,6 +3,7 @@ package com.factionenchants.listeners;
 import com.factionenchants.FactionEnchantsPlugin;
 import com.factionenchants.enchantments.CustomEnchantment;
 import com.factionenchants.enchantments.abilities.armor.*;
+import com.factionenchants.enchantments.abilities.sword.*;
 import com.factionenchants.enchantments.abilities.tool.*;
 import org.bukkit.GameMode;
 import org.bukkit.Bukkit;
@@ -20,16 +21,37 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 public class EnchantListener implements Listener {
 
     private final FactionEnchantsPlugin plugin;
+    /** Tracks who wore a drunk helmet last tick — used to detect fresh re-equip. */
+    private final Set<UUID> previouslyHadDrunk = Collections.synchronizedSet(new HashSet<>());
 
     public EnchantListener(FactionEnchantsPlugin plugin) {
         this.plugin = plugin;
         Bukkit.getScheduler().runTaskTimer(plugin, this::tickPassiveEffects, 1L, 20L);
+        // Fast drain for Divine Immolation: 1 soul every 4 ticks (0.2s) = 5 souls/second
+        Bukkit.getScheduler().runTaskTimer(plugin, this::tickDivineFastDrain, 1L, 4L);
+    }
+
+    /** Drains 1 soul per 0.2 s from players holding a Divine Immolation sword. */
+    private void tickDivineFastDrain() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (player.getGameMode() == org.bukkit.GameMode.CREATIVE
+                    || player.getGameMode() == org.bukkit.GameMode.SPECTATOR) continue;
+            ItemStack held = player.getInventory().getItemInMainHand();
+            boolean hasDivine = plugin.getEnchantmentManager().getEnchantmentsOnItem(held)
+                    .keySet().stream().anyMatch(e -> e instanceof DivineImmolation);
+            if (hasDivine) {
+                plugin.getSoulManager().consumeSouls(player, 1);
+            }
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -188,13 +210,42 @@ public class EnchantListener implements Listener {
                         hasLowHpAdrenaline = true;
                     }
 
+                    int soulCostPerTick = e.getKey().getSoulCostPerTick();
+                    if (soulCostPerTick > 0 && !plugin.getSoulManager().consumeSouls(player, soulCostPerTick)) continue;
                     e.getKey().onTickPassive(player, e.getValue(), armor);
                 }
             }
 
             ItemStack held = player.getInventory().getItemInMainHand();
             for (Map.Entry<CustomEnchantment, Integer> e : plugin.getEnchantmentManager().getEnchantmentsOnItem(held).entrySet()) {
+                // DivineImmolation soul cost is handled by the fast 4-tick timer – skip here
+                if (e.getKey() instanceof DivineImmolation) continue;
+                int soulCostPerTick = e.getKey().getSoulCostPerTick();
+                if (soulCostPerTick > 0 && !plugin.getSoulManager().consumeSouls(player, soulCostPerTick)) continue;
                 e.getKey().onTickPassive(player, e.getValue(), held);
+            }
+
+            // ── /bless + Drunk helmet interaction ──────────────────────────────
+            // BlessedEffectBlocker cancels SLOW/SLOW_DIGGING potion events while
+            // the player is in BLESSED. Keep them in BLESSED even while wearing
+            // Drunk so the blocker prevents Drunk's passive slowness application.
+            // The blessing expires ONLY when they re-equip a drunk helmet
+            // (detected by comparing current tick vs previous tick state).
+            UUID uid = player.getUniqueId();
+            if (hasDrunk) {
+                // Fresh equip of drunk helmet this tick — expire the blessing
+                if (!previouslyHadDrunk.contains(uid)) {
+                    boolean wasBlessed = com.factionenchants.commands.BlessCommand.BLESSED.remove(uid);
+                    com.factionenchants.commands.BlessCommand.WAS_BLESSED.remove(uid);
+                    if (wasBlessed) {
+                        player.sendMessage("§7Your §fShield of Clarity §7has expired — you equipped a Drunk helmet.");
+                    }
+                }
+                previouslyHadDrunk.add(uid);
+            } else {
+                previouslyHadDrunk.remove(uid);
+                // Clean up any stale WAS_BLESSED from old logic
+                com.factionenchants.commands.BlessCommand.WAS_BLESSED.remove(uid);
             }
 
             if (!hasOverload && player.hasPotionEffect(PotionEffectType.HEALTH_BOOST)) {

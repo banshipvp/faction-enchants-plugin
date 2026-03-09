@@ -2,6 +2,9 @@ package com.factionenchants.commands;
 
 import com.factionenchants.FactionEnchantsPlugin;
 import com.factionenchants.enchantments.CustomEnchantment;
+import com.factionenchants.items.NameTagItem;
+import com.factionenchants.items.SoulGemItem;
+import com.factionenchants.items.WhiteScrollItem;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -10,7 +13,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -31,6 +36,11 @@ public class XpShopCommand implements CommandExecutor {
     public static final String ITEM_REROLL_SCROLL = "reroll_scroll";
     public static final String ITEM_COLLECTION_CHEST = "collection_chest";
     public static final String ITEM_TRAPPED_COLLECTION_CHEST = "trapped_collection_chest";
+    public static final String ITEM_NAME_TAG              = "name_tag";
+    public static final String ITEM_WHITE_SCROLL           = "white_scroll";
+    public static final String ITEM_DEPTH_STRIDER_BOOK     = "depth_strider_book";
+    public static final String ITEM_DIAMOND_PICKAXE_SET    = "diamond_pickaxe_set";
+    public static final String ITEM_SOUL_GEM               = "xpshop_soul_gem";
 
     private static NamespacedKey SHOP_ITEM_ID_KEY;
     private static NamespacedKey SHOP_ITEM_COST_KEY;
@@ -95,6 +105,26 @@ public class XpShopCommand implements CommandExecutor {
                 getCost("xpshop.trapped-collection-chest", 110_000),
                 "§7Auto-collect with pressure"));
 
+        gui.setItem(22, createShopDisplayItem(Material.NAME_TAG, "§6§lName Tag", ITEM_NAME_TAG,
+                getCost("xpshop.name-tag", 30_000),
+                "§7Rename any item with custom colours"));
+
+        gui.setItem(23, createShopDisplayItem(Material.MAP, "§f§lWhite Scroll", ITEM_WHITE_SCROLL,
+                getCost("xpshop.white-scroll", 40_000),
+                "§7Protect gear from book destruction"));
+
+        gui.setItem(24, createShopDisplayItem(Material.ENCHANTED_BOOK, "§3§lDepth Strider III Book", ITEM_DEPTH_STRIDER_BOOK,
+                getCost("xpshop.depth-strider-book", 50_000),
+                "§7Depth Strider III enchant book"));
+
+        gui.setItem(25, createShopDisplayItem(Material.DIAMOND_PICKAXE, "§b§lDiamond Pickaxe", ITEM_DIAMOND_PICKAXE_SET,
+                getCost("xpshop.diamond-pickaxe-set", 15_000),
+                "§7Efficiency V · Unbreaking III · Silk Touch I"));
+
+        gui.setItem(26, createShopDisplayItem(Material.EMERALD, "§c§l✦ Soul Gem", ITEM_SOUL_GEM,
+                getCost("xpshop.soul-gem", 75_000),
+                "§71000 charges · Enables SOUL enchants"));
+
         ItemStack border = makeBorder(Material.BLACK_STAINED_GLASS_PANE);
         for (int i = 0; i < gui.getSize(); i++) {
             if (gui.getItem(i) == null) gui.setItem(i, border);
@@ -118,6 +148,11 @@ public class XpShopCommand implements CommandExecutor {
             case ITEM_REROLL_SCROLL -> createRerollScroll();
             case ITEM_COLLECTION_CHEST -> createCustomItem(Material.CHEST, "§a§lCollection Chest", "§7Place to collect mob drops");
             case ITEM_TRAPPED_COLLECTION_CHEST -> createCustomItem(Material.TRAPPED_CHEST, "§c§lTrapped Collection Chest", "§7Place to collect mob drops");
+            case ITEM_NAME_TAG           -> NameTagItem.create(plugin);
+            case ITEM_WHITE_SCROLL        -> WhiteScrollItem.create(plugin);
+            case ITEM_DEPTH_STRIDER_BOOK  -> createDepthStriderBook();
+            case ITEM_DIAMOND_PICKAXE_SET -> createEnchantedDiamondPickaxe();
+            case ITEM_SOUL_GEM            -> SoulGemItem.create(plugin, 1000);
             default -> null;
         };
     }
@@ -159,6 +194,53 @@ public class XpShopCommand implements CommandExecutor {
         meta.getPersistentDataContainer().set(SHOP_ITEM_COST_KEY, PersistentDataType.INTEGER, cost);
         item.setItemMeta(meta);
         return item;
+    }
+
+    private ItemStack createDepthStriderBook() {
+        ItemStack book = new ItemStack(Material.ENCHANTED_BOOK);
+        EnchantmentStorageMeta meta = (EnchantmentStorageMeta) book.getItemMeta();
+        org.bukkit.enchantments.Enchantment depthStrider =
+                org.bukkit.enchantments.Enchantment.getByKey(org.bukkit.NamespacedKey.minecraft("depth_strider"));
+        if (depthStrider != null) {
+            meta.addStoredEnchant(depthStrider, 3, true);
+        }
+        meta.setDisplayName("§3§lDepth Strider III");
+        meta.setLore(Arrays.asList(
+                "§8▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬",
+                "§7Increases movement speed",
+                "§7while in water.",
+                "§8▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬",
+                "§7Purchased from XP Shop"
+        ));
+        book.setItemMeta(meta);
+        return book;
+    }
+
+    private ItemStack createEnchantedDiamondPickaxe() {
+        ItemStack pickaxe = new ItemStack(Material.DIAMOND_PICKAXE);
+        ItemMeta meta = pickaxe.getItemMeta();
+        meta.setDisplayName("§b§lDiamond Pickaxe");
+        meta.setLore(Arrays.asList(
+                "§8▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬",
+                "§7Efficiency V",
+                "§7Unbreaking III",
+                "§7Silk Touch I",
+                "§8▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬",
+                "§7Purchased from XP Shop"
+        ));
+        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        pickaxe.setItemMeta(meta);
+        addVanillaEnchant(pickaxe, "efficiency",  5);
+        addVanillaEnchant(pickaxe, "unbreaking",  3);
+        addVanillaEnchant(pickaxe, "silk_touch",  1);
+        return pickaxe;
+    }
+
+    /** Safely adds a vanilla enchantment by minecraft key. */
+    private void addVanillaEnchant(ItemStack item, String key, int level) {
+        org.bukkit.enchantments.Enchantment ench =
+                org.bukkit.enchantments.Enchantment.getByKey(org.bukkit.NamespacedKey.minecraft(key));
+        if (ench != null) item.addUnsafeEnchantment(ench, level);
     }
 
     private ItemStack makeBorder(Material material) {

@@ -18,6 +18,11 @@ public class DivineImmolation extends CustomEnchantment {
     }
 
     @Override
+    public int getSoulCostPerTick() {
+        return 0; // Soul cost is handled by the 4-tick fast timer in EnchantListener (1/tick = 5/sec)
+    }
+
+    @Override
     public String getDescription() {
         return "Sets nearby enemies ablaze and deals area damage\non right-click.";
     }
@@ -34,7 +39,7 @@ public class DivineImmolation extends CustomEnchantment {
                     living.damage(level * 2.0, attacker);
                 }
             }
-            attacker.sendMessage("§6Divine Immolation §7activated!");
+            attacker.sendMessage("§6§l✦ DIVINE IMMOLATION ✦ §eYou unleash a wave of holy fire!");
         }
     }
 }

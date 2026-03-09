@@ -5,13 +5,17 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.inventory.ItemStack;
 
+import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Guardians extends CustomEnchantment {
 
     private final Random random = new Random();
+    /** Maps golem UUID -> owner (player) UUID. Used by BloodLink. */
+    public static final Map<UUID, UUID> GOLEM_OWNERS = new ConcurrentHashMap<>();
 
     public Guardians() {
         super("guardians", "Guardians", 10, EnchantTier.ULTIMATE, ApplicableGear.ARMOR);
@@ -29,6 +33,7 @@ public class Guardians extends CustomEnchantment {
             double oz = (random.nextDouble() - 0.5) * 4;
             IronGolem golem = defender.getWorld().spawn(defender.getLocation().add(ox, 0, oz), IronGolem.class);
             golem.setPlayerCreated(true);
+            GOLEM_OWNERS.put(golem.getUniqueId(), defender.getUniqueId());
         }
     }
 }

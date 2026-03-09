@@ -3,6 +3,7 @@ package com.factionenchants.enchantments;
 import com.factionenchants.FactionEnchantsPlugin;
 import com.factionenchants.enchantments.abilities.armor.*;
 import com.factionenchants.enchantments.abilities.sword.*;
+import com.factionenchants.enchantments.abilities.sword.ExtendedLooting;
 import com.factionenchants.enchantments.abilities.tool.*;
 import com.factionenchants.enchantments.abilities.bow.*;
 import com.factionenchants.enchantments.abilities.misc.*;
@@ -111,6 +112,7 @@ public class EnchantmentManager {
         register(new Venom());
         register(new Infernal());
         register(new Farcast());
+        register(new ExtendedLooting());
 
         // Ultimate tier
         register(new ArrowLifesteal());
@@ -123,6 +125,9 @@ public class EnchantmentManager {
         register(new Dodge());
         register(new Enrage());
         register(new Guardians());
+        register(new Aegis());
+        register(new BloodLink());
+        register(new BloodLust());
         register(new Implants());
         register(new Obsidianshield());
         register(new Demonic());
@@ -138,6 +143,7 @@ public class EnchantmentManager {
         register(new Unfocus());
         register(new Longbow());
         register(new EagleEye());
+        register(new Sniper());
         register(new Hellfire());
         register(new Pacify());
         register(new ArrowBreak());
@@ -166,6 +172,7 @@ public class EnchantmentManager {
         register(new Fat());
         register(new Hex());
         register(new Barbarian());
+        register(new AntiGank());
         register(new Clarity());
         register(new Deathbringer());
         register(new DoubleStrike());
@@ -185,6 +192,7 @@ public class EnchantmentManager {
         register(new Disarmor());
         register(new DeathGod());
         register(new Insanity());
+        register(new Destruction());
 
         // Soul tier
         register(new Rogue());

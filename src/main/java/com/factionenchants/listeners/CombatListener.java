@@ -2,7 +2,11 @@ package com.factionenchants.listeners;
 
 import com.factionenchants.FactionEnchantsPlugin;
 import com.factionenchants.enchantments.CustomEnchantment;
+import com.factionenchants.enchantments.abilities.armor.BloodLink;
+import com.factionenchants.enchantments.abilities.armor.Hex;
 import com.factionenchants.enchantments.abilities.armor.Lifebloom;
+import com.factionenchants.enchantments.abilities.sword.AntiGank;
+import com.factionenchants.enchantments.abilities.sword.Silence;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -29,12 +33,24 @@ public class CombatListener implements Listener {
             if (event.getEntity() instanceof LivingEntity target) {
                 // Weapon enchants
                 for (Map.Entry<CustomEnchantment, Integer> e : weaponEnchants.entrySet()) {
+                    int soulCost = e.getKey().getSoulCostPerProc();
+                    if (soulCost > 0 && !plugin.getSoulManager().consumeSouls(attacker, soulCost)) continue;
                     e.getKey().onHitEntity(attacker, target, e.getValue(), event);
+                }
+                // Reflect damage back if the attacker is Hexed
+                if (event.getDamager() instanceof Player hexedAttacker
+                        && Hex.isHexed(hexedAttacker.getUniqueId())) {
+                    // Find the highest Hex level on any axe the hexed player carries — use stored level
+                    double reflectRatio = Hex.getReflectRatio(hexedAttacker.getUniqueId(), 1); // default ratio
+                    double reflected = event.getDamage() * reflectRatio;
+                    if (reflected > 0) hexedAttacker.damage(reflected);
                 }
                 // Attacker armor enchants (for offensive armor like Shuffle)
                 for (ItemStack armor : attacker.getInventory().getArmorContents()) {
                     if (armor == null) continue;
                     for (Map.Entry<CustomEnchantment, Integer> e : plugin.getEnchantmentManager().getEnchantmentsOnItem(armor).entrySet()) {
+                        int soulCost = e.getKey().getSoulCostPerProc();
+                        if (soulCost > 0 && !plugin.getSoulManager().consumeSouls(attacker, soulCost)) continue;
                         e.getKey().onHitEntity(attacker, target, e.getValue(), event);
                     }
                 }
@@ -47,12 +63,16 @@ public class CombatListener implements Listener {
             if (event.getEntity() instanceof LivingEntity target) {
                 // Bow enchants
                 for (Map.Entry<CustomEnchantment, Integer> e : bowEnchants.entrySet()) {
+                    int soulCost = e.getKey().getSoulCostPerProc();
+                    if (soulCost > 0 && !plugin.getSoulManager().consumeSouls(shooter, soulCost)) continue;
                     e.getKey().onArrowHit(shooter, target, e.getValue(), event);
                 }
                 // Shooter armor enchants (for Marksman etc.)
                 for (ItemStack armor : shooter.getInventory().getArmorContents()) {
                     if (armor == null) continue;
                     for (Map.Entry<CustomEnchantment, Integer> e : plugin.getEnchantmentManager().getEnchantmentsOnItem(armor).entrySet()) {
+                        int soulCost = e.getKey().getSoulCostPerProc();
+                        if (soulCost > 0 && !plugin.getSoulManager().consumeSouls(shooter, soulCost)) continue;
                         e.getKey().onArrowHit(shooter, target, e.getValue(), event);
                     }
                 }
@@ -64,6 +84,8 @@ public class CombatListener implements Listener {
             Map<CustomEnchantment, Integer> tridentEnchants = plugin.getEnchantmentManager().getEnchantmentsOnItem(tridentItem);
             if (event.getEntity() instanceof LivingEntity target) {
                 for (Map.Entry<CustomEnchantment, Integer> e : tridentEnchants.entrySet()) {
+                    int soulCost = e.getKey().getSoulCostPerProc();
+                    if (soulCost > 0 && !plugin.getSoulManager().consumeSouls(attacker, soulCost)) continue;
                     e.getKey().onHitEntity(attacker, target, e.getValue(), event);
                 }
             }
@@ -71,13 +93,28 @@ public class CombatListener implements Listener {
 
         // Defender armor
         if (event.getEntity() instanceof Player defender) {
+            boolean silenced = Silence.isSilenced(defender.getUniqueId());
             for (ItemStack armor : defender.getInventory().getArmorContents()) {
                 if (armor == null) continue;
                 for (Map.Entry<CustomEnchantment, Integer> e : plugin.getEnchantmentManager().getEnchantmentsOnItem(armor).entrySet()) {
+                    if (silenced) continue; // Silence suppresses all defensive armour enchants
+                    int soulCost = e.getKey().getSoulCostPerProc();
+                    if (soulCost > 0 && !plugin.getSoulManager().consumeSouls(defender, soulCost)) continue;
                     e.getKey().onHurtBy(defender, event.getDamager(), e.getValue(), event);
                 }
             }
+            // Record hit for AntiGank tracking so that bearer knows they're being ganked
+            if (event.getDamager() instanceof Player attackerPlayer) {
+                AntiGank.recordHit(defender.getUniqueId(), attackerPlayer.getUniqueId());
+            }
         }
+    }
+
+    /** Trigger BloodLink when a Guardians golem takes damage. */
+    @EventHandler
+    public void onGolemDamage(EntityDamageByEntityEvent event) {
+        if (!(event.getEntity() instanceof IronGolem golem)) return;
+        BloodLink.golemDamaged(golem.getUniqueId(), plugin);
     }
 
     @EventHandler
@@ -87,6 +124,8 @@ public class CombatListener implements Listener {
         ItemStack weapon = killer.getInventory().getItemInMainHand();
         Map<CustomEnchantment, Integer> enchants = plugin.getEnchantmentManager().getEnchantmentsOnItem(weapon);
         for (Map.Entry<CustomEnchantment, Integer> e : enchants.entrySet()) {
+            int soulCost = e.getKey().getSoulCostPerProc();
+            if (soulCost > 0 && !plugin.getSoulManager().consumeSouls(killer, soulCost)) continue;
             e.getKey().onKillEntity(killer, event.getEntity(), e.getValue(), weapon);
         }
         // Handle special death enchants like Lifebloom

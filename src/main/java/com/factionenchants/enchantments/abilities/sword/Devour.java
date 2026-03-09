@@ -4,26 +4,27 @@ import com.factionenchants.enchantments.CustomEnchantment;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
+/**
+ * Devour — Axe enchantment.
+ * Multiplies damage dealt to targets who currently have an active Bleed DoT.
+ */
 public class Devour extends CustomEnchantment {
 
     public Devour() {
-        super("devour", "Devour", 5, EnchantTier.LEGENDARY, ApplicableGear.SWORD);
+        super("devour", "Devour", 4, EnchantTier.LEGENDARY, ApplicableGear.AXE);
     }
 
     @Override
     public String getDescription() {
-        return "Drains enemy saturation on hit.";
+        return "Multiplies damage dealt to players with active bleed stacks from the Bleed enchantment.";
     }
 
     @Override
     public void onHitEntity(Player attacker, LivingEntity target, int level, EntityDamageByEntityEvent event) {
-        target.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, level * 60, level - 1));
-        if (target instanceof Player p) {
-            p.setFoodLevel(Math.max(0, p.getFoodLevel() - level));
-        }
+        if (!Bleed.BLEED_VICTIMS.contains(target.getUniqueId())) return;
+        // Each level adds 25% bonus damage (up to 2x at level 4)
+        double multiplier = 1.0 + level * 0.25;
+        event.setDamage(event.getDamage() * multiplier);
     }
 }

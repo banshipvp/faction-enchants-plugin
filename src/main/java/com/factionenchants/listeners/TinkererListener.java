@@ -64,6 +64,18 @@ public class TinkererListener implements Listener {
         }
 
         if (TinkererCommand.INPUT_SLOTS.contains(rawSlot)) {
+            // Left-click with empty cursor → return item to player inventory
+            if (event.isLeftClick()
+                    && (event.getCursor() == null || event.getCursor().getType() == Material.AIR)) {
+                ItemStack item = top.getItem(rawSlot);
+                if (item != null && item.getType() != Material.AIR) {
+                    event.setCancelled(true);
+                    top.setItem(rawSlot, null);
+                    player.getInventory().addItem(item).values().forEach(leftover ->
+                            player.getWorld().dropItemNaturally(player.getLocation(), leftover));
+                    player.updateInventory();
+                }
+            }
             schedulePreview(top);
             return;
         }
@@ -83,7 +95,7 @@ public class TinkererListener implements Listener {
 
         if (rawSlot == TinkererCommand.CONFIRM_SLOT) {
             processAllInputs(player, top);
-            schedulePreview(top);
+            player.closeInventory();
         }
     }
 

@@ -45,10 +45,7 @@ public class DustManager {
 
         CustomEnchantment.EnchantTier tier = enchant.getTier();
 
-        int successRate = Math.max(0, Math.min(100, EnchantBook.getSuccessRate(book)));
-        int maxPossiblePercent = getMaxRandomDustPercentFromSuccessRate(successRate);
-        int upper = Math.max(1, maxPossiblePercent);
-        int totalPercent = 1 + random.nextInt(upper);
+        int totalPercent = random.nextInt(11); // 0–10%
 
         int dudChance = Math.max(0, Math.min(100, plugin.getConfig().getInt("random-dust.dud-chance", 30)));
         boolean dud = random.nextInt(100) < dudChance;
@@ -159,6 +156,31 @@ public class DustManager {
         meta.getPersistentDataContainer().set(DUST_PERCENTAGE_KEY, PersistentDataType.INTEGER, percentage);
         dust.setItemMeta(meta);
         return dust;
+    }
+
+    /**
+     * Creates a mystery dust token (fire charge) with a random percentage between 1-16%.
+     * Used by envoy crate rewards — always gives real dust (no dud), range 1-16%.
+     * The player must right-click the fire charge to reveal the actual dust.
+     */
+    public ItemStack createEnvoyDustToken(CustomEnchantment.EnchantTier tier) {
+        int percentage = 1 + random.nextInt(16); // 1–16%, truly random
+        return createRandomTierDustToken(tier, percentage, false);
+    }
+
+    /**
+     * Creates a random dust token for the given tier — identical to what the tinkerer produces.
+     * The token must be right-clicked to reveal (may be real dust or a dud).
+     */
+    public ItemStack createRandomDustToken(CustomEnchantment.EnchantTier tier) {
+        int basePercent = plugin.getConfig().getInt("random-dust.base-percent." + tier.name(), 1);
+        int cap        = plugin.getConfig().getInt("random-dust.percent-cap", 15);
+        int minPct = Math.max(1, basePercent);
+        int maxPct = Math.min(cap, basePercent + 4);
+        int percentage = minPct + random.nextInt(Math.max(1, maxPct - minPct + 1));
+        int dudChance  = Math.max(0, Math.min(100, plugin.getConfig().getInt("random-dust.dud-chance", 30)));
+        boolean dud    = random.nextInt(100) < dudChance;
+        return createRandomTierDustToken(tier, percentage, dud);
     }
 
     private ItemStack createRandomTierDustToken(CustomEnchantment.EnchantTier tier, int percentage, boolean dud) {
