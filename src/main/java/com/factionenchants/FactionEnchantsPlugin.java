@@ -14,6 +14,8 @@ import com.factionenchants.commands.TinkererCommand;
 import com.factionenchants.commands.XpShopCommand;
 import com.factionenchants.enchantments.EnchantmentManager;
 import com.factionenchants.gear.RandomGearManager;
+import com.factionenchants.listeners.ArrowBreakListener;
+import com.factionenchants.listeners.AvengingAngelListener;
 import com.factionenchants.listeners.BookListener;
 import com.factionenchants.listeners.CombatListener;
 import com.factionenchants.listeners.EnchantListener;
@@ -80,6 +82,8 @@ public class FactionEnchantsPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new SoulGemListener(this), this);
         getServer().getPluginManager().registerEvents(new TeleblockListener(), this);
         getServer().getPluginManager().registerEvents(new ExtendedLootingListener(), this);
+        getServer().getPluginManager().registerEvents(new AvengingAngelListener(this), this);
+        getServer().getPluginManager().registerEvents(new ArrowBreakListener(this), this);
         getServer().getPluginManager().registerEvents(new EnchantmentOrbListener(this), this);
         getLogger().info("FactionEnchants has been enabled!");
     }

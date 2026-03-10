@@ -12,6 +12,13 @@ import com.factionenchants.enchantments.abilities.armor.BloodLust;
 import com.factionenchants.enchantments.abilities.armor.Clarity;
 import com.factionenchants.enchantments.abilities.armor.DeathGod;
 import com.factionenchants.enchantments.abilities.armor.Deathbringer;
+import com.factionenchants.enchantments.abilities.armor.Destruction;
+import com.factionenchants.enchantments.abilities.armor.Diminish;
+import com.factionenchants.enchantments.abilities.armor.Drunk;
+import com.factionenchants.enchantments.abilities.armor.EnchantReflect;
+import com.factionenchants.enchantments.abilities.armor.Enlighted;
+import com.factionenchants.enchantments.abilities.armor.Exterminator;
+import com.factionenchants.enchantments.abilities.armor.Gears;
 import com.factionenchants.enchantments.abilities.armor.EnderWalker;
 import com.factionenchants.enchantments.abilities.armor.Ghost;
 import com.factionenchants.enchantments.abilities.armor.Guardians;
@@ -32,6 +39,9 @@ import com.factionenchants.enchantments.abilities.bow.Piercing;
 import com.factionenchants.enchantments.abilities.bow.Unfocus;
 import com.factionenchants.enchantments.abilities.sword.AntiGank;
 import com.factionenchants.enchantments.abilities.sword.Bleed;
+import com.factionenchants.enchantments.abilities.sword.Devour;
+import com.factionenchants.enchantments.abilities.sword.Disarmor;
+import com.factionenchants.enchantments.abilities.sword.DoubleStrike;
 import com.factionenchants.enchantments.abilities.soul.DivineImmolation;
 import com.factionenchants.enchantments.abilities.soul.HeroKiller;
 import com.factionenchants.enchantments.abilities.soul.Immortal;
@@ -64,9 +74,18 @@ import com.factionenchants.enchantments.abilities.sword.Cleave;
 import com.factionenchants.enchantments.abilities.sword.Corrupt;
 import com.factionenchants.enchantments.abilities.sword.Disintegrate;
 import com.factionenchants.enchantments.abilities.sword.Dominate;
+import com.factionenchants.enchantments.abilities.armor.Angelic;
+import com.factionenchants.enchantments.abilities.armor.ArrowDeflect;
+import com.factionenchants.enchantments.abilities.armor.AvengingAngel;
+import com.factionenchants.enchantments.abilities.armor.Sticky;
+import com.factionenchants.enchantments.abilities.armor.Tank;
+import com.factionenchants.enchantments.abilities.axe.ArrowBreak;
+import com.factionenchants.enchantments.abilities.axe.Blessed;
+import com.factionenchants.enchantments.abilities.bow.ArrowLifesteal;
 import com.factionenchants.enchantments.abilities.misc.DeepDiver;
 import com.factionenchants.enchantments.abilities.misc.Dredger;
 import com.factionenchants.enchantments.abilities.misc.TrophySeeker;
+import com.factionenchants.enchantments.abilities.sword.Assassin;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -139,6 +158,17 @@ public class EnchantmentManager {
         register(new Teleblock());
         register(new TungstenPlating());
 
+        // New enchantments
+        register(new Sticky());
+        register(new Tank());
+        register(new ArrowDeflect());
+        register(new Angelic());
+        register(new ArrowBreak());
+        register(new ArrowLifesteal());
+        register(new Assassin());
+        register(new AvengingAngel());
+        register(new Blessed());
+
         // Legendary tier
         register(new Aegis());
         register(new AntiGank());
@@ -152,6 +182,16 @@ public class EnchantmentManager {
         register(new DeathGod());
         register(new Deathbringer());
         register(new DeepDiver());
+        register(new Destruction());
+        register(new Devour());
+        register(new Diminish());
+        register(new Disarmor());
+        register(new DoubleStrike());
+        register(new Drunk());
+        register(new EnchantReflect());
+        register(new Enlighted());
+        register(new Exterminator());
+        register(new Gears());
 
         plugin.getLogger().info("Registered " + enchantments.size() + " custom enchantments.");
     }

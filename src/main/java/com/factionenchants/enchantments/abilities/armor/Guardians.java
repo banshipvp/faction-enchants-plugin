@@ -31,6 +31,8 @@ public class Guardians extends CustomEnchantment {
 
     @Override
     public void onHurtBy(Player defender, Entity attacker, int level, EntityDamageByEntityEvent event) {
+        // Suppressed by Exterminator
+        if (Exterminator.isSuppressed(defender.getUniqueId())) return;
         // Chance: level * 3% to spawn a golem
         if (random.nextInt(100) >= level * 3) return;
 

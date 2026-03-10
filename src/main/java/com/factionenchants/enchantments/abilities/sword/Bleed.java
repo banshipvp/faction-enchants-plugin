@@ -8,6 +8,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -36,7 +38,8 @@ public class Bleed extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "Applies a bleeding tick effect to the target on hit.";
+        return "Applies bleed stacks to enemies that decrease their movement speed. " +
+               "Use in combination with Devour and Blood Lust.";
     }
 
     @Override
@@ -68,6 +71,9 @@ public class Bleed extends CustomEnchantment {
             }
             // Deal bleed damage (bypasses armour via indirect attacker reference)
             target.damage(level * 0.5, attacker);
+            // Apply slowness stack based on bleed level
+            int slownessAmplifier = Math.min(level - 1, 3); // amplifier 0–3 (Slowness I–IV)
+            target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 25, slownessAmplifier, false, false), true);
             // Notify BloodLust wearers nearby
             BloodLust.triggerForNearby(target, plugin);
             ticks[0]++;
