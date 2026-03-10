@@ -5,8 +5,15 @@ import com.factionenchants.books.DustManager;
 import com.factionenchants.books.EnchantBook;
 import com.factionenchants.enchantments.CustomEnchantment;
 import com.factionenchants.enchantments.CustomEnchantment.EnchantTier;
+import com.factionenchants.items.EnchantmentOrbItem;
+import com.factionenchants.items.GodlyTransmogScrollItem;
+import com.factionenchants.items.HeroicBlackScrollItem;
+import com.factionenchants.items.HolyWhiteScrollItem;
 import com.factionenchants.items.NameTagItem;
+import com.factionenchants.items.RandomizationScrollItem;
 import com.factionenchants.items.SoulGemItem;
+import com.factionenchants.items.TransmogScrollItem;
+import com.factionenchants.items.VanillaBlackScrollItem;
 import com.factionenchants.items.WhiteScrollItem;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -38,8 +45,14 @@ import java.util.Random;
 public class GiveItemsCommand implements CommandExecutor, TabCompleter {
 
     private static final List<String> SUBS = List.of(
-            "dust", "duststack", "xp", "blackscroll", "rerollscroll", "randombook", "nametag", "whitescroll",
-            "soulgem", "soulgem_generator");
+            "dust", "duststack", "xp",
+            "blackscroll", "heroicblackscroll", "vanillablackscroll",
+            "rerollscroll", "randombook", "nametag",
+            "whitescroll", "holywhitescroll",
+            "transmogscroll", "godlytransmogscroll",
+            "ultimaterandomizationscroll", "legendaryrandomizationscroll", "godlyrandomizationscroll",
+            "soulgem", "soulgem_generator",
+            "weaponorb", "armororb");
 
     private static final List<String> TIERS = List.of(
             "SIMPLE", "UNIQUE", "ELITE", "ULTIMATE", "LEGENDARY", "SOUL", "HEROIC", "MASTERY");
@@ -70,17 +83,27 @@ public class GiveItemsCommand implements CommandExecutor, TabCompleter {
         }
 
         return switch (sub) {
-            case "dust"         -> handleDust(sender, target, args);
-            case "duststack"    -> handleDustStack(sender, target, args);
-            case "xp"           -> handleXp(sender, target, args);
-            case "blackscroll"  -> handleBlackScroll(sender, target, args);
-            case "rerollscroll" -> handleRerollScroll(sender, target, args);
-            case "randombook"   -> handleRandomBook(sender, target, args);
-            case "nametag"          -> handleNameTag(sender, target, args);
-            case "whitescroll"       -> handleWhiteScroll(sender, target, args);
-            case "soulgem"          -> handleSoulGem(sender, target, args);
-            case "soulgem_generator" -> handleSoulGemGenerator(sender, target, args);
-            default                  -> { sendHelp(sender); yield true; }
+            case "dust"                        -> handleDust(sender, target, args);
+            case "duststack"                   -> handleDustStack(sender, target, args);
+            case "xp"                          -> handleXp(sender, target, args);
+            case "blackscroll"                 -> handleBlackScroll(sender, target, args);
+            case "heroicblackscroll"           -> handleHeroicBlackScroll(sender, target, args);
+            case "vanillablackscroll"          -> handleVanillaBlackScroll(sender, target, args);
+            case "rerollscroll"                -> handleRerollScroll(sender, target, args);
+            case "randombook"                  -> handleRandomBook(sender, target, args);
+            case "nametag"                     -> handleNameTag(sender, target, args);
+            case "whitescroll"                 -> handleWhiteScroll(sender, target, args);
+            case "holywhitescroll"             -> handleHolyWhiteScroll(sender, target, args);
+            case "transmogscroll"              -> handleTransmogScroll(sender, target, args);
+            case "godlytransmogscroll"         -> handleGodlyTransmogScroll(sender, target, args);
+            case "ultimaterandomizationscroll" -> handleUltimateRandomizationScroll(sender, target, args);
+            case "legendaryrandomizationscroll"-> handleLegendaryRandomizationScroll(sender, target, args);
+            case "godlyrandomizationscroll"    -> handleGodlyRandomizationScroll(sender, target, args);
+            case "soulgem"                     -> handleSoulGem(sender, target, args);
+            case "soulgem_generator"           -> handleSoulGemGenerator(sender, target, args);
+            case "weaponorb"                   -> handleWeaponOrb(sender, target, args);
+            case "armororb"                    -> handleArmorOrb(sender, target, args);
+            default                            -> { sendHelp(sender); yield true; }
         };
     }
 
@@ -216,6 +239,86 @@ public class GiveItemsCommand implements CommandExecutor, TabCompleter {
         return true;
     }
 
+    private boolean handleHolyWhiteScroll(CommandSender sender, Player target, String[] args) {
+        int amount = args.length >= 3 ? parsePositiveInt(sender, args[2]) : 1;
+        if (amount < 1) return true;
+        for (int i = 0; i < amount; i++) {
+            giveItem(target, HolyWhiteScrollItem.create(plugin));
+        }
+        sender.sendMessage("§aGave §e" + amount + "x §d§lHoly White Scroll§r §ato §e" + target.getName() + "§a.");
+        return true;
+    }
+
+    private boolean handleHeroicBlackScroll(CommandSender sender, Player target, String[] args) {
+        int amount = args.length >= 3 ? parsePositiveInt(sender, args[2]) : 1;
+        if (amount < 1) return true;
+        for (int i = 0; i < amount; i++) {
+            giveItem(target, HeroicBlackScrollItem.create(plugin));
+        }
+        sender.sendMessage("§aGave §e" + amount + "x §d§lHeroic Black Scroll§r §ato §e" + target.getName() + "§a.");
+        return true;
+    }
+
+    private boolean handleVanillaBlackScroll(CommandSender sender, Player target, String[] args) {
+        int amount = args.length >= 3 ? parsePositiveInt(sender, args[2]) : 1;
+        if (amount < 1) return true;
+        for (int i = 0; i < amount; i++) {
+            giveItem(target, VanillaBlackScrollItem.create(plugin));
+        }
+        sender.sendMessage("§aGave §e" + amount + "x §7§lVanilla Black Scroll§r §ato §e" + target.getName() + "§a.");
+        return true;
+    }
+
+    private boolean handleTransmogScroll(CommandSender sender, Player target, String[] args) {
+        int amount = args.length >= 3 ? parsePositiveInt(sender, args[2]) : 1;
+        if (amount < 1) return true;
+        for (int i = 0; i < amount; i++) {
+            giveItem(target, TransmogScrollItem.create(plugin));
+        }
+        sender.sendMessage("§aGave §e" + amount + "x §e§lTransmog Scroll§r §ato §e" + target.getName() + "§a.");
+        return true;
+    }
+
+    private boolean handleGodlyTransmogScroll(CommandSender sender, Player target, String[] args) {
+        int amount = args.length >= 3 ? parsePositiveInt(sender, args[2]) : 1;
+        if (amount < 1) return true;
+        for (int i = 0; i < amount; i++) {
+            giveItem(target, GodlyTransmogScrollItem.create(plugin));
+        }
+        sender.sendMessage("§aGave §e" + amount + "x §6§lGodly Transmog Scroll§r §ato §e" + target.getName() + "§a.");
+        return true;
+    }
+
+    private boolean handleUltimateRandomizationScroll(CommandSender sender, Player target, String[] args) {
+        int amount = args.length >= 3 ? parsePositiveInt(sender, args[2]) : 1;
+        if (amount < 1) return true;
+        for (int i = 0; i < amount; i++) {
+            giveItem(target, RandomizationScrollItem.createUltimate(plugin));
+        }
+        sender.sendMessage("§aGave §e" + amount + "x §e§lUltimate Randomization Scroll§r §ato §e" + target.getName() + "§a.");
+        return true;
+    }
+
+    private boolean handleLegendaryRandomizationScroll(CommandSender sender, Player target, String[] args) {
+        int amount = args.length >= 3 ? parsePositiveInt(sender, args[2]) : 1;
+        if (amount < 1) return true;
+        for (int i = 0; i < amount; i++) {
+            giveItem(target, RandomizationScrollItem.createLegendary(plugin));
+        }
+        sender.sendMessage("§aGave §e" + amount + "x §6§lLegendary Randomization Scroll§r §ato §e" + target.getName() + "§a.");
+        return true;
+    }
+
+    private boolean handleGodlyRandomizationScroll(CommandSender sender, Player target, String[] args) {
+        int amount = args.length >= 3 ? parsePositiveInt(sender, args[2]) : 1;
+        if (amount < 1) return true;
+        for (int i = 0; i < amount; i++) {
+            giveItem(target, RandomizationScrollItem.createGodly(plugin));
+        }
+        sender.sendMessage("§aGave §e" + amount + "x §c§lGodly Randomization Scroll§r §ato §e" + target.getName() + "§a.");
+        return true;
+    }
+
     private boolean handleSoulGem(CommandSender sender, Player target, String[] args) {
         int charges = args.length >= 3 ? parsePositiveInt(sender, args[2]) : 1000;
         if (charges < 1) return true;
@@ -269,25 +372,35 @@ public class GiveItemsCommand implements CommandExecutor, TabCompleter {
     }
 
     private ItemStack createBlackScroll() {
-        int successRate = 25 + random.nextInt(76); // 25-100%
         ItemStack scroll = new ItemStack(Material.INK_SAC);
         ItemMeta meta = scroll.getItemMeta();
-        meta.setDisplayName("§8§l⚫ Black Scroll §l⚫");
+        meta.setDisplayName("§8§l⚫ Black Scroll");
         meta.setLore(Arrays.asList(
-                "§8▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬",
-                "§7Extract an enchant from",
-                "§7enchanted gear or armor.",
-                "§7",
-                "§eSuccess Rate: §f" + successRate + "%",
-                "§cDestroy Rate: §f100%",
-                "§7",
-                "§eRight-click gear to extract",
-                "§8▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"
+                "§7Removes a random enchantment",
+                "§7from an item and converts",
+                "§7it into a §f95% §7success book.",
+                "§7Place scroll on item to extract.",
+                "",
+                "§6§lObtainable From:",
+                "§8✦ §7/bah",
+                "§8✦ §7/citadel",
+                "§8✦ §7/conquests",
+                "§8✦ §7/dungeons: §fAbandoned Spaceship, Destroyed Outpost, Planet Nul, Time Warp",
+                "§8✦ §7/end: §fElite Ender Monsters, Timeless Dragon",
+                "§8✦ §7/envoys: §fLegendary",
+                "§8✦ §7/kits: §fSupernova, Hyperdrive, Lucky /vkit",
+                "§8✦ §7/koth",
+                "§8✦ §7/minigames",
+                "§8✦ §7/pquests: §fQuest Shop",
+                "§8✦ §7/ruins: §fGuardians, Elite Guardians, Elder Elite Guardians, Leviathan",
+                "§8✦ §7/slot: §fMeta Spin",
+                "§8✦ §7/spacechests: §fSimple",
+                "§8✦ §7/strongholds: §fInfernal, Frozen, Abyssal",
+                "§8✦ §7/trials: §fApprentice, Hardcore, Demonic",
+                "§8✦ §7/xpshop"
         ));
-        NamespacedKey blackScrollKey    = new NamespacedKey(plugin, "black_scroll");
-        NamespacedKey blackSuccessKey   = new NamespacedKey(plugin, "black_scroll_success");
-        meta.getPersistentDataContainer().set(blackScrollKey, PersistentDataType.BYTE,    (byte) 1);
-        meta.getPersistentDataContainer().set(blackSuccessKey, PersistentDataType.INTEGER, successRate);
+        NamespacedKey blackScrollKey = new NamespacedKey(plugin, "black_scroll");
+        meta.getPersistentDataContainer().set(blackScrollKey, PersistentDataType.BYTE, (byte) 1);
         scroll.setItemMeta(meta);
         return scroll;
     }
@@ -310,6 +423,42 @@ public class GiveItemsCommand implements CommandExecutor, TabCompleter {
         meta.getPersistentDataContainer().set(rerollTier, PersistentDataType.STRING, "ELITE");
         scroll.setItemMeta(meta);
         return scroll;
+    }
+
+    // /fegiveitem weaponorb <player> <maxSlots 10-15> [amount]
+    private boolean handleWeaponOrb(CommandSender sender, Player target, String[] args) {
+        if (args.length < 3) {
+            sender.sendMessage("§eUsage: /fegiveitem weaponorb <player> <maxSlots 10-15> [amount]");
+            return true;
+        }
+        int maxSlots = parsePositiveInt(sender, args[2]);
+        if (maxSlots < 1) return true;
+        int amount = args.length >= 4 ? parsePositiveInt(sender, args[3]) : 1;
+        if (amount < 1) return true;
+
+        for (int i = 0; i < amount; i++) {
+            giveItem(target, EnchantmentOrbItem.createWeaponOrb(plugin, maxSlots));
+        }
+        sender.sendMessage("§aGave §e" + amount + "x Weapon Enchantment Orb [" + maxSlots + "] §ato §e" + target.getName() + "§a.");
+        return true;
+    }
+
+    // /fegiveitem armororb <player> <maxSlots 10-15> [amount]
+    private boolean handleArmorOrb(CommandSender sender, Player target, String[] args) {
+        if (args.length < 3) {
+            sender.sendMessage("§eUsage: /fegiveitem armororb <player> <maxSlots 10-15> [amount]");
+            return true;
+        }
+        int maxSlots = parsePositiveInt(sender, args[2]);
+        if (maxSlots < 1) return true;
+        int amount = args.length >= 4 ? parsePositiveInt(sender, args[3]) : 1;
+        if (amount < 1) return true;
+
+        for (int i = 0; i < amount; i++) {
+            giveItem(target, EnchantmentOrbItem.createArmorOrb(plugin, maxSlots));
+        }
+        sender.sendMessage("§aGave §e" + amount + "x Armor Enchantment Orb [" + maxSlots + "] §ato §e" + target.getName() + "§a.");
+        return true;
     }
 
     // ─── Utility ────────────────────────────────────────────────────────────────

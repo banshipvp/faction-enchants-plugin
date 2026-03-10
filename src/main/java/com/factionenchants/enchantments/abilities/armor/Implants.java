@@ -6,7 +6,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.Random;
+
 public class Implants extends CustomEnchantment {
+
+    private final Random random = new Random();
 
     public Implants() {
         super("implants", "Implants", 3, EnchantTier.ULTIMATE, ApplicableGear.HELMET);
@@ -14,12 +18,21 @@ public class Implants extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "Passively heals 1 health and restores 1 hunger every few seconds.";
+        return "Passively heals +1 health and restores +1 hunger every few seconds.";
     }
 
     @Override
     public void onTickPassive(Player player, int level, ItemStack equipment) {
-        player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 60, level - 1, true, false));
-        player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 60, 0, true, false));
+        // Apply Regeneration I — heals 1 HP every ~2.5 sec while effect is active.
+        // Duration 40 ticks, renewed each second by the tick loop.
+        player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 40, 0, false, false, true));
+
+        // Restore +1 hunger every (4 - level) seconds
+        // Level 1: ~33% chance per second, Level 2: ~50%, Level 3: every second
+        int chancePercent = level == 3 ? 100 : level == 2 ? 50 : 33;
+        if (random.nextInt(100) < chancePercent) {
+            int newFood = Math.min(player.getFoodLevel() + 1, 20);
+            player.setFoodLevel(newFood);
+        }
     }
 }

@@ -4,21 +4,21 @@ import com.factionenchants.enchantments.CustomEnchantment;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.inventory.ItemStack;
 
 public class Piercing extends CustomEnchantment {
 
     public Piercing() {
-        super("piercing", "Piercing", 5, EnchantTier.ULTIMATE, ApplicableGear.BOW, ApplicableGear.CROSSBOW);
+        super("piercing", "Piercing", 5, EnchantTier.ULTIMATE, ApplicableGear.BOW);
     }
 
     @Override
     public String getDescription() {
-        return "Increases your damage with arrows.";
+        return "Inflicts more damage.";
     }
 
     @Override
     public void onArrowHit(Player shooter, LivingEntity target, int level, EntityDamageByEntityEvent event) {
-        event.setDamage(event.getDamage() + level * 0.5 + 0.5);
+        // +10% damage per level
+        event.setDamage(event.getDamage() * (1.0 + level * 0.10));
     }
 }

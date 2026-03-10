@@ -21,13 +21,13 @@ public class Aegis extends CustomEnchantment {
     private static final long WINDOW_MS = 5000L;
 
     public Aegis() {
-        super("aegis", "Aegis", 6, EnchantTier.ULTIMATE, ApplicableGear.ARMOR);
+        super("aegis", "Aegis", 6, EnchantTier.LEGENDARY, ApplicableGear.ARMOR);
     }
 
     @Override
     public String getDescription() {
-        return "If you are hit by more than N enemies within 5 seconds, all subsequent "
-             + "attackers within that window deal halved damage.";
+        return "If you are taking damage from more than (8-level) enemies in a short period, "
+             + "the damage from any additional players beyond that initial group will be halved.";
     }
 
     @Override

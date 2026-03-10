@@ -1,0 +1,297 @@
+﻿[INFO] Scanning for projects...
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.factionenchants:faction-enchants-plugin:jar:1.0-SNAPSHOT
+[WARNING] 'dependencies.dependency.systemPath' for local.simplefactions:SimpleFactions:jar should not point at files within the project directory, ${project.basedir}/../SimpleFactions/build/libs/SimpleFactions-1.0.0.jar will be unresolvable by dependent projects @ line 40, column 25
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+[INFO] 
+[INFO] ------------< com.factionenchants:faction-enchants-plugin >-------------
+[INFO] Building faction-enchants-plugin 1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ faction-enchants-plugin ---
+[INFO] Deleting C:\Users\admin\Dev\faction-enchants-plugin\target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ faction-enchants-plugin ---
+[INFO] Copying 3 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ faction-enchants-plugin ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 74 source files with javac [debug release 17] to target\classes
+[INFO] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/enchantments/abilities/sword/Enrage.java: Some input files use or override a deprecated API.
+[INFO] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/enchantments/abilities/sword/Enrage.java: Recompile with -Xlint:deprecation for details.
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/enchantments/EnchantmentManager.java:[8,56] cannot find symbol
+  symbol:   class Armored
+  location: package com.factionenchants.enchantments.abilities.armor
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/enchantments/EnchantmentManager.java:[11,56] cannot find symbol
+  symbol:   class Clarity
+  location: package com.factionenchants.enchantments.abilities.armor
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/enchantments/EnchantmentManager.java:[12,56] cannot find symbol
+  symbol:   class DeathGod
+  location: package com.factionenchants.enchantments.abilities.armor
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/enchantments/EnchantmentManager.java:[23,56] cannot find symbol
+  symbol:   class AntiGank
+  location: package com.factionenchants.enchantments.abilities.sword
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/enchantments/EnchantmentManager.java:[27,56] cannot find symbol
+  symbol:   class Barbarian
+  location: package com.factionenchants.enchantments.abilities.sword
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[5,56] cannot find symbol
+  symbol:   class Hardened
+  location: package com.factionenchants.enchantments.abilities.armor
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[6,56] cannot find symbol
+  symbol:   class DivineImmolation
+  location: package com.factionenchants.enchantments.abilities.sword
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[7,55] cannot find symbol
+  symbol:   class AutoSmelt
+  location: package com.factionenchants.enchantments.abilities.tool
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[9,55] cannot find symbol
+  symbol:   class Experience
+  location: package com.factionenchants.enchantments.abilities.tool
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[10,55] cannot find symbol
+  symbol:   class Inquisitive
+  location: package com.factionenchants.enchantments.abilities.tool
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[11,55] cannot find symbol
+  symbol:   class MasterInquisitive
+  location: package com.factionenchants.enchantments.abilities.tool
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[12,55] cannot find symbol
+  symbol:   class ObsidianBreaker
+  location: package com.factionenchants.enchantments.abilities.tool
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[13,55] cannot find symbol
+  symbol:   class Oxygenate
+  location: package com.factionenchants.enchantments.abilities.tool
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[14,55] cannot find symbol
+  symbol:   class Reforged
+  location: package com.factionenchants.enchantments.abilities.tool
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[15,55] cannot find symbol
+  symbol:   class Telepathy
+  location: package com.factionenchants.enchantments.abilities.tool
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/FishingListener.java:[6,55] cannot find symbol
+  symbol:   class Dredger
+  location: package com.factionenchants.enchantments.abilities.misc
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/FishingListener.java:[7,55] cannot find symbol
+  symbol:   class TrophySeeker
+  location: package com.factionenchants.enchantments.abilities.misc
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/FishingListener.java:[8,55] cannot find symbol
+  symbol:   class QuickReeler
+  location: package com.factionenchants.enchantments.abilities.tool
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/enchantments/EnchantmentManager.java:[76,22] cannot find symbol
+  symbol:   class AntiGank
+  location: class com.factionenchants.enchantments.EnchantmentManager
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/enchantments/EnchantmentManager.java:[77,22] cannot find symbol
+  symbol:   class Armored
+  location: class com.factionenchants.enchantments.EnchantmentManager
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/enchantments/EnchantmentManager.java:[78,22] cannot find symbol
+  symbol:   class Barbarian
+  location: class com.factionenchants.enchantments.EnchantmentManager
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/enchantments/EnchantmentManager.java:[83,22] cannot find symbol
+  symbol:   class Clarity
+  location: class com.factionenchants.enchantments.EnchantmentManager
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/enchantments/EnchantmentManager.java:[84,22] cannot find symbol
+  symbol:   class DeathGod
+  location: class com.factionenchants.enchantments.EnchantmentManager
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/enchantments/abilities/misc/DeepDiver.java:[13,83] cannot find symbol
+  symbol:   variable FISHING_ROD
+  location: class com.factionenchants.enchantments.CustomEnchantment.ApplicableGear
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/enchantments/abilities/armor/BloodLink.java:[38,35] cannot find symbol
+  symbol:   variable GOLEM_OWNERS
+  location: class com.factionenchants.enchantments.abilities.armor.Guardians
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[58,48] cannot find symbol
+  symbol:   class AutoSmelt
+  location: class com.factionenchants.listeners.EnchantListener
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[59,48] cannot find symbol
+  symbol:   class Telepathy
+  location: class com.factionenchants.listeners.EnchantListener
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[60,48] cannot find symbol
+  symbol:   class Oxygenate
+  location: class com.factionenchants.listeners.EnchantListener
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[61,48] cannot find symbol
+  symbol:   class Experience
+  location: class com.factionenchants.listeners.EnchantListener
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[62,48] cannot find symbol
+  symbol:   class Inquisitive
+  location: class com.factionenchants.listeners.EnchantListener
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[63,48] cannot find symbol
+  symbol:   class MasterInquisitive
+  location: class com.factionenchants.listeners.EnchantListener
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[79,50] cannot find symbol
+  symbol:   variable AutoSmelt
+  location: class com.factionenchants.listeners.EnchantListener
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[84,50] cannot find symbol
+  symbol:   variable AutoSmelt
+  location: class com.factionenchants.listeners.EnchantListener
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[105,36] cannot find symbol
+  symbol:   variable AutoSmelt
+  location: class com.factionenchants.listeners.EnchantListener
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[113,40] cannot find symbol
+  symbol:   variable AutoSmelt
+  location: class com.factionenchants.listeners.EnchantListener
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[151,92] cannot find symbol
+  symbol:   class ObsidianBreaker
+  location: class com.factionenchants.listeners.EnchantListener
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[189,43] cannot find symbol
+  symbol:   class DivineImmolation
+  location: class com.factionenchants.listeners.EnchantListener
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[213,39] cannot find symbol
+  symbol:   class Hardened
+  location: class com.factionenchants.listeners.EnchantListener
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[217,39] cannot find symbol
+  symbol:   class Reforged
+  location: class com.factionenchants.listeners.EnchantListener
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/FishingListener.java:[46,43] cannot find symbol
+  symbol:   class Dredger
+  location: class com.factionenchants.listeners.FishingListener
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/FishingListener.java:[47,43] cannot find symbol
+  symbol:   class QuickReeler
+  location: class com.factionenchants.listeners.FishingListener
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/FishingListener.java:[48,43] cannot find symbol
+  symbol:   class TrophySeeker
+  location: class com.factionenchants.listeners.FishingListener
+[INFO] 42 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.602 s
+[INFO] Finished at: 2026-03-10T16:44:27+10:30
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile (default-compile) on project faction-enchants-plugin: Compilation failure: Compilation failure: 
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/enchantments/EnchantmentManager.java:[8,56] cannot find symbol
+[ERROR]   symbol:   class Armored
+[ERROR]   location: package com.factionenchants.enchantments.abilities.armor
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/enchantments/EnchantmentManager.java:[11,56] cannot find symbol
+[ERROR]   symbol:   class Clarity
+[ERROR]   location: package com.factionenchants.enchantments.abilities.armor
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/enchantments/EnchantmentManager.java:[12,56] cannot find symbol
+[ERROR]   symbol:   class DeathGod
+[ERROR]   location: package com.factionenchants.enchantments.abilities.armor
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/enchantments/EnchantmentManager.java:[23,56] cannot find symbol
+[ERROR]   symbol:   class AntiGank
+[ERROR]   location: package com.factionenchants.enchantments.abilities.sword
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/enchantments/EnchantmentManager.java:[27,56] cannot find symbol
+[ERROR]   symbol:   class Barbarian
+[ERROR]   location: package com.factionenchants.enchantments.abilities.sword
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[5,56] cannot find symbol
+[ERROR]   symbol:   class Hardened
+[ERROR]   location: package com.factionenchants.enchantments.abilities.armor
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[6,56] cannot find symbol
+[ERROR]   symbol:   class DivineImmolation
+[ERROR]   location: package com.factionenchants.enchantments.abilities.sword
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[7,55] cannot find symbol
+[ERROR]   symbol:   class AutoSmelt
+[ERROR]   location: package com.factionenchants.enchantments.abilities.tool
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[9,55] cannot find symbol
+[ERROR]   symbol:   class Experience
+[ERROR]   location: package com.factionenchants.enchantments.abilities.tool
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[10,55] cannot find symbol
+[ERROR]   symbol:   class Inquisitive
+[ERROR]   location: package com.factionenchants.enchantments.abilities.tool
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[11,55] cannot find symbol
+[ERROR]   symbol:   class MasterInquisitive
+[ERROR]   location: package com.factionenchants.enchantments.abilities.tool
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[12,55] cannot find symbol
+[ERROR]   symbol:   class ObsidianBreaker
+[ERROR]   location: package com.factionenchants.enchantments.abilities.tool
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[13,55] cannot find symbol
+[ERROR]   symbol:   class Oxygenate
+[ERROR]   location: package com.factionenchants.enchantments.abilities.tool
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[14,55] cannot find symbol
+[ERROR]   symbol:   class Reforged
+[ERROR]   location: package com.factionenchants.enchantments.abilities.tool
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[15,55] cannot find symbol
+[ERROR]   symbol:   class Telepathy
+[ERROR]   location: package com.factionenchants.enchantments.abilities.tool
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/FishingListener.java:[6,55] cannot find symbol
+[ERROR]   symbol:   class Dredger
+[ERROR]   location: package com.factionenchants.enchantments.abilities.misc
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/FishingListener.java:[7,55] cannot find symbol
+[ERROR]   symbol:   class TrophySeeker
+[ERROR]   location: package com.factionenchants.enchantments.abilities.misc
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/FishingListener.java:[8,55] cannot find symbol
+[ERROR]   symbol:   class QuickReeler
+[ERROR]   location: package com.factionenchants.enchantments.abilities.tool
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/enchantments/EnchantmentManager.java:[76,22] cannot find symbol
+[ERROR]   symbol:   class AntiGank
+[ERROR]   location: class com.factionenchants.enchantments.EnchantmentManager
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/enchantments/EnchantmentManager.java:[77,22] cannot find symbol
+[ERROR]   symbol:   class Armored
+[ERROR]   location: class com.factionenchants.enchantments.EnchantmentManager
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/enchantments/EnchantmentManager.java:[78,22] cannot find symbol
+[ERROR]   symbol:   class Barbarian
+[ERROR]   location: class com.factionenchants.enchantments.EnchantmentManager
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/enchantments/EnchantmentManager.java:[83,22] cannot find symbol
+[ERROR]   symbol:   class Clarity
+[ERROR]   location: class com.factionenchants.enchantments.EnchantmentManager
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/enchantments/EnchantmentManager.java:[84,22] cannot find symbol
+[ERROR]   symbol:   class DeathGod
+[ERROR]   location: class com.factionenchants.enchantments.EnchantmentManager
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/enchantments/abilities/misc/DeepDiver.java:[13,83] cannot find symbol
+[ERROR]   symbol:   variable FISHING_ROD
+[ERROR]   location: class com.factionenchants.enchantments.CustomEnchantment.ApplicableGear
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/enchantments/abilities/armor/BloodLink.java:[38,35] cannot find symbol
+[ERROR]   symbol:   variable GOLEM_OWNERS
+[ERROR]   location: class com.factionenchants.enchantments.abilities.armor.Guardians
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[58,48] cannot find symbol
+[ERROR]   symbol:   class AutoSmelt
+[ERROR]   location: class com.factionenchants.listeners.EnchantListener
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[59,48] cannot find symbol
+[ERROR]   symbol:   class Telepathy
+[ERROR]   location: class com.factionenchants.listeners.EnchantListener
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[60,48] cannot find symbol
+[ERROR]   symbol:   class Oxygenate
+[ERROR]   location: class com.factionenchants.listeners.EnchantListener
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[61,48] cannot find symbol
+[ERROR]   symbol:   class Experience
+[ERROR]   location: class com.factionenchants.listeners.EnchantListener
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[62,48] cannot find symbol
+[ERROR]   symbol:   class Inquisitive
+[ERROR]   location: class com.factionenchants.listeners.EnchantListener
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[63,48] cannot find symbol
+[ERROR]   symbol:   class MasterInquisitive
+[ERROR]   location: class com.factionenchants.listeners.EnchantListener
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[79,50] cannot find symbol
+[ERROR]   symbol:   variable AutoSmelt
+[ERROR]   location: class com.factionenchants.listeners.EnchantListener
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[84,50] cannot find symbol
+[ERROR]   symbol:   variable AutoSmelt
+[ERROR]   location: class com.factionenchants.listeners.EnchantListener
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[105,36] cannot find symbol
+[ERROR]   symbol:   variable AutoSmelt
+[ERROR]   location: class com.factionenchants.listeners.EnchantListener
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[113,40] cannot find symbol
+[ERROR]   symbol:   variable AutoSmelt
+[ERROR]   location: class com.factionenchants.listeners.EnchantListener
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[151,92] cannot find symbol
+[ERROR]   symbol:   class ObsidianBreaker
+[ERROR]   location: class com.factionenchants.listeners.EnchantListener
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[189,43] cannot find symbol
+[ERROR]   symbol:   class DivineImmolation
+[ERROR]   location: class com.factionenchants.listeners.EnchantListener
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[213,39] cannot find symbol
+[ERROR]   symbol:   class Hardened
+[ERROR]   location: class com.factionenchants.listeners.EnchantListener
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/EnchantListener.java:[217,39] cannot find symbol
+[ERROR]   symbol:   class Reforged
+[ERROR]   location: class com.factionenchants.listeners.EnchantListener
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/FishingListener.java:[46,43] cannot find symbol
+[ERROR]   symbol:   class Dredger
+[ERROR]   location: class com.factionenchants.listeners.FishingListener
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/FishingListener.java:[47,43] cannot find symbol
+[ERROR]   symbol:   class QuickReeler
+[ERROR]   location: class com.factionenchants.listeners.FishingListener
+[ERROR] /C:/Users/admin/Dev/faction-enchants-plugin/src/main/java/com/factionenchants/listeners/FishingListener.java:[48,43] cannot find symbol
+[ERROR]   symbol:   class TrophySeeker
+[ERROR]   location: class com.factionenchants.listeners.FishingListener
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

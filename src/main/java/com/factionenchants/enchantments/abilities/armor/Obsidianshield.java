@@ -19,6 +19,8 @@ public class Obsidianshield extends CustomEnchantment {
 
     @Override
     public void onTickPassive(Player player, int level, ItemStack equipment) {
-        player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 200, 0, true, false));
+        if (!player.hasPotionEffect(PotionEffectType.FIRE_RESISTANCE)) {
+            player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 40, 0, false, false, true));
+        }
     }
 }

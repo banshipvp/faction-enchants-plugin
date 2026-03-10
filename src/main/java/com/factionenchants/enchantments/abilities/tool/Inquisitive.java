@@ -1,35 +1,39 @@
 package com.factionenchants.enchantments.abilities.tool;
 
 import com.factionenchants.enchantments.CustomEnchantment;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Collection;
+import java.util.Random;
+
 /**
- * Inquisitive — Sword enchantment.
- * Increases EXP dropped by mobs when you kill them.
+ * Inquisitive – Pickaxe enchantment, UNIQUE tier.
+ * Chance to double the drops from the mined block.
  */
 public class Inquisitive extends CustomEnchantment {
 
+    private static final Random random = new Random();
+
     public Inquisitive() {
-        super("inquisitive", "Inquisitive", 4, EnchantTier.LEGENDARY, ApplicableGear.SWORD);
+        super("inquisitive", "Inquisitive", 5, EnchantTier.UNIQUE, ApplicableGear.PICKAXE);
     }
 
     @Override
     public String getDescription() {
-        return "Increases EXP drops from mobs you kill.";
+        return "Chance to double the drops from the mined block.";
     }
 
-    @Override
-    public void onKillEntity(Player killer, LivingEntity victim, int level, ItemStack weapon) {
-        // Drop bonus XP at the victim's location
-        int bonus = level * 3;
-        killer.giveExp(bonus);
-    }
-
-    // Keep block-break bonus for backwards compatibility if still applied to tools
+    /**
+     * Called by EnchantListener on block break.
+     */
     public void onBlockBreak(Player player, BlockBreakEvent event, int level) {
-        event.setExpToDrop(event.getExpToDrop() + level * 2);
+        if (random.nextInt(100) < level * 10) {
+            Collection<ItemStack> drops = event.getBlock().getDrops(player.getInventory().getItemInMainHand());
+            for (ItemStack drop : drops) {
+                player.getInventory().addItem(drop.clone());
+            }
+        }
     }
 }

@@ -4,14 +4,9 @@ import com.factionenchants.enchantments.CustomEnchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import java.util.Random;
-
 public class Ragdoll extends CustomEnchantment {
-
-    private final Random random = new Random();
 
     public Ragdoll() {
         super("ragdoll", "Ragdoll", 4, EnchantTier.ULTIMATE, ApplicableGear.ARMOR);
@@ -24,10 +19,13 @@ public class Ragdoll extends CustomEnchantment {
 
     @Override
     public void onHurtBy(Player defender, Entity attacker, int level, EntityDamageByEntityEvent event) {
-        if (random.nextInt(100) < level * 10) {
-            Vector dir = defender.getLocation().subtract(attacker.getLocation()).toVector().normalize();
-            dir.setY(0.4);
-            defender.setVelocity(dir.multiply(1 + level * 0.4));
-        }
+        if (attacker == null) return;
+        // Launch defender away from attacker
+        Vector direction = defender.getLocation().toVector()
+                .subtract(attacker.getLocation().toVector())
+                .normalize()
+                .multiply(level * 0.8)
+                .setY(0.4);
+        defender.setVelocity(direction);
     }
 }

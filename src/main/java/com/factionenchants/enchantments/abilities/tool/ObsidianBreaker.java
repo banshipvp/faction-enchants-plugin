@@ -1,21 +1,20 @@
 package com.factionenchants.enchantments.abilities.tool;
 
 import com.factionenchants.enchantments.CustomEnchantment;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
+/**
+ * Obsidian Breaker – Pickaxe enchantment, ELITE tier.
+ * Allows breaking obsidian, crying obsidian, and respawn anchors
+ * via left-click (handled in EnchantListener).
+ */
 public class ObsidianBreaker extends CustomEnchantment {
 
     public ObsidianBreaker() {
-        super("obsidian_breaker", "Obsidian Breaker", 1, EnchantTier.LEGENDARY, ApplicableGear.PICKAXE);
+        super("obsidian_breaker", "Obsidian Breaker", 3, EnchantTier.ELITE, ApplicableGear.PICKAXE);
     }
 
     @Override
     public String getDescription() {
-        return "Left-click obsidian to instantly break it.";
-    }
-
-    @Override
-    public void onActivate(Player player, int level, ItemStack item) {
+        return "Allows breaking obsidian-type blocks with left-click.";
     }
 }

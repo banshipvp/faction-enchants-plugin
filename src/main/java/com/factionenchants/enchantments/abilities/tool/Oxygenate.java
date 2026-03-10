@@ -2,23 +2,29 @@ package com.factionenchants.enchantments.abilities.tool;
 
 import com.factionenchants.enchantments.CustomEnchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
+/**
+ * Oxygenate – Pickaxe enchantment, ELITE tier.
+ * Refills air supply while the player is underwater.
+ */
 public class Oxygenate extends CustomEnchantment {
 
     public Oxygenate() {
-        super("oxygenate", "Oxygenate", 1, EnchantTier.SIMPLE, ApplicableGear.PICKAXE);
+        super("oxygenate", "Oxygenate", 3, EnchantTier.ELITE, ApplicableGear.PICKAXE);
     }
 
     @Override
     public String getDescription() {
-        return "Refills oxygen levels when breaking blocks under water.";
+        return "Refills your air supply while mining underwater.";
     }
 
-    /** Called from EnchantListener.onBlockBreak when player is underwater. */
+    /**
+     * Called by EnchantListener when the player is in water.
+     */
     public void tryRefill(Player player) {
         if (player.getRemainingAir() < player.getMaximumAir()) {
-            player.setRemainingAir(player.getMaximumAir());
+            player.setRemainingAir(Math.min(player.getMaximumAir(),
+                    player.getRemainingAir() + 30));
         }
     }
 }

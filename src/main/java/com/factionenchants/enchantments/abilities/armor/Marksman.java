@@ -3,7 +3,7 @@ package com.factionenchants.enchantments.abilities.armor;
 import com.factionenchants.enchantments.CustomEnchantment;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 public class Marksman extends CustomEnchantment {
 
@@ -13,12 +13,12 @@ public class Marksman extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "Increases your arrow damage.";
+        return "Increases damage dealt with bows, this enchantment is stackable.";
     }
 
     @Override
-    public void onArrowHit(Player shooter, LivingEntity target, int level, org.bukkit.event.entity.EntityDamageByEntityEvent event) {
-        double bonus = 1 + level * 0.1;
-        event.setDamage(event.getDamage() * bonus);
+    public void onArrowHit(Player shooter, LivingEntity target, int level, EntityDamageByEntityEvent event) {
+        // +8% damage per level (stackable across armor pieces)
+        event.setDamage(event.getDamage() * (1.0 + level * 0.08));
     }
 }

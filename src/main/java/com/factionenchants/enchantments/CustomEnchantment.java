@@ -114,7 +114,7 @@ public abstract class CustomEnchantment {
     public enum ApplicableGear {
         SWORD, AXE, PICKAXE, SHOVEL, HOE,
         HELMET, CHESTPLATE, LEGGINGS, BOOTS,
-        BOW, CROSSBOW, TRIDENT,
+        BOW, CROSSBOW, TRIDENT, FISHING_ROD,
         WEAPON,   // sword + axe + trident
         TOOL_ALL, // pickaxe + shovel + axe + hoe
         ARMOR,    // helmet + chestplate + leggings + boots
@@ -136,6 +136,7 @@ public abstract class CustomEnchantment {
                 case BOW -> type.equals("BOW");
                 case CROSSBOW -> type.equals("CROSSBOW");
                 case TRIDENT -> type.equals("TRIDENT");
+                case FISHING_ROD -> type.equals("FISHING_ROD");
                 case WEAPON -> type.endsWith("_SWORD") || type.endsWith("_AXE") || type.equals("TRIDENT");
                 case TOOL_ALL -> type.endsWith("_PICKAXE") || type.endsWith("_SHOVEL") || type.endsWith("_AXE") || type.endsWith("_HOE");
                 case ARMOR -> type.endsWith("_HELMET") || type.endsWith("_CHESTPLATE") || type.endsWith("_LEGGINGS") || type.endsWith("_BOOTS");

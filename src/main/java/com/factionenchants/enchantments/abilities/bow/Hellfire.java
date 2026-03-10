@@ -1,30 +1,25 @@
 package com.factionenchants.enchantments.abilities.bow;
 
 import com.factionenchants.enchantments.CustomEnchantment;
-import org.bukkit.FireworkEffect;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.inventory.ItemStack;
-
-import java.util.Random;
 
 public class Hellfire extends CustomEnchantment {
 
-    private final Random random = new Random();
-
     public Hellfire() {
-        super("hellfire", "Hellfire", 5, EnchantTier.ULTIMATE, ApplicableGear.BOW, ApplicableGear.CROSSBOW);
+        super("hellfire", "Hellfire", 5, EnchantTier.ULTIMATE, ApplicableGear.BOW);
     }
 
     @Override
     public String getDescription() {
-        return "Arrows explode into fire on impact.";
+        return "All arrows shot by you turn into explosive fireballs.";
     }
 
     @Override
     public void onArrowHit(Player shooter, LivingEntity target, int level, EntityDamageByEntityEvent event) {
-        target.getWorld().createExplosion(target.getLocation(), level * 0.4f, true, false);
-        target.setFireTicks(level * 40);
+        // Explosion power scales with level (0.8 to 2.0), no fire, no block damage
+        float power = 0.5f + level * 0.3f;
+        target.getWorld().createExplosion(target.getLocation(), power, false, false);
     }
 }

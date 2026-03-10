@@ -4,13 +4,8 @@ import com.factionenchants.enchantments.CustomEnchantment;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.inventory.ItemStack;
-
-import java.util.Random;
 
 public class Enrage extends CustomEnchantment {
-
-    private final Random random = new Random();
 
     public Enrage() {
         super("enrage", "Enrage", 3, EnchantTier.ULTIMATE, ApplicableGear.SWORD);
@@ -18,15 +13,17 @@ public class Enrage extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "Deal more damage on low HP.";
+        return "The lower your HP is, the more damage you deal.";
     }
 
     @Override
     public void onHitEntity(Player attacker, LivingEntity target, int level, EntityDamageByEntityEvent event) {
-        double hpRatio = attacker.getHealth() / attacker.getMaxHealth();
-        if (hpRatio < 0.5) {
-            double bonus = 1 + level * 0.15 * (1 - hpRatio);
-            event.setDamage(event.getDamage() * bonus);
-        }
+        double maxHealth = attacker.getMaxHealth();
+        double currentHealth = attacker.getHealth();
+        // Missing HP fraction (0.0 = full health, 1.0 = 1 HP)
+        double missingFraction = (maxHealth - currentHealth) / maxHealth;
+        // Bonus damage: up to level * 40% at 0 HP, scales with missing HP
+        double bonusMultiplier = 1.0 + (missingFraction * level * 0.4);
+        event.setDamage(event.getDamage() * bonusMultiplier);
     }
 }

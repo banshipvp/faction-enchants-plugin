@@ -9,21 +9,25 @@ import org.bukkit.inventory.ItemStack;
 public class Longbow extends CustomEnchantment {
 
     public Longbow() {
-        super("longbow", "Longbow", 4, EnchantTier.ULTIMATE, ApplicableGear.BOW, ApplicableGear.CROSSBOW);
+        super("longbow", "Longbow", 4, EnchantTier.ULTIMATE, ApplicableGear.BOW);
     }
 
     @Override
     public String getDescription() {
-        return "Deal more damage to enemies who are also wielding a bow.";
+        return "Greatly increases damage dealt to enemy players that have a bow in their hands.";
     }
 
     @Override
     public void onArrowHit(Player shooter, LivingEntity target, int level, EntityDamageByEntityEvent event) {
-        if (target instanceof Player p) {
-            String held = p.getInventory().getItemInMainHand().getType().name();
-            if (held.equals("BOW") || held.equals("CROSSBOW")) {
-                event.setDamage(event.getDamage() * (1 + level * 0.1));
-            }
-        }
+        if (!(target instanceof Player targetPlayer)) return;
+        ItemStack mainHand = targetPlayer.getInventory().getItemInMainHand();
+        ItemStack offHand = targetPlayer.getInventory().getItemInOffHand();
+        boolean targetHasBow = mainHand.getType().name().equals("BOW")
+                || offHand.getType().name().equals("BOW")
+                || mainHand.getType().name().equals("CROSSBOW")
+                || offHand.getType().name().equals("CROSSBOW");
+        if (!targetHasBow) return;
+        // Increase damage by 25% per level
+        event.setDamage(event.getDamage() * (1.0 + level * 0.25));
     }
 }

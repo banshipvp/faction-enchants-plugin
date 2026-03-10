@@ -14,15 +14,22 @@ public class Valor extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "Reduces damage taken while wielding a sword.";
+        return "Reduces incoming damage while wielding a non-heroic sword. This enchantment is stackable.";
     }
 
     @Override
     public void onHurtBy(Player defender, Entity attacker, int level, EntityDamageByEntityEvent event) {
         ItemStack held = defender.getInventory().getItemInMainHand();
-        if (held != null && held.getType().name().endsWith("_SWORD")) {
-            double reduction = level * 0.06;
-            event.setDamage(event.getDamage() * (1 - reduction));
-        }
+        if (!held.getType().name().endsWith("_SWORD")) return;
+
+        // Check item is "non-heroic" — no HEROIC tier enchant in its lore
+        boolean isHeroic = held.hasItemMeta()
+                && held.getItemMeta().hasLore()
+                && held.getItemMeta().getLore().stream()
+                        .anyMatch(l -> l.contains("Heroic"));
+        if (isHeroic) return;
+
+        // Reduce incoming damage by 3% per level (stackable across armor pieces)
+        event.setDamage(event.getDamage() * (1.0 - level * 0.03));
     }
 }

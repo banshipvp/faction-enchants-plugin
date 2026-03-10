@@ -33,17 +33,19 @@ public class WhiteScrollItem {
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName("§f§lWhite Scroll");
         meta.setLore(List.of(
-                "§8▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬",
-                "§7Apply to any piece of gear,",
-                "§7weapon, or tool to grant it",
-                "§fprotection §7against being",
-                "§7destroyed by an enchant book.",
-                "§7",
-                "§7When a book would destroy the",
-                "§7item, the §fWhite Scroll §7absorbs",
-                "§7the hit and is consumed instead.",
-                "§8▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬",
-                "§eHold on cursor, click gear to apply"
+                "§7Prevents an item from being destroyed",
+                "§7due to a failed Enchantment Book.",
+                "§7Place scroll on item to apply.",
+                "",
+                "§6§lObtainable From:",
+                "§8✦ §7/envoys: §fUnique, Simple",
+                "§8✦ §7/kits: §fHeroic, Interstellar, Supernova, Hyperdrive, Lucky /vkit",
+                "§8✦ §7/koth",
+                "§8✦ §7/nether: §fFortress Chests",
+                "§8✦ §7/spacechests: §fSimple, Unique, Elite, Ultimate, Legendary",
+                "§8✦ §7/strongholds: §fInfernal, Frozen, Abyssal",
+                "§8✦ §7/trials: §fRecruit",
+                "§8✦ §7/xpshop"
         ));
         meta.getPersistentDataContainer()
                 .set(new NamespacedKey(plugin, PDC_KEY), PersistentDataType.BYTE, (byte) 1);

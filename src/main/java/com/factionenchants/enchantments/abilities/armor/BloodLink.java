@@ -22,13 +22,12 @@ public class BloodLink extends CustomEnchantment {
     private static final Random random = new Random();
 
     public BloodLink() {
-        super("bloodlink", "Blood Link", 5, EnchantTier.ULTIMATE, ApplicableGear.ARMOR);
+        super("bloodlink", "Blood Link", 5, EnchantTier.LEGENDARY, ApplicableGear.ARMOR);
     }
 
     @Override
     public String getDescription() {
-        return "Chance to heal when your Guardians iron golems take damage. "
-             + "Heal amount and proc chance scale with level.";
+        return "A chance to heal you for 1-3hp whenever your Guardians take damage.";
     }
 
     /**

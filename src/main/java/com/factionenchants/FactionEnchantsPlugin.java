@@ -18,10 +18,13 @@ import com.factionenchants.listeners.BookListener;
 import com.factionenchants.listeners.CombatListener;
 import com.factionenchants.listeners.EnchantListener;
 import com.factionenchants.listeners.NameTagListener;
+import com.factionenchants.listeners.TeleblockListener;
 import com.factionenchants.listeners.TinkererListener;
 import com.factionenchants.listeners.SoulGemListener;
+import com.factionenchants.listeners.EnchantmentOrbListener;
 import com.factionenchants.listeners.ExtendedLootingListener;
 import com.factionenchants.listeners.WhiteScrollListener;
+import com.factionenchants.listeners.HolyWhiteScrollListener;
 import com.factionenchants.listeners.BlessedEffectBlocker;
 import com.factionenchants.listeners.XpShopListener;
 import com.factionenchants.utils.ConfigUtil;
@@ -72,9 +75,12 @@ public class FactionEnchantsPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new XpShopListener(this, xpShopCommand), this);
         getServer().getPluginManager().registerEvents(new NameTagListener(this), this);
         getServer().getPluginManager().registerEvents(new WhiteScrollListener(this), this);
+        getServer().getPluginManager().registerEvents(new HolyWhiteScrollListener(this), this);
         getServer().getPluginManager().registerEvents(new BlessedEffectBlocker(), this);
         getServer().getPluginManager().registerEvents(new SoulGemListener(this), this);
-        getServer().getPluginManager().registerEvents(new ExtendedLootingListener(this), this);
+        getServer().getPluginManager().registerEvents(new TeleblockListener(), this);
+        getServer().getPluginManager().registerEvents(new ExtendedLootingListener(), this);
+        getServer().getPluginManager().registerEvents(new EnchantmentOrbListener(this), this);
         getLogger().info("FactionEnchants has been enabled!");
     }
 

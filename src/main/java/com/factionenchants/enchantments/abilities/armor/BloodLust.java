@@ -22,13 +22,12 @@ public class BloodLust extends CustomEnchantment {
     private static final Random random = new Random();
 
     public BloodLust() {
-        super("bloodlust", "Blood Lust", 6, EnchantTier.ULTIMATE, ApplicableGear.CHESTPLATE);
+        super("bloodlust", "Blood Lust", 6, EnchantTier.LEGENDARY, ApplicableGear.CHESTPLATE);
     }
 
     @Override
     public String getDescription() {
-        return "While an enemy within 7 blocks is suffering from Bleed, you have a chance "
-             + "to heal 1HP per Bleed tick. Chance and healing scale with level.";
+        return "A chance to heal you whenever an enemy player within 7x7 blocks is damaged by the Bleed enchantment.";
     }
 
     /**

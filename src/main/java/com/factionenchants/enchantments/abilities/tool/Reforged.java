@@ -1,26 +1,31 @@
 package com.factionenchants.enchantments.abilities.tool;
 
 import com.factionenchants.enchantments.CustomEnchantment;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.Random;
 
+/**
+ * Reforged – Tool enchantment, ELITE tier.
+ * Chance to negate tool durability damage on use.
+ */
 public class Reforged extends CustomEnchantment {
 
-    private final Random random = new Random();
+    private static final Random random = new Random();
 
     public Reforged() {
-        super("reforged", "Reforged", 10, EnchantTier.ELITE, ApplicableGear.WEAPON);
+        super("reforged", "Reforged", 5, EnchantTier.ELITE, ApplicableGear.TOOL_ALL);
     }
 
     @Override
     public String getDescription() {
-        return "Protects weapons durability, items will take longer to break.";
+        return "Chance to negate tool durability damage.";
     }
 
-    // Handled via PlayerItemDamageEvent - see EnchantListener
+    /**
+     * Called from PlayerItemDamageEvent in EnchantListener.
+     * @return true if the durability damage should be cancelled this time.
+     */
     public boolean shouldCancelDamage(int level) {
-        return random.nextInt(100) < level * 8;
+        return random.nextInt(100) < level * 15; // 15–75% chance
     }
 }
