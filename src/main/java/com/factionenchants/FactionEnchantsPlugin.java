@@ -28,6 +28,7 @@ import com.factionenchants.listeners.ExtendedLootingListener;
 import com.factionenchants.listeners.WhiteScrollListener;
 import com.factionenchants.listeners.HolyWhiteScrollListener;
 import com.factionenchants.listeners.BlessedEffectBlocker;
+import com.factionenchants.listeners.FishingListener;
 import com.factionenchants.listeners.XpShopListener;
 import com.factionenchants.utils.ConfigUtil;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -85,6 +86,7 @@ public class FactionEnchantsPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new AvengingAngelListener(this), this);
         getServer().getPluginManager().registerEvents(new ArrowBreakListener(this), this);
         getServer().getPluginManager().registerEvents(new EnchantmentOrbListener(this), this);
+        getServer().getPluginManager().registerEvents(new FishingListener(this), this);
         getLogger().info("FactionEnchants has been enabled!");
     }
 

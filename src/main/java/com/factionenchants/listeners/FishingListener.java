@@ -4,8 +4,11 @@ import com.factionenchants.FactionEnchantsPlugin;
 import com.factionenchants.enchantments.CustomEnchantment;
 import com.factionenchants.enchantments.abilities.misc.DeepDiver;
 import com.factionenchants.enchantments.abilities.misc.Dredger;
+import com.factionenchants.enchantments.abilities.misc.Sizzle;
 import com.factionenchants.enchantments.abilities.misc.TrophySeeker;
 import com.factionenchants.enchantments.abilities.tool.QuickReeler;
+import org.bukkit.Material;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.FishHook;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -41,12 +44,14 @@ public class FishingListener implements Listener {
         int quickReelerLevel = 0;
         int trophySeekerLevel = 0;
         int deepDiverLevel = 0;
+        int sizzleLevel = 0;
 
         for (Map.Entry<CustomEnchantment, Integer> entry : enchants.entrySet()) {
             if (entry.getKey() instanceof Dredger) dredgerLevel = entry.getValue();
             if (entry.getKey() instanceof QuickReeler) quickReelerLevel = entry.getValue();
             if (entry.getKey() instanceof TrophySeeker) trophySeekerLevel = entry.getValue();
             if (entry.getKey() instanceof DeepDiver) deepDiverLevel = entry.getValue();
+            if (entry.getKey() instanceof Sizzle) sizzleLevel = entry.getValue();
         }
 
         // Quick Reeler: reduce wait time when rod is cast
@@ -77,6 +82,19 @@ public class FishingListener implements Listener {
         if (deepDiverLevel > 0 && event.getState() == PlayerFishEvent.State.CAUGHT_FISH) {
             player.addPotionEffect(new org.bukkit.potion.PotionEffect(
                     org.bukkit.potion.PotionEffectType.LUCK, 200, deepDiverLevel, true, false));
+        }
+
+        // Sizzle: chance to auto-cook caught fish
+        if (sizzleLevel > 0 && event.getState() == PlayerFishEvent.State.CAUGHT_FISH
+                && event.getCaught() instanceof Item caughtItem) {
+            if (random.nextDouble() < Sizzle.getProcChance(sizzleLevel)) {
+                org.bukkit.inventory.ItemStack fish = caughtItem.getItemStack();
+                Material cooked = Sizzle.COOK_MAP.get(fish.getType());
+                if (cooked != null) {
+                    fish.setType(cooked);
+                    caughtItem.setItemStack(fish);
+                }
+            }
         }
     }
 }

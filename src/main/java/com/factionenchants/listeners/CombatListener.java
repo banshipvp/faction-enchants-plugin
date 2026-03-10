@@ -3,6 +3,8 @@ package com.factionenchants.listeners;
 import com.factionenchants.FactionEnchantsPlugin;
 import com.factionenchants.enchantments.CustomEnchantment;
 import com.factionenchants.enchantments.abilities.bow.Unfocus;
+import com.factionenchants.enchantments.abilities.sword.Hex;
+import com.factionenchants.enchantments.abilities.sword.Silence;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -39,6 +41,11 @@ public class CombatListener implements Listener {
                         if (soulCost > 0 && !plugin.getSoulManager().consumeSouls(attacker, soulCost)) continue;
                         e.getKey().onHitEntity(attacker, target, e.getValue(), event);
                     }
+                }
+                // Hex reflection: if the attacker is hexed, they take a portion of the damage they dealt
+                double hexFraction = Hex.getReflectionFraction(attacker.getUniqueId());
+                if (hexFraction > 0 && !event.isCancelled() && event.getDamage() > 0) {
+                    attacker.damage(event.getDamage() * hexFraction);
                 }
             }
         }
@@ -79,11 +86,20 @@ public class CombatListener implements Listener {
             }
         }
 
-        // Defender armor
+        // Defender armor + held weapon defensive enchants (suppressed by Silence)
         if (event.getEntity() instanceof Player defender) {
-            for (ItemStack armor : defender.getInventory().getArmorContents()) {
-                if (armor == null) continue;
-                for (Map.Entry<CustomEnchantment, Integer> e : plugin.getEnchantmentManager().getEnchantmentsOnItem(armor).entrySet()) {
+            if (!Silence.isSilenced(defender.getUniqueId())) {
+                for (ItemStack armor : defender.getInventory().getArmorContents()) {
+                    if (armor == null) continue;
+                    for (Map.Entry<CustomEnchantment, Integer> e : plugin.getEnchantmentManager().getEnchantmentsOnItem(armor).entrySet()) {
+                        int soulCost = e.getKey().getSoulCostPerProc();
+                        if (soulCost > 0 && !plugin.getSoulManager().consumeSouls(defender, soulCost)) continue;
+                        e.getKey().onHurtBy(defender, event.getDamager(), e.getValue(), event);
+                    }
+                }
+                // Also fire onHurtBy for held weapon enchants (e.g. Inversion)
+                ItemStack heldWeapon = defender.getInventory().getItemInMainHand();
+                for (Map.Entry<CustomEnchantment, Integer> e : plugin.getEnchantmentManager().getEnchantmentsOnItem(heldWeapon).entrySet()) {
                     int soulCost = e.getKey().getSoulCostPerProc();
                     if (soulCost > 0 && !plugin.getSoulManager().consumeSouls(defender, soulCost)) continue;
                     e.getKey().onHurtBy(defender, event.getDamager(), e.getValue(), event);
