@@ -26,8 +26,7 @@ public class Aegis extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "If you are taking damage from more than (8-level) enemies in a short period, "
-             + "the damage from any additional players beyond that initial group will be halved.";
+        return "If taking damage from more than (8-level) enemies in 5 seconds, additional attackers deal 50% damage.";
     }
 
     @Override

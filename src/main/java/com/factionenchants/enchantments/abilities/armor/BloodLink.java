@@ -27,7 +27,7 @@ public class BloodLink extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "A chance to heal you for 1-3hp whenever your Guardians take damage.";
+        return "20% chance per level to heal 0.5-3.0 HP (0.5+level×0.5) when your Guardians golems take damage.";
     }
 
     /**

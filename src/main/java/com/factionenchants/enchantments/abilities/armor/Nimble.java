@@ -15,6 +15,6 @@ public class Nimble extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "Increases mcMMO XP gained in Acrobatics while equipped.";
+        return "Increases mcMMO Acrobatics XP gain by 15% per level (max 75% at level V).";
     }
 }

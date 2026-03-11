@@ -23,7 +23,7 @@ public class Vampire extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "A chance to heal you for up to 3hp a few seconds after you strike.";
+        return "25% chance per level to heal 1 HP per level, 3 seconds after striking.";
     }
 
     @Override

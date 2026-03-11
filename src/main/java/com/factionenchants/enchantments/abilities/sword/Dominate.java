@@ -16,7 +16,7 @@ public class Dominate extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "Weaken your enemies with every hit.";
+        return "Applies Weakness to target (duration level×40 ticks, amplifier = level-1).";
     }
 
     @Override

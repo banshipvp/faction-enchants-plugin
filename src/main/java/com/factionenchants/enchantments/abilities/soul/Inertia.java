@@ -25,7 +25,7 @@ public class Inertia extends CustomEnchantment {
     public void onTickPassive(Player player, int level, ItemStack equipment) {
         if (!player.hasPotionEffect(PotionEffectType.SLOW)) return;
 
-        FactionEnchantsPlugin plugin = (FactionEnchantsPlugin) Bukkit.getPluginManager().getPlugin("FactionEnchantsPlugin");
+        FactionEnchantsPlugin plugin = (FactionEnchantsPlugin) Bukkit.getPluginManager().getPlugin("FactionEnchants");
         if (plugin == null) return;
         if (!plugin.getSoulManager().isSoulActive(player)) return;
 

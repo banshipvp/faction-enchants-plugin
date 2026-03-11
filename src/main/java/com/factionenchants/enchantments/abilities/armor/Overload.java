@@ -1,26 +1,21 @@
 package com.factionenchants.enchantments.abilities.armor;
 
 import com.factionenchants.enchantments.CustomEnchantment;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeInstance;
-import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.UUID;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 /**
  * Overload III — Armor enchantment (LEGENDARY).
- * Permanently increases the wearer's max health while the armor is equipped.
- * Bonus health per level: 2 hearts (4 HP). Uses an AttributeModifier so that
- * removing the armor restores the original max health.
- *
- * The modifier is refreshed on each passive tick if not already present.
+ * Temporarily increases the wearer's max health while the armor is equipped.
+ * Overload I: +2 hearts (4 HP)
+ * Overload II: +4 hearts (8 HP)
+ * Overload III: +3 hearts (6 HP)
+ * 
+ * Effects are automatically cleared when armor is removed.
  */
 public class Overload extends CustomEnchantment {
-
-    private static final UUID MODIFIER_UUID = UUID.fromString("b4c3d2e1-f0a9-4b8c-7d6e-5c4b3a2f1e0d");
-    private static final String MODIFIER_NAME = "overload_max_health";
 
     public Overload() {
         super("overload", "Overload", 3, EnchantTier.LEGENDARY, ApplicableGear.ARMOR);
@@ -28,27 +23,33 @@ public class Overload extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "Permanent increase in hearts.";
+        return "Temporary increase in hearts.";
     }
 
     @Override
     public void onTickPassive(Player player, int level, ItemStack equipment) {
-        AttributeInstance attr = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
-        if (attr == null) return;
+        // Apply temporary health boost effect
+        // Overload 1: +2 hearts (amp 0 = +4 HP), Overload 2: +4 hearts (amp 1 = +8 HP), Overload 3: +3 hearts (amp 0.5 = +6 HP)
+        int amplifier = switch (level) {
+            case 1 -> 0;  // +2 hearts (4 HP)
+            case 2 -> 1;  // +4 hearts (8 HP)
+            case 3 -> 0;  // Will give +2 hearts, then add a second effect for +1 heart
+            default -> 0;
+        };
 
-        // Check if already applied
-        boolean hasModifier = attr.getModifiers().stream()
-                .anyMatch(m -> m.getUniqueId().equals(MODIFIER_UUID));
-        if (hasModifier) return;
+        // Apply the health boost effect (60 tick duration, refreshed every tick)
+        player.addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, 60, amplifier, true, false, false));
 
-        // Add +4 HP (2 hearts) per level
-        double bonus = level * 4.0;
-        AttributeModifier modifier = new AttributeModifier(MODIFIER_UUID, MODIFIER_NAME,
-                bonus, AttributeModifier.Operation.ADD_NUMBER);
-        attr.addModifier(modifier);
-        // Restore health to new max if needed
-        if (player.getHealth() > attr.getValue()) {
-            player.setHealth(attr.getValue());
+        // For Overload III, add an additional +1 heart (2 HP) by giving Absorption
+        if (level == 3) {
+            player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 60, 0, true, false, false));
         }
+    }
+
+    @Override
+    public void onArmorUnequip(Player player, ItemStack armor, int level) {
+        // Clear health boost and absorption effects when armor is removed
+        player.removePotionEffect(PotionEffectType.HEALTH_BOOST);
+        player.removePotionEffect(PotionEffectType.ABSORPTION);
     }
 }

@@ -18,7 +18,7 @@ public class Enlighted extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "Can heal hearts while taking damage.";
+        return "20% chance per level to heal 0.5 hearts per level when taking damage.";
     }
 
     @Override

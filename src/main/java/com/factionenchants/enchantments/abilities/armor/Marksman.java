@@ -13,7 +13,7 @@ public class Marksman extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "Increases damage dealt with bows, this enchantment is stackable.";
+        return "Increases bow damage by 8% per level (stackable across armor pieces).";
     }
 
     @Override

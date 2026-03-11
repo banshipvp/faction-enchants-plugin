@@ -2,7 +2,13 @@ package com.factionenchants.enchantments.abilities.tool;
 
 import com.factionenchants.enchantments.CustomEnchantment;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.inventory.ItemStack;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -42,5 +48,29 @@ public class AutoSmelt extends CustomEnchantment {
      */
     public static Material getSmeltResult(Material input) {
         return SMELT_MAP.get(input);
+    }
+
+    @Override
+    public void onBlockBreak(Player player, Block block, int level, BlockBreakEvent event) {
+        ItemStack tool = player.getInventory().getItemInMainHand();
+        Collection<ItemStack> drops = block.getDrops(tool);
+        boolean anySmelted = false;
+        for (ItemStack drop : drops) {
+            Material smelted = getSmeltResult(drop.getType());
+            if (smelted != null) {
+                anySmelted = true;
+                ItemStack smeltedItem = new ItemStack(smelted, drop.getAmount());
+                HashMap<Integer, ItemStack> overflow = player.getInventory().addItem(smeltedItem);
+                for (ItemStack leftover : overflow.values()) {
+                    player.getWorld().dropItemNaturally(player.getLocation(), leftover);
+                }
+            } else {
+                // Drop non-smeltable items normally
+                player.getWorld().dropItemNaturally(player.getLocation(), drop);
+            }
+        }
+        if (anySmelted) {
+            event.setDropItems(false);
+        }
     }
 }

@@ -33,7 +33,7 @@ public class Rage extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "For every combo hit you land, your damage is multiplied by 1.1×.";
+        return "For every combo hit you land, damage is multiplied by 1.1× (max level×5 stacks, 3s reset).";
     }
 
     @Override

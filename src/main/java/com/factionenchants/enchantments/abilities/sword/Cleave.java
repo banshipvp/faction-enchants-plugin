@@ -19,7 +19,7 @@ public class Cleave extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "Damages players within a radius that increases with the level of enchant.";
+        return "8% chance per level to damage nearby enemies (radius 1+level×0.5, damage = level).";
     }
 
     @Override

@@ -27,7 +27,7 @@ public class Trickster extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "When hit you have a chance to teleport directly behind your opponent and take them by surprise.";
+        return "5% chance per level to teleport behind your attacker when hit (8 second cooldown).";
     }
 
     @Override

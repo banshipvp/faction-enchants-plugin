@@ -17,7 +17,7 @@ public class Armored extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "Reduces incoming damage based on level.";
+        return "Reduces incoming damage by 3% per level (max 15% at level V).";
     }
 
     @Override

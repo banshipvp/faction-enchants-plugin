@@ -13,7 +13,7 @@ public class Piercing extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "Inflicts more damage.";
+        return "Inflicts 10% more damage per level (max 50% at level V).";
     }
 
     @Override

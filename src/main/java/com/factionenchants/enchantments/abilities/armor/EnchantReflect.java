@@ -32,7 +32,7 @@ public class EnchantReflect extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "Chance to cause enemy offensive enchants up to Legendary (up to level) to proc on themselves instead of you.";
+        return "8% chance per level to reflect one enemy weapon enchant back at them (reflects enchants ≤ your level).";
     }
 
     @Override

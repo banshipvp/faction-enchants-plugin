@@ -18,7 +18,7 @@ public class Gears extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "Added speed when equipped.";
+        return "Grants Speed effect equal to enchant level (Speed I-III) when equipped.";
     }
 
     @Override

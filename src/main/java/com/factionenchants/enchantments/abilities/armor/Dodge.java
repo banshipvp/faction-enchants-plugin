@@ -17,7 +17,7 @@ public class Dodge extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "Chance to dodge physical enemy attacks, increased chance if sneaking.";
+        return "6% per level chance to dodge attacks (11% per level while sneaking).";
     }
 
     @Override

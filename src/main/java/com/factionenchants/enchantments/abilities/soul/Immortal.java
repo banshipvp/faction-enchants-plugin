@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class Immortal extends CustomEnchantment {
 
@@ -37,7 +38,7 @@ public class Immortal extends CustomEnchantment {
      * Returns true if durability damage should be cancelled.
      */
     public boolean tryPrevent(Player player, int level) {
-        FactionEnchantsPlugin plugin = (FactionEnchantsPlugin) Bukkit.getPluginManager().getPlugin("FactionEnchantsPlugin");
+        FactionEnchantsPlugin plugin = (FactionEnchantsPlugin) Bukkit.getPluginManager().getPlugin("FactionEnchants");
         if (plugin == null) return false;
         if (!plugin.getSoulManager().isSoulActive(player)) return false;
         int cost = getSoulCostForDurability(level);
@@ -46,6 +47,11 @@ public class Immortal extends CustomEnchantment {
 
     @Override
     public void onHurtBy(Player defender, Entity attacker, int level, EntityDamageByEntityEvent event) {
-        // Durability prevention is handled in EnchantListener.onPlayerItemDamage via tryPrevent()
+        // Durability prevention is handled via onItemDamage below
+    }
+
+    @Override
+    public int onItemDamage(Player player, ItemStack item, int level, int originalDamage) {
+        return tryPrevent(player, level) ? 0 : originalDamage;
     }
 }

@@ -24,7 +24,7 @@ public class Corrupt extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "Damage with niche — this enchant deals damage over time.";
+        return "10% chance per level to inflict damage over time (level×3 ticks, 0.5+level×0.5 damage per tick).";
     }
 
     @Override
@@ -33,7 +33,7 @@ public class Corrupt extends CustomEnchantment {
             UUID tid = target.getUniqueId();
             Integer oldTask = taskMap.get(tid);
             if (oldTask != null) Bukkit.getScheduler().cancelTask(oldTask);
-            Plugin plugin = Bukkit.getPluginManager().getPlugin("FactionEnchantsPlugin");
+            Plugin plugin = Bukkit.getPluginManager().getPlugin("FactionEnchants");
             if (plugin == null) return;
             int[] ticks = {0};
             int task = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {

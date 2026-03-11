@@ -18,7 +18,7 @@ public class Hardened extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "Armor takes less durability damage.";
+        return "Armor takes 25% less durability damage per level (max 75% at level III).";
     }
 
     /**

@@ -22,7 +22,7 @@ public class Shockwave extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "The chance to push back your attacker.";
+        return "10% chance per level to knockback your attacker (knockback scales with level).";
     }
 
     @Override

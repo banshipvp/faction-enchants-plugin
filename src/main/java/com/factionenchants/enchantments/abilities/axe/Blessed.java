@@ -1,5 +1,6 @@
 package com.factionenchants.enchantments.abilities.axe;
 
+import com.factionenchants.commands.BlessCommand;
 import com.factionenchants.enchantments.CustomEnchantment;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -58,6 +59,7 @@ public class Blessed extends CustomEnchantment {
         }
 
         if (!removed.isEmpty()) {
+            BlessCommand.BLESSED.add(attacker.getUniqueId());
             attacker.sendMessage("§a✦ §fBlessed cleansed §a" + removed.size() + " §fdebuff(s) from you!");
         }
     }

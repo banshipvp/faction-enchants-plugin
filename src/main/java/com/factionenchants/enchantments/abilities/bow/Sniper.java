@@ -8,14 +8,11 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 /**
  * Sniper V — Bow enchantment (LEGENDARY).
- * Long-range arrow shots deal bonus damage. The farther the arrow traveled,
- * the more bonus damage is applied, up to 1.25× normal damage.
- * Minimum range for bonus: 15 blocks. Maximum bonus at 40+ blocks.
+ * Headshots (arrows that hit at or above the target's eye level) deal bonus damage.
+ * Damage multiplier scales with level: up to 1.25× at max level.
  */
 public class Sniper extends CustomEnchantment {
 
-    private static final double MIN_RANGE = 15.0;
-    private static final double MAX_RANGE = 40.0;
     private static final double MAX_BONUS_MULT = 1.25;
 
     public Sniper() {
@@ -24,23 +21,30 @@ public class Sniper extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "Headshots with projectile deal up to 1.25x damage.";
+        return "Headshots with projectiles deal up to 1.25x damage (scales with level).";
     }
 
     @Override
     public void onArrowHit(Player shooter, LivingEntity target, int level, EntityDamageByEntityEvent event) {
-        // Calculate arrow travel distance
-        double distance = 0;
-        if (event.getDamager() instanceof Arrow arrow) {
-            distance = arrow.getLocation().distance(shooter.getLocation());
-        }
-        if (distance < MIN_RANGE) return;
+        if (!(event.getDamager() instanceof Arrow arrow)) return;
 
-        // Scale bonus from 1.0× at MIN_RANGE to MAX_BONUS_MULT at MAX_RANGE
-        double fraction = Math.min((distance - MIN_RANGE) / (MAX_RANGE - MIN_RANGE), 1.0);
-        // Scale further by level (level 1 = 20% of max bonus, level 5 = 100%)
+        // Check if arrow hit at or above eye level (headshot detection)
+        double arrowY = arrow.getLocation().getY();
+        double targetEyeY = target.getEyeLocation().getY();
+        double targetFeetY = target.getLocation().getY();
+        
+        // Headshot zone: upper 30% of the entity's height (around head/upper torso)
+        double entityHeight = targetEyeY - targetFeetY;
+        double headshotThreshold = targetFeetY + (entityHeight * 0.7); // Top 30% of body
+
+        if (arrowY < headshotThreshold) return; // Not a headshot
+
+        // Headshot confirmed - apply bonus damage scaled by level
+        // Level 1 = 20% of max bonus, Level 5 = 100% of max bonus
         double levelScale = (double) level / getMaxLevel();
-        double multiplier = 1.0 + fraction * (MAX_BONUS_MULT - 1.0) * levelScale;
+        double multiplier = 1.0 + (MAX_BONUS_MULT - 1.0) * levelScale;
         event.setDamage(event.getDamage() * multiplier);
+        
+        shooter.sendMessage("§c§l✦ HEADSHOT!");
     }
 }

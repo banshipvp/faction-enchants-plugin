@@ -26,7 +26,7 @@ public class Stormcaller extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "Strikes lightning on attacking players.";
+        return "15% chance per level to strike lightning on your attacker (4 second cooldown).";
     }
 
     @Override

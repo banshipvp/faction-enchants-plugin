@@ -23,7 +23,7 @@ public class Poison extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "A chance of giving the poison effect.";
+        return "20% chance per level to poison target for 3-9 seconds (scales with level).";
     }
 
     @Override

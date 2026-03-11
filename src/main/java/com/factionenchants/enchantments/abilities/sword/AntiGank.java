@@ -17,7 +17,7 @@ public class AntiGank extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "Deal extra damage for each nearby enemy player beyond the first.";
+        return "Deal extra damage for each nearby enemy (level × 0.5 damage per enemy, 10 block radius).";
     }
 
     @Override

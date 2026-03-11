@@ -24,7 +24,7 @@ public class Paradox extends CustomEnchantment {
 
     @Override
     public void onHurtBy(Player defender, Entity attacker, int level, EntityDamageByEntityEvent event) {
-        FactionEnchantsPlugin plugin = (FactionEnchantsPlugin) Bukkit.getPluginManager().getPlugin("FactionEnchantsPlugin");
+        FactionEnchantsPlugin plugin = (FactionEnchantsPlugin) Bukkit.getPluginManager().getPlugin("FactionEnchants");
         if (plugin == null) return;
         if (!plugin.getSoulManager().isSoulActive(defender)) return;
         if (!plugin.getSoulManager().consumeSouls(defender, 5)) return;

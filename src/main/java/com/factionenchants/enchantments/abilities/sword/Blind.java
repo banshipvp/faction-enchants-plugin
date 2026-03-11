@@ -23,7 +23,7 @@ public class Blind extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "A chance of causing blindness when attacking.";
+        return "15% chance per level to blind target for 3-9 seconds (scales with level).";
     }
 
     @Override

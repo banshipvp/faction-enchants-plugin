@@ -21,7 +21,7 @@ public class Lightning extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "A chance to strike lightning where you strike.";
+        return "25% chance per level to strike lightning on target hit with arrow.";
     }
 
     @Override

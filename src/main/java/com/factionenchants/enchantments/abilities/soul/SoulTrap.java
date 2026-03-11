@@ -46,7 +46,7 @@ public class SoulTrap extends CustomEnchantment {
         Integer existing = activeTaskMap.get(victimId);
         if (existing != null) Bukkit.getScheduler().cancelTask(existing);
 
-        FactionEnchantsPlugin plugin = (FactionEnchantsPlugin) Bukkit.getPluginManager().getPlugin("FactionEnchantsPlugin");
+        FactionEnchantsPlugin plugin = (FactionEnchantsPlugin) Bukkit.getPluginManager().getPlugin("FactionEnchants");
         if (plugin == null) return;
 
         // Force-deactivate victim's soul gem

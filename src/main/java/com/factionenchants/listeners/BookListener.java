@@ -628,15 +628,42 @@ public class BookListener implements Listener {
 
         Map<CustomEnchantment, Integer> existing = plugin.getEnchantmentManager().getEnchantmentsOnItem(current);
 
-        // Check Heroic prerequisites
+        // Check Heroic prerequisites — must have the prerequisite enchant at its max level
         String prereq = enchant.getPrerequisiteEnchantId();
         if (prereq != null) {
-            boolean hasPrereq = existing.keySet().stream().anyMatch(e -> e.getId().equals(prereq));
-            if (!hasPrereq) {
+            CustomEnchantment prereqEnchant = plugin.getEnchantmentManager().getEnchantment(prereq);
+            if (prereqEnchant == null) {
                 event.setCancelled(true);
                 event.getView().setCursor(savedBook);
                 player.updateInventory();
-                player.sendMessage("\u00a7cThis enchant requires \u00a7e" + prereq + " \u00a7cto be applied first!");
+                player.sendMessage("\u00a7cPrerequisite enchant '" + prereq + "' not found!");
+                return;
+            }
+
+            Integer prereqLevel = existing.entrySet().stream()
+                    .filter(e -> e.getKey().getId().equals(prereq))
+                    .map(java.util.Map.Entry::getValue)
+                    .findFirst()
+                    .orElse(null);
+
+            if (prereqLevel == null) {
+                event.setCancelled(true);
+                event.getView().setCursor(savedBook);
+                player.updateInventory();
+                String color = "\u00a7" + prereqEnchant.getTier().getColor();
+                player.sendMessage("\u00a7cThis enchant requires " + color + prereqEnchant.getDisplayName() 
+                        + " " + EnchantmentManager.toRoman(prereqEnchant.getMaxLevel()) + " \u00a7cto be applied first!");
+                return;
+            }
+
+            if (prereqLevel < prereqEnchant.getMaxLevel()) {
+                event.setCancelled(true);
+                event.getView().setCursor(savedBook);
+                player.updateInventory();
+                String color = "\u00a7" + prereqEnchant.getTier().getColor();
+                player.sendMessage("\u00a7cThis enchant requires " + color + prereqEnchant.getDisplayName() 
+                        + " " + EnchantmentManager.toRoman(prereqEnchant.getMaxLevel()) 
+                        + " \u00a7c(currently " + EnchantmentManager.toRoman(prereqLevel) + ")!");
                 return;
             }
         }

@@ -14,7 +14,7 @@ public class Ghost extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "Invisible to /near lookups while in friendly territory depending on level of enchantment.";
+        return "Invisible to /near lookups based on level: I=50 blocks, II=25 blocks, III=10 blocks minimum distance.";
     }
 
     @Override

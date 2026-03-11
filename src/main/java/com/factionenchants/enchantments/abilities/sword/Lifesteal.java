@@ -18,7 +18,7 @@ public class Lifesteal extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "A chance to regain health when attacking.";
+        return "15% chance per level to heal 0.5 hearts per level on hit.";
     }
 
     @Override

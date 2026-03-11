@@ -1,6 +1,7 @@
 package com.factionenchants.enchantments.abilities.tool;
 
 import com.factionenchants.enchantments.CustomEnchantment;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
@@ -25,12 +26,10 @@ public class Inquisitive extends CustomEnchantment {
         return "Chance to double the drops from the mined block.";
     }
 
-    /**
-     * Called by EnchantListener on block break.
-     */
-    public void onBlockBreak(Player player, BlockBreakEvent event, int level) {
+    @Override
+    public void onBlockBreak(Player player, Block block, int level, BlockBreakEvent event) {
         if (random.nextInt(100) < level * 10) {
-            Collection<ItemStack> drops = event.getBlock().getDrops(player.getInventory().getItemInMainHand());
+            Collection<ItemStack> drops = block.getDrops(player.getInventory().getItemInMainHand());
             for (ItemStack drop : drops) {
                 player.getInventory().addItem(drop.clone());
             }

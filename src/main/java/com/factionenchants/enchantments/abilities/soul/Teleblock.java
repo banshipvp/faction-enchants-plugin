@@ -40,7 +40,7 @@ public class Teleblock extends CustomEnchantment {
         if (!(target instanceof Player victim)) return;
 
         com.factionenchants.FactionEnchantsPlugin plugin =
-                (com.factionenchants.FactionEnchantsPlugin) org.bukkit.Bukkit.getPluginManager().getPlugin("FactionEnchantsPlugin");
+                (com.factionenchants.FactionEnchantsPlugin) org.bukkit.Bukkit.getPluginManager().getPlugin("FactionEnchants");
         if (plugin == null) return;
         if (!plugin.getSoulManager().isSoulActive(shooter)) return;
         if (!plugin.getSoulManager().consumeSouls(shooter, level * 6)) return;

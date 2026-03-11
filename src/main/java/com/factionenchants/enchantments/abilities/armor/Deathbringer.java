@@ -22,7 +22,7 @@ public class Deathbringer extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "Chance to deal double damage.";
+        return "15% chance per level to deal double damage (max 45%).";
     }
 
     @Override

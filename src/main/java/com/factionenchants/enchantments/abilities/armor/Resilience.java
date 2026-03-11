@@ -23,7 +23,7 @@ public class Resilience extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "Chance to negate 50% of damage from attacks that would normally kill you.";
+        return "50% chance to negate half of lethal damage. Also increases NPC HP by 15% per level if combat logged.";
     }
 
     @Override

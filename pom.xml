@@ -44,6 +44,13 @@
             <systemPath>${project.basedir}/../SimpleFactions/build/libs/SimpleFactions-1.0.0.jar</systemPath>
         </dependency>
         <dependency>
+            <groupId>local.simplepvp</groupId>
+            <artifactId>SimplePvP</artifactId>
+            <version>1.0.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../SimplePvP/build/libs/SimplePvP-1.0.0.jar</systemPath>
+        </dependency>
+        <dependency>
             <groupId>com.gmail.nossr50.mcMMO</groupId>
             <artifactId>mcMMO</artifactId>
             <version>2.1.220</version>

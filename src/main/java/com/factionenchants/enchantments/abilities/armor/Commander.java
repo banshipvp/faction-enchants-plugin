@@ -22,7 +22,7 @@ public class Commander extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "Nearby allies are given Haste while you wear this armor.";
+        return "Nearby faction allies gain Haste (8+level×2 block radius, amplifier = level-1).";
     }
 
     @Override

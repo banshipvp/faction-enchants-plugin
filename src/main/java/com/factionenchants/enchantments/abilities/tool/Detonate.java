@@ -5,6 +5,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -22,16 +23,15 @@ public class Detonate extends CustomEnchantment {
     }
 
     @Override
-    public void onActivate(Player player, int level, ItemStack item) {
-        Block target = player.getTargetBlockExact(5);
-        if (target == null || target.getType() == Material.AIR) return;
-
+    public void onBlockBreak(Player player, Block block, int level, BlockBreakEvent event) {
         int radius = level;
+        ItemStack tool = player.getInventory().getItemInMainHand();
         List<Block> toBreak = new ArrayList<>();
         for (int x = -radius; x <= radius; x++) {
             for (int y = -radius; y <= radius; y++) {
                 for (int z = -radius; z <= radius; z++) {
-                    Block b = target.getRelative(x, y, z);
+                    if (x == 0 && y == 0 && z == 0) continue; // original block already handled by the event
+                    Block b = block.getRelative(x, y, z);
                     Material t = b.getType();
                     if (t == Material.AIR || t == Material.BEDROCK) continue;
                     toBreak.add(b);
@@ -46,7 +46,7 @@ public class Detonate extends CustomEnchantment {
             } else if (player.getGameMode() == GameMode.CREATIVE) {
                 b.setType(Material.AIR);
             } else {
-                b.breakNaturally(item);
+                b.breakNaturally(tool);
             }
         }
     }

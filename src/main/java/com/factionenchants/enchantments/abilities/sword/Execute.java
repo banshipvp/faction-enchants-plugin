@@ -18,7 +18,7 @@ public class Execute extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "Damage buff when your target is at low hp.";
+        return "5% damage bonus per level when attacking targets below 30% HP.";
     }
 
     @Override

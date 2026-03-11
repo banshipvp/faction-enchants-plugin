@@ -23,7 +23,7 @@ public class Featherweight extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "A chance to give a burst of Haste when you strike an enemy.";
+        return "20% chance per level to gain Haste burst (2+level seconds, amplifier = level-1).";
     }
 
     @Override

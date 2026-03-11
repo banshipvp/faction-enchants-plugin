@@ -26,7 +26,7 @@ public class Leadership extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "The more allies near you, the more damage you deal.";
+        return "8% damage bonus per level per nearby ally (max 5 allies, 20 block radius).";
     }
 
     @Override

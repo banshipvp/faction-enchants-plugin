@@ -4,6 +4,7 @@ import com.factionenchants.FactionEnchantsPlugin;
 import com.factionenchants.enchantments.CustomEnchantment;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 public class TungstenPlating extends CustomEnchantment {
 
@@ -27,11 +28,16 @@ public class TungstenPlating extends CustomEnchantment {
      * Called from EnchantListener.onPlayerItemDamage.
      */
     public boolean tryPrevent(Player player, int level) {
-        FactionEnchantsPlugin plugin = (FactionEnchantsPlugin) Bukkit.getPluginManager().getPlugin("FactionEnchantsPlugin");
+        FactionEnchantsPlugin plugin = (FactionEnchantsPlugin) Bukkit.getPluginManager().getPlugin("FactionEnchants");
         if (plugin == null) return false;
         if (!plugin.getSoulManager().isSoulActive(player)) return false;
         // Cost: 1 + level (1–3 for L1)
         int cost = Math.min(level + 1, 3);
         return plugin.getSoulManager().consumeSouls(player, cost);
+    }
+
+    @Override
+    public int onItemDamage(Player player, ItemStack item, int level, int originalDamage) {
+        return tryPrevent(player, level) ? 0 : originalDamage;
     }
 }

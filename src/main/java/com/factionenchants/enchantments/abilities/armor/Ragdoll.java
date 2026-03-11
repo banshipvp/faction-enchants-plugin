@@ -14,7 +14,7 @@ public class Ragdoll extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "Whenever you take damage you are pushed far back.";
+        return "When damaged, you are launched away from attacker (knockback scales level×0.8).";
     }
 
     @Override

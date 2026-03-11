@@ -26,7 +26,7 @@ public class Guardians extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "Chance to spawn iron golems to assist you and watch over you.";
+        return "3% chance per level to spawn iron golems (30 second duration) to assist you.";
     }
 
     @Override

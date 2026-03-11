@@ -31,7 +31,7 @@ public class Destruction extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "Automatically damages and debuffs all nearby enemies.";
+        return "Damages nearby enemies (5 block radius) for level×0.5 damage + Weakness (3 second cooldown).";
     }
 
     @Override

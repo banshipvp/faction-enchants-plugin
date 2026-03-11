@@ -96,17 +96,28 @@ public class EnchantListener implements Listener {
 
         ItemStack armor = event.getCurrentItem();
         if (armor == null || armor.getType().isAir()) return;
-        if (!(armor.getItemMeta() instanceof Damageable damageable)) return;
-
-        int maxDurability = armor.getType().getMaxDurability();
-        if (maxDurability <= 0) return;
-        // Only trigger when armor is 80% or more damaged (20% or less durability remaining)
-        if ((double) damageable.getDamage() / maxDurability < 0.80) return;
 
         Map<CustomEnchantment, Integer> enchants =
                 plugin.getEnchantmentManager().getEnchantmentsOnItem(armor);
+
+        // Handle Overload cleanup (always, regardless of durability)
         for (Map.Entry<CustomEnchantment, Integer> e : enchants.entrySet()) {
-            e.getKey().onArmorUnequip(player, armor, e.getValue());
+            if (e.getKey().getId().equalsIgnoreCase("overload")) {
+                e.getKey().onArmorUnequip(player, armor, e.getValue());
+            }
+        }
+
+        // Handle low-durability armor unequip (Repair Guard, etc.)
+        if (armor.getItemMeta() instanceof Damageable damageable) {
+            int maxDurability = armor.getType().getMaxDurability();
+            if (maxDurability > 0) {
+                // Only trigger when armor is 80% or more damaged (20% or less durability remaining)
+                if ((double) damageable.getDamage() / maxDurability >= 0.80) {
+                    for (Map.Entry<CustomEnchantment, Integer> e : enchants.entrySet()) {
+                        e.getKey().onArmorUnequip(player, armor, e.getValue());
+                    }
+                }
+            }
         }
     }
 }
