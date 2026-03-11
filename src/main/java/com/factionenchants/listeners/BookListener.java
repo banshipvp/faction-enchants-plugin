@@ -117,6 +117,47 @@ public class BookListener implements Listener {
             return;
         }
 
+        // ---- Vanilla Enchanter Sub-GUI ----
+        if (title.equals(EnchanterCommand.VANILLA_GUI_TITLE)) {
+            event.setCancelled(true);
+            ItemStack clicked = event.getCurrentItem();
+            if (clicked == null || !clicked.hasItemMeta()) return;
+
+            // Back button
+            if (clicked.getType() == Material.SPECTRAL_ARROW) {
+                EnchanterCommand.openEnchanterGUI(player, plugin);
+                return;
+            }
+
+            var vpdc = clicked.getItemMeta().getPersistentDataContainer();
+            if (EnchanterCommand.VANILLA_ENCH_KEY != null
+                    && vpdc.has(EnchanterCommand.VANILLA_ENCH_KEY, PersistentDataType.STRING)) {
+                String enchKey = vpdc.get(EnchanterCommand.VANILLA_ENCH_KEY, PersistentDataType.STRING);
+                int level = (EnchanterCommand.VANILLA_ENCH_LEVEL_KEY != null
+                        && vpdc.has(EnchanterCommand.VANILLA_ENCH_LEVEL_KEY, PersistentDataType.INTEGER))
+                        ? vpdc.get(EnchanterCommand.VANILLA_ENCH_LEVEL_KEY, PersistentDataType.INTEGER) : 1;
+                int cost = plugin.getConfig().getInt("enchanter.vanilla." + enchKey + "-cost", 25);
+                if (player.getLevel() < cost) {
+                    player.sendMessage("\u00a7cYou need \u00a7e" + cost + " XP levels \u00a7cto buy this book!");
+                    return;
+                }
+                org.bukkit.enchantments.Enchantment ench =
+                        org.bukkit.enchantments.Enchantment.getByKey(
+                                org.bukkit.NamespacedKey.minecraft(enchKey));
+                if (ench == null) return;
+                player.setLevel(player.getLevel() - cost);
+                ItemStack vBook = new ItemStack(Material.ENCHANTED_BOOK);
+                EnchantmentStorageMeta esm = (EnchantmentStorageMeta) vBook.getItemMeta();
+                esm.addStoredEnchant(ench, level, true);
+                vBook.setItemMeta(esm);
+                player.getInventory().addItem(vBook);
+                player.sendMessage("\u00a7aYou received a \u00a7f"
+                        + EnchanterCommand.prettyKey(enchKey) + " "
+                        + EnchanterCommand.toRoman(level) + " \u00a7abook!");
+            }
+            return;
+        }
+
         // ---- Enchanter GUI ----
         if (title.equals(EnchanterCommand.GUI_TITLE)) {
             event.setCancelled(true);
@@ -599,12 +640,17 @@ public class BookListener implements Listener {
             player.sendMessage("\u00a7cThis item already has the maximum of \u00a7e" + EnchantBook.MAX_ENCHANTS_PER_ITEM + " \u00a7cenchants!");
             return;
         }
-        if (existing.containsKey(enchant) && existing.get(enchant) >= enchant.getMaxLevel()) {
-            event.setCancelled(true);
-            event.getView().setCursor(savedBook);
-            player.updateInventory();
-            player.sendMessage("\u00a7cThis enchant is already at max level!");
-            return;
+        if (existing.containsKey(enchant)) {
+            int existingLevel = existing.get(enchant);
+            if (existingLevel >= level) {
+                String color = "\u00a7" + enchant.getTier().getColor();
+                event.setCancelled(true);
+                event.getView().setCursor(savedBook);
+                player.updateInventory();
+                player.sendMessage("\u00a7cYou already have " + color + enchant.getDisplayName() + " "
+                        + EnchantmentManager.toRoman(existingLevel) + " \u00a7cor higher on this item!");
+                return;
+            }
         }
 
         event.setCancelled(true);

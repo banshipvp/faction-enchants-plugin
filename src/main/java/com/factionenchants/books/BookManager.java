@@ -127,29 +127,11 @@ public class BookManager {
     }
 
     private int defaultSuccessMin(CustomEnchantment.EnchantTier tier) {
-        return switch (tier) {
-            case SIMPLE -> 85;
-            case UNIQUE -> 80;
-            case ELITE -> 70;
-            case ULTIMATE -> 60;
-            case LEGENDARY -> 50;
-            case SOUL -> 45;
-            case HEROIC -> 40;
-            case MASTERY -> 35;
-        };
+        return 1; // All tiers: fully random from 1%
     }
 
     private int defaultSuccessMax(CustomEnchantment.EnchantTier tier) {
-        return switch (tier) {
-            case SIMPLE -> 100;
-            case UNIQUE -> 95;
-            case ELITE -> 90;
-            case ULTIMATE -> 85;
-            case LEGENDARY -> 80;
-            case SOUL -> 75;
-            case HEROIC -> 70;
-            case MASTERY -> 65;
-        };
+        return 100; // All tiers: fully random up to 100%
     }
 
     private int defaultDestroyMin(CustomEnchantment.EnchantTier tier) {

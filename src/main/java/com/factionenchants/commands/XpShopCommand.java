@@ -41,6 +41,12 @@ public class XpShopCommand implements CommandExecutor {
     public static final String ITEM_DEPTH_STRIDER_BOOK     = "depth_strider_book";
     public static final String ITEM_DIAMOND_PICKAXE_SET    = "diamond_pickaxe_set";
     public static final String ITEM_SOUL_GEM               = "xpshop_soul_gem";
+    public static final String ITEM_RAND_SCROLL_SIMPLE     = "rand_scroll_simple";
+    public static final String ITEM_RAND_SCROLL_UNIQUE     = "rand_scroll_unique";
+    public static final String ITEM_RAND_SCROLL_ELITE      = "rand_scroll_elite";
+    public static final String ITEM_RAND_SCROLL_ULTIMATE   = "rand_scroll_ultimate";
+    public static final String ITEM_RAND_SCROLL_LEGENDARY  = "rand_scroll_legendary";
+    public static final String ITEM_RAND_SCROLL_GODLY      = "rand_scroll_godly";
 
     private static NamespacedKey SHOP_ITEM_ID_KEY;
     private static NamespacedKey SHOP_ITEM_COST_KEY;
@@ -153,6 +159,12 @@ public class XpShopCommand implements CommandExecutor {
             case ITEM_DEPTH_STRIDER_BOOK  -> createDepthStriderBook();
             case ITEM_DIAMOND_PICKAXE_SET -> createEnchantedDiamondPickaxe();
             case ITEM_SOUL_GEM            -> SoulGemItem.create(plugin, 1000);
+            case ITEM_RAND_SCROLL_SIMPLE   -> com.factionenchants.items.RandomizationScrollItem.createSimple(plugin);
+            case ITEM_RAND_SCROLL_UNIQUE   -> com.factionenchants.items.RandomizationScrollItem.createUnique(plugin);
+            case ITEM_RAND_SCROLL_ELITE    -> com.factionenchants.items.RandomizationScrollItem.createElite(plugin);
+            case ITEM_RAND_SCROLL_ULTIMATE -> com.factionenchants.items.RandomizationScrollItem.createUltimate(plugin);
+            case ITEM_RAND_SCROLL_LEGENDARY-> com.factionenchants.items.RandomizationScrollItem.createLegendary(plugin);
+            case ITEM_RAND_SCROLL_GODLY    -> com.factionenchants.items.RandomizationScrollItem.createGodly(plugin);
             default -> null;
         };
     }

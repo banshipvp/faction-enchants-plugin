@@ -1,104 +1,54 @@
 package com.factionenchants.enchantments;
 
 import com.factionenchants.FactionEnchantsPlugin;
-import com.factionenchants.enchantments.abilities.armor.CreeperArmor;
-import com.factionenchants.enchantments.abilities.armor.Dodge;
+import com.factionenchants.enchantments.abilities.armor.AntiGravity;
+import com.factionenchants.enchantments.abilities.armor.Cactus;
 import com.factionenchants.enchantments.abilities.armor.Hardened;
-import com.factionenchants.enchantments.abilities.armor.IceAspect;
-import com.factionenchants.enchantments.abilities.armor.Aegis;
-import com.factionenchants.enchantments.abilities.armor.Armored;
-import com.factionenchants.enchantments.abilities.armor.BloodLink;
-import com.factionenchants.enchantments.abilities.armor.BloodLust;
-import com.factionenchants.enchantments.abilities.armor.Clarity;
-import com.factionenchants.enchantments.abilities.armor.DeathGod;
-import com.factionenchants.enchantments.abilities.armor.Deathbringer;
-import com.factionenchants.enchantments.abilities.armor.Destruction;
-import com.factionenchants.enchantments.abilities.armor.Diminish;
-import com.factionenchants.enchantments.abilities.armor.Drunk;
-import com.factionenchants.enchantments.abilities.armor.EnchantReflect;
-import com.factionenchants.enchantments.abilities.armor.Enlighted;
-import com.factionenchants.enchantments.abilities.armor.Exterminator;
-import com.factionenchants.enchantments.abilities.armor.Gears;
-import com.factionenchants.enchantments.abilities.armor.Leadership;
-import com.factionenchants.enchantments.abilities.armor.Overload;
-import com.factionenchants.enchantments.abilities.armor.Protector;
-import com.factionenchants.enchantments.abilities.armor.EnderWalker;
-import com.factionenchants.enchantments.abilities.bow.Sniper;
-import com.factionenchants.enchantments.abilities.misc.Sizzle;
-import com.factionenchants.enchantments.abilities.armor.Ghost;
-import com.factionenchants.enchantments.abilities.armor.Guardians;
-import com.factionenchants.enchantments.abilities.armor.Heavy;
-import com.factionenchants.enchantments.abilities.armor.Implants;
-import com.factionenchants.enchantments.abilities.armor.Lucky;
-import com.factionenchants.enchantments.abilities.armor.Marksman;
-import com.factionenchants.enchantments.abilities.armor.Metaphysical;
-import com.factionenchants.enchantments.abilities.armor.Obsidianshield;
-import com.factionenchants.enchantments.abilities.armor.Ragdoll;
-import com.factionenchants.enchantments.abilities.armor.Valor;
-import com.factionenchants.enchantments.abilities.bow.DimensionRift;
-import com.factionenchants.enchantments.abilities.bow.EagleEye;
-import com.factionenchants.enchantments.abilities.bow.Hellfire;
-import com.factionenchants.enchantments.abilities.bow.Longbow;
-import com.factionenchants.enchantments.abilities.bow.Pacify;
-import com.factionenchants.enchantments.abilities.bow.Piercing;
-import com.factionenchants.enchantments.abilities.bow.Unfocus;
-import com.factionenchants.enchantments.abilities.sword.AntiGank;
-import com.factionenchants.enchantments.abilities.sword.Bleed;
-import com.factionenchants.enchantments.abilities.sword.Devour;
-import com.factionenchants.enchantments.abilities.sword.Disarmor;
-import com.factionenchants.enchantments.abilities.sword.DoubleStrike;
-import com.factionenchants.enchantments.abilities.sword.Hex;
-import com.factionenchants.enchantments.abilities.sword.Insanity;
-import com.factionenchants.enchantments.abilities.sword.Inversion;
-import com.factionenchants.enchantments.abilities.sword.KillAura;
-import com.factionenchants.enchantments.abilities.sword.Lifesteal;
-import com.factionenchants.enchantments.abilities.sword.Rage;
-import com.factionenchants.enchantments.abilities.sword.Shiva;
-import com.factionenchants.enchantments.abilities.sword.Silence;
-import com.factionenchants.enchantments.abilities.soul.DivineImmolation;
-import com.factionenchants.enchantments.abilities.soul.HeroKiller;
-import com.factionenchants.enchantments.abilities.soul.Immortal;
-import com.factionenchants.enchantments.abilities.soul.Inertia;
-import com.factionenchants.enchantments.abilities.soul.NatureWrath;
-import com.factionenchants.enchantments.abilities.soul.Paradox;
-import com.factionenchants.enchantments.abilities.soul.Phoenix;
-import com.factionenchants.enchantments.abilities.soul.Rogue;
-import com.factionenchants.enchantments.abilities.soul.Sabotage;
-import com.factionenchants.enchantments.abilities.soul.SoulTrap;
-import com.factionenchants.enchantments.abilities.soul.Teleblock;
-import com.factionenchants.enchantments.abilities.soul.TungstenPlating;
-import com.factionenchants.enchantments.abilities.sword.Enrage;
-import com.factionenchants.enchantments.abilities.tool.AutoSmelt;
-import com.factionenchants.enchantments.abilities.tool.Blacksmith;
-import com.factionenchants.enchantments.abilities.tool.Detonate;
-import com.factionenchants.enchantments.abilities.tool.Experience;
-import com.factionenchants.enchantments.abilities.tool.Fuse;
-import com.factionenchants.enchantments.abilities.tool.Inquisitive;
-import com.factionenchants.enchantments.abilities.tool.MasterInquisitive;
-import com.factionenchants.enchantments.abilities.tool.ObsidianBreaker;
-import com.factionenchants.enchantments.abilities.tool.Oxygenate;
-import com.factionenchants.enchantments.abilities.tool.QuickReeler;
-import com.factionenchants.enchantments.abilities.tool.Reforged;
+import com.factionenchants.enchantments.abilities.armor.Lifebloom;
+import com.factionenchants.enchantments.abilities.armor.Nimble;
+import com.factionenchants.enchantments.abilities.armor.PlagueCarrier;
+import com.factionenchants.enchantments.abilities.armor.Poisoned;
+import com.factionenchants.enchantments.abilities.armor.RepairGuard;
+import com.factionenchants.enchantments.abilities.armor.Resilience;
+import com.factionenchants.enchantments.abilities.armor.RocketEscape;
+import com.factionenchants.enchantments.abilities.armor.SelfDestruct;
+import com.factionenchants.enchantments.abilities.armor.Shockwave;
+import com.factionenchants.enchantments.abilities.armor.SmokeBomb;
+import com.factionenchants.enchantments.abilities.armor.SpiritLink;
+import com.factionenchants.enchantments.abilities.armor.Springs;
+import com.factionenchants.enchantments.abilities.armor.Stormcaller;
+import com.factionenchants.enchantments.abilities.armor.Trickster;
+import com.factionenchants.enchantments.abilities.armor.UndeadRuse;
+import com.factionenchants.enchantments.abilities.armor.Voodoo;
+import com.factionenchants.enchantments.abilities.armor.WitherEnchant;
+import com.factionenchants.enchantments.abilities.axe.Funnel;
+import com.factionenchants.enchantments.abilities.bow.Farcast;
+import com.factionenchants.enchantments.abilities.bow.Healing;
+import com.factionenchants.enchantments.abilities.bow.Hijack;
+import com.factionenchants.enchantments.abilities.bow.Lightning;
+import com.factionenchants.enchantments.abilities.bow.TargetTracking;
+import com.factionenchants.enchantments.abilities.bow.Teleportation;
+import com.factionenchants.enchantments.abilities.bow.Venom;
+import com.factionenchants.enchantments.abilities.bow.Virus;
+import com.factionenchants.enchantments.abilities.misc.QuickReeler;
+import com.factionenchants.enchantments.abilities.sword.Blind;
+import com.factionenchants.enchantments.abilities.sword.Denonforged;
+import com.factionenchants.enchantments.abilities.sword.Execute;
+import com.factionenchants.enchantments.abilities.sword.Greatsword;
+import com.factionenchants.enchantments.abilities.sword.Insomnia;
+import com.factionenchants.enchantments.abilities.sword.Paralyze;
+import com.factionenchants.enchantments.abilities.sword.Poison;
+import com.factionenchants.enchantments.abilities.sword.Reforged;
+import com.factionenchants.enchantments.abilities.sword.SkillSwipe;
+import com.factionenchants.enchantments.abilities.sword.Solitude;
+import com.factionenchants.enchantments.abilities.sword.ThunderingBlow;
+import com.factionenchants.enchantments.abilities.sword.Trap;
+import com.factionenchants.enchantments.abilities.sword.Vampire;
+import com.factionenchants.enchantments.abilities.tool.ObsidianDestroyer;
+import com.factionenchants.enchantments.abilities.tool.Skilling;
 import com.factionenchants.enchantments.abilities.tool.Telepathy;
-import com.factionenchants.enchantments.abilities.sword.Barbarian;
-import com.factionenchants.enchantments.abilities.sword.Block;
-import com.factionenchants.enchantments.abilities.sword.BossSlayer;
-import com.factionenchants.enchantments.abilities.sword.Cleave;
-import com.factionenchants.enchantments.abilities.sword.Corrupt;
-import com.factionenchants.enchantments.abilities.sword.Disintegrate;
-import com.factionenchants.enchantments.abilities.sword.Dominate;
-import com.factionenchants.enchantments.abilities.armor.Angelic;
-import com.factionenchants.enchantments.abilities.armor.ArrowDeflect;
-import com.factionenchants.enchantments.abilities.armor.AvengingAngel;
-import com.factionenchants.enchantments.abilities.armor.Sticky;
-import com.factionenchants.enchantments.abilities.armor.Tank;
-import com.factionenchants.enchantments.abilities.axe.ArrowBreak;
-import com.factionenchants.enchantments.abilities.axe.Blessed;
-import com.factionenchants.enchantments.abilities.bow.ArrowLifesteal;
-import com.factionenchants.enchantments.abilities.misc.DeepDiver;
-import com.factionenchants.enchantments.abilities.misc.Dredger;
-import com.factionenchants.enchantments.abilities.misc.TrophySeeker;
-import com.factionenchants.enchantments.abilities.sword.Assassin;
+import com.factionenchants.enchantments.abilities.weapon.Obliterate;
+import com.factionenchants.enchantments.abilities.weapon.Shackle;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -114,110 +64,77 @@ public class EnchantmentManager {
     }
 
     public void registerEnchantments() {
-        register(new IceAspect());
-        register(new Block());
-        register(new Disintegrate());
-        register(new Cleave());
-        register(new Corrupt());
-        register(new Dominate());
-        register(new CreeperArmor());
-        register(new Dodge());
-        register(new Detonate());
-        register(new DimensionRift());
-        register(new EagleEye());
-        register(new EnderWalker());
-        register(new Enrage());
-        register(new Fuse());
-        register(new Ghost());
-        register(new Guardians());
-        register(new Heavy());
-        register(new Hellfire());
-        register(new Implants());
-        register(new Longbow());
-        register(new Lucky());
-        register(new Marksman());
-        register(new Metaphysical());
-        register(new Obsidianshield());
-        register(new Pacify());
-        register(new Piercing());
-        register(new Ragdoll());
-        register(new Unfocus());
-        register(new Valor());
-        register(new Bleed());
-        register(new AutoSmelt());
-        register(new DivineImmolation());
-        register(new Experience());
-        register(new Inquisitive());
-        register(new MasterInquisitive());
-        register(new ObsidianBreaker());
-        register(new Oxygenate());
-        register(new QuickReeler());
-        register(new Reforged());
+        // Unique tier enchantments
+
+        // Armor enchantments
+        register(new SelfDestruct());
+        register(new PlagueCarrier());
+        register(new Nimble());
+        register(new Lifebloom());
+
+        // Sword enchantments
+        register(new SkillSwipe());
+
+        // Bow enchantments
+        register(new Virus());
+
+        // Tool enchantments
         register(new Telepathy());
-        register(new Dredger());
-        register(new TrophySeeker());
+        register(new Skilling());
+        register(new ObsidianDestroyer());
+
+        // Elite tier enchantments
+
+        // Armor / Boots / Helmet enchantments
+        register(new AntiGravity());
+        register(new Cactus());
         register(new Hardened());
+        register(new Poisoned());
+        register(new RepairGuard());
+        register(new Resilience());
+        register(new RocketEscape());
+        register(new Shockwave());
+        register(new SmokeBomb());
+        register(new SpiritLink());
+        register(new Springs());
+        register(new Stormcaller());
+        register(new Trickster());
+        register(new UndeadRuse());
+        register(new Voodoo());
+        register(new WitherEnchant());
 
-        // Soul tier
-        register(new HeroKiller());
-        register(new Immortal());
-        register(new Inertia());
-        register(new NatureWrath());
-        register(new Paradox());
-        register(new Phoenix());
-        register(new Rogue());
-        register(new Sabotage());
-        register(new SoulTrap());
-        register(new Teleblock());
-        register(new TungstenPlating());
+        // Axe enchantments
+        register(new Funnel());
 
-        // New enchantments
-        register(new Sticky());
-        register(new Tank());
-        register(new ArrowDeflect());
-        register(new Angelic());
-        register(new ArrowBreak());
-        register(new ArrowLifesteal());
-        register(new Assassin());
-        register(new AvengingAngel());
-        register(new Blessed());
+        // Bow enchantments
+        register(new Farcast());
+        register(new Healing());
+        register(new Hijack());
+        register(new Lightning());
+        register(new TargetTracking());
+        register(new Teleportation());
+        register(new Venom());
 
-        // Legendary tier
-        register(new Aegis());
-        register(new AntiGank());
-        register(new Armored());
-        register(new Barbarian());
-        register(new Blacksmith());
-        register(new BloodLink());
-        register(new BloodLust());
-        register(new BossSlayer());
-        register(new Clarity());
-        register(new DeathGod());
-        register(new Deathbringer());
-        register(new DeepDiver());
-        register(new Destruction());
-        register(new Devour());
-        register(new Diminish());
-        register(new Disarmor());
-        register(new DoubleStrike());
-        register(new Drunk());
-        register(new EnchantReflect());
-        register(new Enlighted());
-        register(new Exterminator());
-        register(new Gears());
-        register(new Hex());
-        register(new Insanity());
-        register(new Inversion());
-        register(new KillAura());
-        register(new Leadership());
-        register(new Lifesteal());
-        register(new Overload());
-        register(new Protector());
-        register(new Rage());
-        register(new Shiva());
-        register(new Silence());
-        register(new Sizzle());
-        register(new Sniper());
+        // Fishing Rod enchantments
+        register(new QuickReeler());
+
+        // Sword enchantments
+        register(new Blind());
+        register(new Denonforged());
+        register(new Execute());
+        register(new Greatsword());
+        register(new Insomnia());
+        register(new Paralyze());
+        register(new Poison());
+        register(new Reforged());
+        register(new Solitude());
+        register(new ThunderingBlow());
+        register(new Trap());
+        register(new Vampire());
+
+        // Weapon enchantments
+        register(new Obliterate());
+        register(new Shackle());
 
         plugin.getLogger().info("Registered " + enchantments.size() + " custom enchantments.");
     }

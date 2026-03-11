@@ -4,6 +4,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
 
 public abstract class CustomEnchantment {
@@ -39,6 +40,24 @@ public abstract class CustomEnchantment {
 
     /** Called periodically for passive effects (armour worn, tool in hand). */
     public void onTickPassive(Player player, int level, ItemStack equipment) {}
+
+    /** Called when a block is broken while the player holds a tool with this enchant. */
+    public void onBlockBreak(Player player, org.bukkit.block.Block block, int level, org.bukkit.event.block.BlockBreakEvent event) {}
+
+    /** Called each time a player deals a damage tick to a block while holding a tool with this enchant. */
+    public void onBlockDamage(Player player, org.bukkit.block.Block block, int level, org.bukkit.event.block.BlockDamageEvent event) {}
+
+    /** Called when the player wearing this armor piece dies. */
+    public void onPlayerDeath(Player player, int level, ItemStack armor, org.bukkit.event.entity.PlayerDeathEvent event) {}
+
+    /** Called when a player's item takes durability damage (for Hardened/Reforged). Returns the new damage amount. */
+    public int onItemDamage(Player player, ItemStack item, int level, int originalDamage) { return originalDamage; }
+
+    /** Called when a player casts their fishing rod (state == FISHING). */
+    public void onFishCast(Player player, int level, PlayerFishEvent event) {}
+
+    /** Called when a player removes armor from an armor slot while it has low durability. */
+    public void onArmorUnequip(Player player, ItemStack armor, int level) {}
 
     /**
      * Soul charges consumed each time this enchant procs via an event  

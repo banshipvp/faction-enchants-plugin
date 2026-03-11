@@ -14,13 +14,10 @@ import com.factionenchants.commands.TinkererCommand;
 import com.factionenchants.commands.XpShopCommand;
 import com.factionenchants.enchantments.EnchantmentManager;
 import com.factionenchants.gear.RandomGearManager;
-import com.factionenchants.listeners.ArrowBreakListener;
-import com.factionenchants.listeners.AvengingAngelListener;
 import com.factionenchants.listeners.BookListener;
 import com.factionenchants.listeners.CombatListener;
 import com.factionenchants.listeners.EnchantListener;
 import com.factionenchants.listeners.NameTagListener;
-import com.factionenchants.listeners.TeleblockListener;
 import com.factionenchants.listeners.TinkererListener;
 import com.factionenchants.listeners.SoulGemListener;
 import com.factionenchants.listeners.EnchantmentOrbListener;
@@ -28,8 +25,12 @@ import com.factionenchants.listeners.ExtendedLootingListener;
 import com.factionenchants.listeners.WhiteScrollListener;
 import com.factionenchants.listeners.HolyWhiteScrollListener;
 import com.factionenchants.listeners.BlessedEffectBlocker;
-import com.factionenchants.listeners.FishingListener;
 import com.factionenchants.listeners.XpShopListener;
+import com.factionenchants.listeners.DeathListener;
+import com.factionenchants.listeners.McMMOListener;
+import com.factionenchants.listeners.ToolListener;
+import com.factionenchants.listeners.VirusEffectListener;
+import com.factionenchants.listeners.SpawnerMobTracker;
 import com.factionenchants.utils.ConfigUtil;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -81,12 +82,16 @@ public class FactionEnchantsPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new HolyWhiteScrollListener(this), this);
         getServer().getPluginManager().registerEvents(new BlessedEffectBlocker(), this);
         getServer().getPluginManager().registerEvents(new SoulGemListener(this), this);
-        getServer().getPluginManager().registerEvents(new TeleblockListener(), this);
         getServer().getPluginManager().registerEvents(new ExtendedLootingListener(), this);
-        getServer().getPluginManager().registerEvents(new AvengingAngelListener(this), this);
-        getServer().getPluginManager().registerEvents(new ArrowBreakListener(this), this);
         getServer().getPluginManager().registerEvents(new EnchantmentOrbListener(this), this);
-        getServer().getPluginManager().registerEvents(new FishingListener(this), this);
+        getServer().getPluginManager().registerEvents(new ToolListener(this), this);
+        getServer().getPluginManager().registerEvents(new DeathListener(this), this);
+        getServer().getPluginManager().registerEvents(new VirusEffectListener(), this);
+        getServer().getPluginManager().registerEvents(new SpawnerMobTracker(), this);
+        if (getServer().getPluginManager().isPluginEnabled("mcMMO")) {
+            getServer().getPluginManager().registerEvents(new McMMOListener(this), this);
+            getLogger().info("mcMMO detected — Skilling and Nimble enchants activated.");
+        }
         getLogger().info("FactionEnchants has been enabled!");
     }
 

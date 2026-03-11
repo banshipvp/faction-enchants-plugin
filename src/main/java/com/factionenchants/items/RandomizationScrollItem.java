@@ -26,7 +26,53 @@ public class RandomizationScrollItem {
     public static final String PDC_TIER_KEY = "randomization_scroll_tier";
 
     // ── Factories ─────────────────────────────────────────────────────────────
+    public static ItemStack createSimple(FactionEnchantsPlugin plugin) {
+        return create(plugin,
+                "§f§lSimple Randomization Scroll",
+                "§fSimple",
+                "SIMPLE",
+                List.of(
+                        "§7Apply to a(n) §fSimple §7enchantment book",
+                        "§7to reroll the success and destroy rates.",
+                        "",
+                        "§7Drag n\u2019 Drop onto §eenchantment book §7to apply.",
+                        "",
+                        "§6§lObtainable From:",
+                        "§8❖ §7/xpshop"
+                ));
+    }
 
+    public static ItemStack createUnique(FactionEnchantsPlugin plugin) {
+        return create(plugin,
+                "§a§lUnique Randomization Scroll",
+                "§aUnique",
+                "UNIQUE",
+                List.of(
+                        "§7Apply to a(n) §aUnique §7enchantment book",
+                        "§7to reroll the success and destroy rates.",
+                        "",
+                        "§7Drag n\u2019 Drop onto §eenchantment book §7to apply.",
+                        "",
+                        "§6§lObtainable From:",
+                        "§8❖ §7/xpshop"
+                ));
+    }
+
+    public static ItemStack createElite(FactionEnchantsPlugin plugin) {
+        return create(plugin,
+                "§b§lElite Randomization Scroll",
+                "§bElite",
+                "ELITE",
+                List.of(
+                        "§7Apply to a(n) §bElite §7enchantment book",
+                        "§7to reroll the success and destroy rates.",
+                        "",
+                        "§7Drag n\u2019 Drop onto §eenchantment book §7to apply.",
+                        "",
+                        "§6§lObtainable From:",
+                        "§8❖ §7/xpshop"
+                ));
+    }
     public static ItemStack createUltimate(FactionEnchantsPlugin plugin) {
         return create(plugin,
                 "§e§lUltimate Randomization Scroll",

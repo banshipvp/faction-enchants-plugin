@@ -14,11 +14,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class EnchantsCommand implements CommandExecutor {
 
     public static final String GUI_TITLE = "\u00a7b\u00a7lEnchantments";
+
+    private static final int DESCRIPTION_WRAP_WIDTH = 38;
 
     private final FactionEnchantsPlugin plugin;
 
@@ -56,8 +59,9 @@ public class EnchantsCommand implements CommandExecutor {
         closeButton.setItemMeta(closeMeta);
         gui.setItem(53, closeButton);
 
-        // Get enchantments for this tier
+        // Get enchantments for this tier and sort A-Z
         List<CustomEnchantment> tierEnchants = plugin.getEnchantmentManager().getEnchantmentsByTier(tier);
+        tierEnchants.sort(Comparator.comparing(e -> e.getDisplayName().replaceAll("\u00a7[0-9a-fk-or]", "").toLowerCase()));
 
         // Display enchantments in the main area (slots 0-44)
         int slot = 0;
@@ -109,7 +113,9 @@ public class EnchantsCommand implements CommandExecutor {
         String desc = enchant.getDescription();
         if (desc != null && !desc.isEmpty()) {
             lore.add("");
-            lore.add("\u00a77" + desc);
+            for (String line : wrapText(desc, DESCRIPTION_WRAP_WIDTH)) {
+                lore.add("\u00a77" + line);
+            }
         }
 
         // Add prerequisite info for Heroic enchants
@@ -122,6 +128,23 @@ public class EnchantsCommand implements CommandExecutor {
         meta.setLore(lore);
         item.setItemMeta(meta);
         return item;
+    }
+
+    private static List<String> wrapText(String text, int maxWidth) {
+        List<String> lines = new ArrayList<>();
+        String[] words = text.split(" ");
+        StringBuilder current = new StringBuilder();
+        for (String word : words) {
+            if (current.length() > 0 && current.length() + 1 + word.length() > maxWidth) {
+                lines.add(current.toString());
+                current = new StringBuilder(word);
+            } else {
+                if (current.length() > 0) current.append(' ');
+                current.append(word);
+            }
+        }
+        if (current.length() > 0) lines.add(current.toString());
+        return lines;
     }
 
     private ItemStack makeBorder(Material mat) {
