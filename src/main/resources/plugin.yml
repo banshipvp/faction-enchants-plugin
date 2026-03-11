@@ -34,6 +34,9 @@ commands:
   splitsouls:
     description: Split charges from a held Soul Gem into a new gem.
     usage: /<command> <amount>
+  clearhealth:
+    description: Clears Health Boost and Absorption effects (for testing Overload).
+    usage: /<command>
 permissions:
   factionenchants.enchanter:
     description: Allows access to the enchanter command.
@@ -59,3 +62,6 @@ permissions:
   factionenchants.admin:
     description: Allows use of admin give commands (fegiveitem).
     default: op
+  factionenchants.clearhealth:
+    description: Allows clearing health effects for testing.
+    default: true

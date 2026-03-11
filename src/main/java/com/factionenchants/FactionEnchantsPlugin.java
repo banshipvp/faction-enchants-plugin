@@ -7,6 +7,7 @@ import com.factionenchants.commands.EnchanterCommand;
 import com.factionenchants.commands.EnchantsCommand;
 import com.factionenchants.commands.GiveEnchantCommand;
 import com.factionenchants.commands.BlessCommand;
+import com.factionenchants.commands.ClearHealthCommand;
 import com.factionenchants.commands.GiveItemsCommand;
 import com.factionenchants.commands.GiveRandomGearCommand;
 import com.factionenchants.commands.SplitSoulsCommand;
@@ -80,6 +81,7 @@ public class FactionEnchantsPlugin extends JavaPlugin {
         getCommand("fegiveitem").setTabCompleter(giveItemsCmd);
         getCommand("bless").setExecutor(new BlessCommand(this));
         getCommand("splitsouls").setExecutor(new SplitSoulsCommand(this));
+        getCommand("clearhealth").setExecutor(new ClearHealthCommand(this));
         getServer().getPluginManager().registerEvents(new EnchantListener(this), this);
         getServer().getPluginManager().registerEvents(new CombatListener(this), this);
         getServer().getPluginManager().registerEvents(new OverloadCleanupListener(this), this);
