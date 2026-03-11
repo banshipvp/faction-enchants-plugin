@@ -125,7 +125,7 @@ public class BookListener implements Listener {
 
             // Back button
             if (clicked.getType() == Material.SPECTRAL_ARROW) {
-                EnchanterCommand.openEnchanterGUI(player, plugin);
+                Bukkit.getScheduler().runTask(plugin, () -> EnchanterCommand.openEnchanterGUI(player, plugin));
                 return;
             }
 
@@ -168,7 +168,7 @@ public class BookListener implements Listener {
             // ── Vanilla Enchants button → open sub-GUI ────────────────────────────────
             if (EnchanterCommand.VANILLA_ENCHANTER_BTN_KEY != null
                     && pdc.has(EnchanterCommand.VANILLA_ENCHANTER_BTN_KEY, PersistentDataType.BYTE)) {
-                EnchanterCommand.openVanillaEnchanterGUI(player, plugin);
+                Bukkit.getScheduler().runTask(plugin, () -> EnchanterCommand.openVanillaEnchanterGUI(player, plugin));
                 return;
             }
 

@@ -171,8 +171,8 @@ public class XpShopCommand implements CommandExecutor {
             case ITEM_TNT_WAND -> createTntWand();
             case ITEM_BLACK_SCROLL -> createBlackScroll();
             case ITEM_REROLL_SCROLL -> createRerollScroll();
-            case ITEM_COLLECTION_CHEST -> createCustomItem(Material.CHEST, "§a§lCollection Chest", "§7Place to collect mob drops");
-            case ITEM_TRAPPED_COLLECTION_CHEST -> createCustomItem(Material.TRAPPED_CHEST, "§c§lTrapped Collection Chest", "§7Place to collect mob drops");
+            case ITEM_COLLECTION_CHEST -> createCollectionChest(false);
+            case ITEM_TRAPPED_COLLECTION_CHEST -> createCollectionChest(true);
             case ITEM_NAME_TAG           -> NameTagItem.create(plugin);
             case ITEM_WHITE_SCROLL        -> WhiteScrollItem.create(plugin);
             case ITEM_DEPTH_STRIDER_BOOK  -> createDepthStriderBook();
@@ -281,6 +281,16 @@ public class XpShopCommand implements CommandExecutor {
         meta.setDisplayName(" ");
         pane.setItemMeta(meta);
         return pane;
+    }
+
+    private ItemStack createCollectionChest(boolean trapped) {
+        Material material = trapped ? Material.TRAPPED_CHEST : Material.CHEST;
+        String name = trapped ? "§c§lTrapped Collection Chest" : "§a§lCollection Chest";
+        
+        // SimpleFactionsRaiding detects collection chests by display name only
+        // PDC is set on the BLOCK when placed, not on the item
+        ItemStack item = createCustomItem(material, name, "§7Place to collect mob drops");
+        return item;
     }
 
     private ItemStack createBlackScroll() {
