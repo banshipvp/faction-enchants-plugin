@@ -24,7 +24,7 @@ public class RocketEscape extends CustomEnchantment {
     private static final long COOLDOWN_MS = 8000L;
 
     public RocketEscape() {
-        super("rocketescape", "Rocket Escape", 3, EnchantTier.ELITE, ApplicableGear.BOOTS);
+        super("rocket_escape", "Rocket Escape", 3, EnchantTier.ELITE, ApplicableGear.BOOTS);
     }
 
     @Override

@@ -25,7 +25,7 @@ public class UndeadRuse extends CustomEnchantment {
     private static final long COOLDOWN_MS = 20_000L;
 
     public UndeadRuse() {
-        super("undeadruse", "Undead Ruse", 10, EnchantTier.ELITE, ApplicableGear.ARMOR);
+        super("undead_ruse", "Undead Ruse", 10, EnchantTier.ELITE, ApplicableGear.ARMOR);
     }
 
     @Override

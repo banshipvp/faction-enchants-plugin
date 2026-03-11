@@ -13,7 +13,7 @@ import org.bukkit.potion.PotionEffectType;
 public class Endershift extends CustomEnchantment {
 
     public Endershift() {
-        super("endershift", "Endershift", 3, EnchantTier.UNIQUE, ApplicableGear.HELMET);
+        super("ender_shift", "Endershift", 3, EnchantTier.UNIQUE, ApplicableGear.HELMET);
     }
 
     @Override

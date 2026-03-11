@@ -21,7 +21,7 @@ public class SelfDestruct extends CustomEnchantment {
     private static final long COOLDOWN_MS = 20_000L;
 
     public SelfDestruct() {
-        super("selfdestruct", "Self Destruct", 3, EnchantTier.UNIQUE, ApplicableGear.ARMOR);
+        super("self_destruct", "Self Destruct", 3, EnchantTier.UNIQUE, ApplicableGear.ARMOR);
     }
 
     @Override

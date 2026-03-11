@@ -24,7 +24,7 @@ public class SmokeBomb extends CustomEnchantment {
     private static final long COOLDOWN_MS = 12000L;
 
     public SmokeBomb() {
-        super("smokebomb", "Smoke Bomb", 8, EnchantTier.ELITE, ApplicableGear.HELMET);
+        super("smoke_bomb", "Smoke Bomb", 8, EnchantTier.ELITE, ApplicableGear.HELMET);
     }
 
     @Override

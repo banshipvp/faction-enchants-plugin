@@ -165,6 +165,13 @@ public class BookListener implements Listener {
             if (clicked == null || !clicked.hasItemMeta()) return;
             var pdc = clicked.getItemMeta().getPersistentDataContainer();
 
+            // ── Vanilla Enchants button → open sub-GUI ────────────────────────────────
+            if (EnchanterCommand.VANILLA_ENCHANTER_BTN_KEY != null
+                    && pdc.has(EnchanterCommand.VANILLA_ENCHANTER_BTN_KEY, PersistentDataType.BYTE)) {
+                EnchanterCommand.openVanillaEnchanterGUI(player, plugin);
+                return;
+            }
+
             // ── Vanilla enchant book purchase ─────────────────────────────────────────
             if (EnchanterCommand.VANILLA_ENCH_KEY != null
                     && pdc.has(EnchanterCommand.VANILLA_ENCH_KEY, PersistentDataType.STRING)) {
