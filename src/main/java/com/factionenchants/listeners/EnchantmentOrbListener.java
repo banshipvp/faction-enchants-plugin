@@ -8,7 +8,10 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -79,6 +82,17 @@ public class EnchantmentOrbListener implements Listener {
         // Success — increment gear's max slots
         int newMax = gearCurrent + 1;
         EnchantmentOrbItem.setItemMaxSlots(plugin, clicked, newMax);
+
+        // Update or insert the "Enchantment Slots:" lore line
+        ItemMeta clickedMeta = clicked.getItemMeta();
+        List<String> gearLore = clickedMeta.hasLore()
+                ? new ArrayList<>(clickedMeta.getLore())
+                : new ArrayList<>();
+        gearLore.removeIf(l -> l.startsWith("§7Enchantment Slots:"));
+        gearLore.add(0, "§7Enchantment Slots: §f" + newMax);
+        clickedMeta.setLore(gearLore);
+        clicked.setItemMeta(clickedMeta);
+        event.setCurrentItem(clicked);
 
         String type = isWeaponOrb ? "weapon" : "armor";
         player.sendMessage("§aSuccessfully expanded your §e" + type

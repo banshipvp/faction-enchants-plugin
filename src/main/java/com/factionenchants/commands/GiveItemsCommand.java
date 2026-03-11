@@ -6,6 +6,7 @@ import com.factionenchants.books.EnchantBook;
 import com.factionenchants.enchantments.CustomEnchantment;
 import com.factionenchants.enchantments.CustomEnchantment.EnchantTier;
 import com.factionenchants.items.EnchantmentOrbItem;
+import com.factionenchants.items.FallenHeroItem;
 import com.factionenchants.items.GodlyTransmogScrollItem;
 import com.factionenchants.items.HeroicBlackScrollItem;
 import com.factionenchants.items.HolyWhiteScrollItem;
@@ -52,7 +53,8 @@ public class GiveItemsCommand implements CommandExecutor, TabCompleter {
             "transmogscroll", "godlytransmogscroll",
             "ultimaterandomizationscroll", "legendaryrandomizationscroll", "godlyrandomizationscroll",
             "soulgem", "soulgem_generator",
-            "weaponorb", "armororb");
+            "weaponorb", "armororb",
+            "fallenherobone");
 
     private static final List<String> TIERS = List.of(
             "SIMPLE", "UNIQUE", "ELITE", "ULTIMATE", "LEGENDARY", "SOUL", "HEROIC", "MASTERY");
@@ -103,6 +105,7 @@ public class GiveItemsCommand implements CommandExecutor, TabCompleter {
             case "soulgem_generator"           -> handleSoulGemGenerator(sender, target, args);
             case "weaponorb"                   -> handleWeaponOrb(sender, target, args);
             case "armororb"                    -> handleArmorOrb(sender, target, args);
+            case "fallenherobone"              -> handleFallenHeroBone(sender, target, args);
             default                            -> { sendHelp(sender); yield true; }
         };
     }
@@ -423,6 +426,18 @@ public class GiveItemsCommand implements CommandExecutor, TabCompleter {
         meta.getPersistentDataContainer().set(rerollTier, PersistentDataType.STRING, "ELITE");
         scroll.setItemMeta(meta);
         return scroll;
+    }
+
+    // /fegiveitem fallenherobone <player> <kitname>
+    private boolean handleFallenHeroBone(CommandSender sender, Player target, String[] args) {
+        if (args.length < 3) {
+            sender.sendMessage("§eUsage: /fegiveitem fallenherobone <player> <kitname>");
+            return true;
+        }
+        String kitName = args[2].toLowerCase();
+        giveItem(target, FallenHeroItem.createBone(plugin, kitName));
+        sender.sendMessage("§aGave §e" + FallenHeroItem.capitalize(kitName) + " Fallen Hero Bone §ato §e" + target.getName() + "§a.");
+        return true;
     }
 
     // /fegiveitem weaponorb <player> <maxSlots 10-15> [amount]

@@ -50,7 +50,7 @@ public class EnchantmentOrbItem {
      */
     public static ItemStack createWeaponOrb(FactionEnchantsPlugin plugin, int maxSlots) {
         maxSlots = Math.max(WEAPON_ORB_MIN, Math.min(WEAPON_ORB_MAX, maxSlots));
-        ItemStack orb = new ItemStack(Material.NETHER_STAR);
+        ItemStack orb = new ItemStack(Material.ENDER_EYE);
         ItemMeta meta = orb.getItemMeta();
         meta.setDisplayName("§5§lWeapon Enchantment Orb §d[" + maxSlots + "]");
         List<String> lore = new ArrayList<>();
@@ -81,7 +81,7 @@ public class EnchantmentOrbItem {
      */
     public static ItemStack createArmorOrb(FactionEnchantsPlugin plugin, int maxSlots) {
         maxSlots = Math.max(ARMOR_ORB_MIN, Math.min(ARMOR_ORB_MAX, maxSlots));
-        ItemStack orb = new ItemStack(Material.NETHER_STAR);
+        ItemStack orb = new ItemStack(Material.ENDER_EYE);
         ItemMeta meta = orb.getItemMeta();
         meta.setDisplayName("§5§lArmor Enchantment Orb §d[" + maxSlots + "]");
         List<String> lore = new ArrayList<>();

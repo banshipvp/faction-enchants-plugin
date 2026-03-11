@@ -4,6 +4,7 @@ import com.factionenchants.FactionEnchantsPlugin;
 import com.factionenchants.enchantments.CustomEnchantment;
 import com.factionenchants.items.NameTagItem;
 import com.factionenchants.items.SoulGemItem;
+import com.factionenchants.items.TransmogScrollItem;
 import com.factionenchants.items.WhiteScrollItem;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -48,6 +49,7 @@ public class XpShopCommand implements CommandExecutor {
     public static final String ITEM_RAND_SCROLL_ULTIMATE   = "rand_scroll_ultimate";
     public static final String ITEM_RAND_SCROLL_LEGENDARY  = "rand_scroll_legendary";
     public static final String ITEM_RAND_SCROLL_GODLY      = "rand_scroll_godly";
+    public static final String ITEM_TRANSMOG_SCROLL        = "transmog_scroll";
 
     private static NamespacedKey SHOP_ITEM_ID_KEY;
     private static NamespacedKey SHOP_ITEM_COST_KEY;
@@ -84,7 +86,11 @@ public class XpShopCommand implements CommandExecutor {
 
         gui.setItem(12, createShopDisplayItem(Material.WATER_BUCKET, "§b§lWater Fat Bucket", ITEM_WATER_FAT_BUCKET,
                 getCost("xpshop.water-fat-bucket", 15_000),
-                "§7Useful for fast water placement"));
+                "§7Can only be refilled with §bwater"));
+
+        gui.setItem(13, createShopDisplayItem(Material.PAPER, "§e§lTransmog Scroll", ITEM_TRANSMOG_SCROLL,
+                getCost("xpshop.transmog-scroll", 40_000),
+                "§7Sorts enchants by rarity on gear"));
 
         // Row 2: Wands
         gui.setItem(14, createShopDisplayItem(Material.BLAZE_ROD, "§a§lSell Wand", ITEM_SELL_WAND,
@@ -147,8 +153,20 @@ public class XpShopCommand implements CommandExecutor {
     public ItemStack createPurchasedItem(String itemId) {
         return switch (itemId) {
             case ITEM_DETONATE_PICKAXE -> createDetonatePickaxe();
-            case ITEM_LAVA_FAT_BUCKET -> createCustomItem(Material.LAVA_BUCKET, "§6§lLava Fat Bucket", "§7Purchased from XP Shop");
-            case ITEM_WATER_FAT_BUCKET -> createCustomItem(Material.WATER_BUCKET, "§b§lWater Fat Bucket", "§7Purchased from XP Shop");
+            case ITEM_LAVA_FAT_BUCKET -> {
+                ItemStack lavaItem = createCustomItem(Material.LAVA_BUCKET, "§6§lLava Fat Bucket", "§7Can only be refilled with §4lava");
+                org.bukkit.inventory.meta.ItemMeta lavaMeta = lavaItem.getItemMeta();
+                lavaMeta.getPersistentDataContainer().set(new NamespacedKey(plugin, "lava_fat_bucket"), PersistentDataType.BYTE, (byte) 1);
+                lavaItem.setItemMeta(lavaMeta);
+                yield lavaItem;
+            }
+            case ITEM_WATER_FAT_BUCKET -> {
+                ItemStack waterItem = createCustomItem(Material.WATER_BUCKET, "§b§lWater Fat Bucket", "§7Can only be refilled with §bwater");
+                org.bukkit.inventory.meta.ItemMeta waterMeta = waterItem.getItemMeta();
+                waterMeta.getPersistentDataContainer().set(new NamespacedKey(plugin, "water_fat_bucket"), PersistentDataType.BYTE, (byte) 1);
+                waterItem.setItemMeta(waterMeta);
+                yield waterItem;
+            }
             case ITEM_SELL_WAND -> createSellWand();
             case ITEM_TNT_WAND -> createTntWand();
             case ITEM_BLACK_SCROLL -> createBlackScroll();
@@ -166,6 +184,7 @@ public class XpShopCommand implements CommandExecutor {
             case ITEM_RAND_SCROLL_ULTIMATE -> com.factionenchants.items.RandomizationScrollItem.createUltimate(plugin);
             case ITEM_RAND_SCROLL_LEGENDARY-> com.factionenchants.items.RandomizationScrollItem.createLegendary(plugin);
             case ITEM_RAND_SCROLL_GODLY    -> com.factionenchants.items.RandomizationScrollItem.createGodly(plugin);
+            case ITEM_TRANSMOG_SCROLL      -> TransmogScrollItem.create(plugin);
             default -> null;
         };
     }

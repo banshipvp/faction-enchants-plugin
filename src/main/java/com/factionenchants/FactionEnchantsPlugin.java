@@ -17,6 +17,8 @@ import com.factionenchants.gear.RandomGearManager;
 import com.factionenchants.listeners.ArrowBreakListener;
 import com.factionenchants.listeners.AvengingAngelListener;
 import com.factionenchants.listeners.BookListener;
+import com.factionenchants.listeners.FatBucketListener;
+import com.factionenchants.listeners.FallenHeroListener;
 import com.factionenchants.listeners.FishingListener;
 import com.factionenchants.listeners.CombatListener;
 import com.factionenchants.listeners.EnchantListener;
@@ -33,6 +35,7 @@ import com.factionenchants.listeners.DeathListener;
 import com.factionenchants.listeners.McMMOListener;
 import com.factionenchants.listeners.TeleblockListener;
 import com.factionenchants.listeners.ToolListener;
+import com.factionenchants.listeners.TransmogScrollListener;
 import com.factionenchants.listeners.VirusEffectListener;
 import com.factionenchants.listeners.SpawnerMobTracker;
 import com.factionenchants.utils.ConfigUtil;
@@ -96,6 +99,9 @@ public class FactionEnchantsPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new AvengingAngelListener(this), this);
         getServer().getPluginManager().registerEvents(new FishingListener(this), this);
         getServer().getPluginManager().registerEvents(new TeleblockListener(), this);
+        getServer().getPluginManager().registerEvents(new FatBucketListener(this), this);
+        getServer().getPluginManager().registerEvents(new TransmogScrollListener(this), this);
+        getServer().getPluginManager().registerEvents(new FallenHeroListener(this), this);
         if (getServer().getPluginManager().isPluginEnabled("mcMMO")) {
             getServer().getPluginManager().registerEvents(new McMMOListener(this), this);
             getLogger().info("mcMMO detected — Skilling and Nimble enchants activated.");
