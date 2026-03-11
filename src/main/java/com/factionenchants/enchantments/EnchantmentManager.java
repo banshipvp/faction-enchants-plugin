@@ -4,6 +4,11 @@ import com.factionenchants.FactionEnchantsPlugin;
 // Armor
 import com.factionenchants.enchantments.abilities.armor.Aegis;
 import com.factionenchants.enchantments.abilities.armor.Angelic;
+import com.factionenchants.enchantments.abilities.armor.Aquatic;
+import com.factionenchants.enchantments.abilities.armor.Commander;
+import com.factionenchants.enchantments.abilities.armor.Curse;
+import com.factionenchants.enchantments.abilities.armor.Endershift;
+import com.factionenchants.enchantments.abilities.armor.Glowing;
 import com.factionenchants.enchantments.abilities.armor.AntiGravity;
 import com.factionenchants.enchantments.abilities.armor.Armored;
 import com.factionenchants.enchantments.abilities.armor.ArrowDeflect;
@@ -59,11 +64,14 @@ import com.factionenchants.enchantments.abilities.armor.Voodoo;
 import com.factionenchants.enchantments.abilities.armor.WitherEnchant;
 // Axe
 import com.factionenchants.enchantments.abilities.axe.ArrowBreak;
+import com.factionenchants.enchantments.abilities.axe.Berserk;
 import com.factionenchants.enchantments.abilities.axe.Blessed;
+import com.factionenchants.enchantments.abilities.axe.Decapitation;
 import com.factionenchants.enchantments.abilities.axe.Funnel;
 // Bow
 import com.factionenchants.enchantments.abilities.bow.ArrowLifesteal;
 import com.factionenchants.enchantments.abilities.bow.DimensionRift;
+import com.factionenchants.enchantments.abilities.bow.Explosive;
 import com.factionenchants.enchantments.abilities.bow.Farcast;
 import com.factionenchants.enchantments.abilities.bow.Healing;
 import com.factionenchants.enchantments.abilities.bow.Hellfire;
@@ -100,6 +108,10 @@ import com.factionenchants.enchantments.abilities.soul.TungstenPlating;
 // Sword
 import com.factionenchants.enchantments.abilities.sword.AntiGank;
 import com.factionenchants.enchantments.abilities.sword.Assassin;
+import com.factionenchants.enchantments.abilities.sword.DeepWounds;
+import com.factionenchants.enchantments.abilities.sword.Epicness;
+import com.factionenchants.enchantments.abilities.sword.Featherweight;
+import com.factionenchants.enchantments.abilities.sword.Headless;
 import com.factionenchants.enchantments.abilities.sword.Barbarian;
 import com.factionenchants.enchantments.abilities.sword.Bleed;
 import com.factionenchants.enchantments.abilities.sword.Blind;
@@ -137,6 +149,7 @@ import com.factionenchants.enchantments.abilities.sword.Vampire;
 // Tool
 import com.factionenchants.enchantments.abilities.tool.AutoSmelt;
 import com.factionenchants.enchantments.abilities.tool.Blacksmith;
+import com.factionenchants.enchantments.abilities.tool.Haste;
 import com.factionenchants.enchantments.abilities.tool.Detonate;
 import com.factionenchants.enchantments.abilities.tool.Experience;
 import com.factionenchants.enchantments.abilities.tool.Fuse;
@@ -150,6 +163,7 @@ import com.factionenchants.enchantments.abilities.tool.Telepathy;
 // Weapon
 import com.factionenchants.enchantments.abilities.weapon.Obliterate;
 import com.factionenchants.enchantments.abilities.weapon.Shackle;
+import com.factionenchants.enchantments.abilities.weapon.Training;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -166,58 +180,62 @@ public class EnchantmentManager {
 
     public void registerEnchantments() {
         // ── SIMPLE tier ──────────────────────────────────────────────────────
-        register(new IceAspect());
-        register(new CreeperArmor());
-        register(new Dodge());
-        register(new Heavy());
-        register(new Marksman());
-        register(new Ragdoll());
-        register(new Longbow());
-        register(new Piercing());
-        register(new Block());
-        register(new Cleave());
-        register(new Disintegrate());
-        register(new Dominate());
-        register(new Dredger());
-        register(new TrophySeeker());
-        register(new ObsidianBreaker());
-        register(new Oxygenate());
-
-        // ── UNIQUE tier ───────────────────────────────────────────────────────
         // Armor
-        register(new SelfDestruct());
-        register(new PlagueCarrier());
-        register(new Nimble());
-        register(new Lifebloom());
-        register(new Implants());
-        register(new Metaphysical());
-        register(new Obsidianshield());
-        register(new Valor());
-        register(new Ghost());
-        register(new Guardians());
-        register(new EnderWalker());
+        register(new Aquatic());
+        register(new Glowing());
         // Axe
-        register(new Blessed());
+        register(new Decapitation());
         // Bow
-        register(new Virus());
-        register(new Pacify());
-        register(new Unfocus());
+        register(new Healing());
+        register(new Lightning());
+        register(new TargetTracking());
         // Sword
-        register(new SkillSwipe());
+        register(new Epicness());
+        register(new Headless());
         register(new Insomnia());
         register(new ThunderingBlow());
         // Tool
-        register(new Telepathy());
-        register(new Skilling());
-        register(new ObsidianDestroyer());
-        register(new Inquisitive());
         register(new AutoSmelt());
         register(new Experience());
+        register(new Haste());
+        // Weapon
+        register(new Obliterate());
+
+        // ── UNIQUE tier ───────────────────────────────────────────────────────
+        // Armor
+        register(new Commander());
+        register(new Curse());
+        register(new Endershift());
+        register(new Lifebloom());
+        register(new Nimble());
+        register(new PlagueCarrier());
+        register(new SelfDestruct());
+        // Axe
+        register(new Berserk());
+        // Bow
+        register(new Explosive());
+        register(new Pacify());
+        register(new Unfocus());
+        register(new Virus());
+        // Sword
+        register(new DeepWounds());
+        register(new Featherweight());
+        register(new SkillSwipe());
+        // Tool
+        register(new Inquisitive());
+        register(new ObsidianDestroyer());
+        register(new Skilling());
+        register(new Telepathy());
+        // Weapon
+        register(new Training());
 
         // ── ELITE tier ────────────────────────────────────────────────────────
         // Armor
         register(new AntiGravity());
         register(new Cactus());
+        register(new Clarity());
+        register(new Enlighted());
+        register(new Gears());
         register(new Hardened());
         register(new Poisoned());
         register(new RepairGuard());
@@ -232,25 +250,17 @@ public class EnchantmentManager {
         register(new UndeadRuse());
         register(new Voodoo());
         register(new WitherEnchant());
-        register(new Clarity());
-        register(new Enlighted());
-        register(new Gears());
         // Axe
-        register(new Funnel());
         register(new ArrowBreak());
+        register(new Funnel());
         // Bow
         register(new Farcast());
-        register(new Healing());
         register(new Hijack());
-        register(new Lightning());
-        register(new TargetTracking());
         register(new Teleportation());
         register(new Venom());
-        register(new Hellfire());
-        register(new DimensionRift());
         // Fishing Rod
-        register(new QuickReeler());
         register(new DeepDiver());
+        register(new QuickReeler());
         // Sword
         register(new Blind());
         register(new Denonforged());
@@ -262,42 +272,68 @@ public class EnchantmentManager {
         register(new Solitude());
         register(new Trap());
         register(new Vampire());
-        register(new Bleed());
-        register(new Enrage());
         // Tool
-        register(new MasterInquisitive());
         register(new Blacksmith());
-        register(new Detonate());
-        register(new Fuse());
+        register(new ObsidianBreaker());
+        register(new Oxygenate());
         // Weapon
-        register(new Obliterate());
         register(new Shackle());
 
         // ── ULTIMATE tier ─────────────────────────────────────────────────────
         // Armor
         register(new Angelic());
         register(new ArrowDeflect());
+        register(new AvengingAngel());
         register(new BloodLink());
+        register(new CreeperArmor());
         register(new Destruction());
         register(new Diminish());
+        register(new Dodge());
         register(new Drunk());
+        register(new EnderWalker());
         register(new Exterminator());
-        register(new Sticky());
-        register(new Tank());
+        register(new Ghost());
+        register(new Guardians());
+        register(new Heavy());
+        register(new IceAspect());
+        register(new Implants());
+        register(new Marksman());
+        register(new Metaphysical());
+        register(new Obsidianshield());
         register(new Overload());
         register(new Protector());
+        register(new Ragdoll());
+        register(new Sticky());
+        register(new Tank());
+        register(new Valor());
+        // Axe
+        register(new Blessed());
         // Bow
         register(new ArrowLifesteal());
+        register(new DimensionRift());
+        register(new Hellfire());
+        register(new Longbow());
+        register(new Piercing());
         register(new Sniper());
         // Sword
+        register(new Assassin());
+        register(new Bleed());
+        register(new Block());
+        register(new Cleave());
         register(new Corrupt());
         register(new Devour());
         register(new Disarmor());
+        register(new Disintegrate());
+        register(new Dominate());
         register(new DoubleStrike());
+        register(new Enrage());
         register(new Insanity());
         register(new InquisitiveSword());
         // Misc
         register(new Sizzle());
+        // Tool
+        register(new Detonate());
+        register(new Fuse());
 
         // ── LEGENDARY tier ───────────────────────────────────────────────────
         // Armor
@@ -308,6 +344,9 @@ public class EnchantmentManager {
         register(new Deathbringer());
         register(new EnchantReflect());
         register(new Leadership());
+        // Misc
+        register(new Dredger());
+        register(new TrophySeeker());
         // Sword
         register(new AntiGank());
         register(new Barbarian());
@@ -333,6 +372,9 @@ public class EnchantmentManager {
         register(new SoulTrap());
         register(new Teleblock());
         register(new TungstenPlating());
+
+        // ── HEROIC tier ───────────────────────────────────────────────────────
+        register(new MasterInquisitive());
 
         plugin.getLogger().info("Registered " + enchantments.size() + " custom enchantments.");
     }

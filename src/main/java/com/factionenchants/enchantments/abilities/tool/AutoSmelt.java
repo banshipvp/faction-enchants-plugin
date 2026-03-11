@@ -29,7 +29,7 @@ public class AutoSmelt extends CustomEnchantment {
     );
 
     public AutoSmelt() {
-        super("auto_smelt", "Auto Smelt", 1, EnchantTier.ELITE, ApplicableGear.PICKAXE);
+        super("auto_smelt", "Auto Smelt", 1, EnchantTier.SIMPLE, ApplicableGear.PICKAXE);
     }
 
     @Override

@@ -36,7 +36,7 @@ public class Blessed extends CustomEnchantment {
     );
 
     public Blessed() {
-        super("blessed", "Blessed", 4, EnchantTier.ELITE, ApplicableGear.AXE);
+        super("blessed", "Blessed", 4, EnchantTier.ULTIMATE, ApplicableGear.AXE);
     }
 
     @Override

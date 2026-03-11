@@ -14,7 +14,7 @@ public class Experience extends CustomEnchantment {
     private static final Random random = new Random();
 
     public Experience() {
-        super("experience", "Experience", 5, EnchantTier.UNIQUE, ApplicableGear.PICKAXE);
+        super("experience", "Experience", 5, EnchantTier.SIMPLE, ApplicableGear.PICKAXE);
     }
 
     @Override

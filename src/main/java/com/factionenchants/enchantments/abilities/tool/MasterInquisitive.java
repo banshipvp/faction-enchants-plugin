@@ -17,7 +17,7 @@ public class MasterInquisitive extends CustomEnchantment {
     private static final Random random = new Random();
 
     public MasterInquisitive() {
-        super("master_inquisitive", "Master Inquisitive", 5, EnchantTier.ELITE, ApplicableGear.PICKAXE);
+        super("master_inquisitive", "Master Inquisitive", 5, EnchantTier.HEROIC, ApplicableGear.PICKAXE);
     }
 
     @Override

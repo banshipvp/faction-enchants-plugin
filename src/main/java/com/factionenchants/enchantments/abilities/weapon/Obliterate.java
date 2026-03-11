@@ -13,7 +13,7 @@ import org.bukkit.util.Vector;
 public class Obliterate extends CustomEnchantment {
 
     public Obliterate() {
-        super("obliterate", "Obliterate", 5, EnchantTier.UNIQUE, ApplicableGear.WEAPON);
+        super("obliterate", "Obliterate", 5, EnchantTier.SIMPLE, ApplicableGear.WEAPON);
     }
 
     @Override

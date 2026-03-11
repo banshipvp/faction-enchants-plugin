@@ -16,7 +16,7 @@ public class ThunderingBlow extends CustomEnchantment {
     private static final Random random = new Random();
 
     public ThunderingBlow() {
-        super("thunderingblow", "Thundering Blow", 3, EnchantTier.UNIQUE, ApplicableGear.SWORD);
+        super("thunderingblow", "Thundering Blow", 3, EnchantTier.SIMPLE, ApplicableGear.SWORD);
     }
 
     @Override

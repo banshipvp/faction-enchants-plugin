@@ -26,7 +26,7 @@ public class Healing extends CustomEnchantment {
     private static final Random random = new Random();
 
     public Healing() {
-        super("healing", "Healing", 4, EnchantTier.UNIQUE, ApplicableGear.BOW);
+        super("healing", "Healing", 4, EnchantTier.SIMPLE, ApplicableGear.BOW);
     }
 
     @Override

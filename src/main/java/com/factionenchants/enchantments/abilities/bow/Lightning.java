@@ -16,7 +16,7 @@ public class Lightning extends CustomEnchantment {
     private static final Random random = new Random();
 
     public Lightning() {
-        super("lightning", "Lightning", 3, EnchantTier.UNIQUE, ApplicableGear.BOW);
+        super("lightning", "Lightning", 3, EnchantTier.SIMPLE, ApplicableGear.BOW);
     }
 
     @Override

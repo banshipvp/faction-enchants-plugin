@@ -12,7 +12,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 public class TargetTracking extends CustomEnchantment {
 
     public TargetTracking() {
-        super("targettracking", "Target Tracking", 1, EnchantTier.UNIQUE, ApplicableGear.BOW);
+        super("targettracking", "Target Tracking", 1, EnchantTier.SIMPLE, ApplicableGear.BOW);
     }
 
     @Override

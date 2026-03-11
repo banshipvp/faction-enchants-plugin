@@ -14,7 +14,7 @@ import org.bukkit.potion.PotionEffectType;
 public class Insomnia extends CustomEnchantment {
 
     public Insomnia() {
-        super("insomnia", "Insomnia", 7, EnchantTier.UNIQUE, ApplicableGear.SWORD);
+        super("insomnia", "Insomnia", 7, EnchantTier.SIMPLE, ApplicableGear.SWORD);
     }
 
     @Override
