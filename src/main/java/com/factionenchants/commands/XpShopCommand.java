@@ -17,6 +17,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import java.util.List;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.text.NumberFormat;
@@ -148,8 +149,8 @@ public class XpShopCommand implements CommandExecutor {
             case ITEM_DETONATE_PICKAXE -> createDetonatePickaxe();
             case ITEM_LAVA_FAT_BUCKET -> createCustomItem(Material.LAVA_BUCKET, "§6§lLava Fat Bucket", "§7Purchased from XP Shop");
             case ITEM_WATER_FAT_BUCKET -> createCustomItem(Material.WATER_BUCKET, "§b§lWater Fat Bucket", "§7Purchased from XP Shop");
-            case ITEM_SELL_WAND -> null;
-            case ITEM_TNT_WAND -> null;
+            case ITEM_SELL_WAND -> createSellWand();
+            case ITEM_TNT_WAND -> createTntWand();
             case ITEM_BLACK_SCROLL -> createBlackScroll();
             case ITEM_REROLL_SCROLL -> createRerollScroll();
             case ITEM_COLLECTION_CHEST -> createCustomItem(Material.CHEST, "§a§lCollection Chest", "§7Place to collect mob drops");
@@ -316,6 +317,35 @@ public class XpShopCommand implements CommandExecutor {
 
         scroll.setItemMeta(meta);
         return scroll;
+    }
+
+    private ItemStack createTntWand() {
+        ItemStack wand = new ItemStack(Material.STICK);
+        ItemMeta meta = wand.getItemMeta();
+        meta.setDisplayName("§c§lTNT Wand");
+        meta.setLore(List.of(
+            "§7Left-click a chest/container",
+            "§7to instantly deposit all TNT",
+            "§7into your faction TNT bank.",
+            "§8simplefactions:tnt_wand"
+        ));
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        wand.setItemMeta(meta);
+        return wand;
+    }
+
+    private ItemStack createSellWand() {
+        ItemStack wand = new ItemStack(Material.BLAZE_ROD);
+        ItemMeta meta = wand.getItemMeta();
+        meta.setDisplayName("§6§lSell Wand");
+        meta.setLore(List.of(
+            "§7Left-click a chest/container",
+            "§7to sell all items inside.",
+            "§8simplefactions:sell_wand"
+        ));
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        wand.setItemMeta(meta);
+        return wand;
     }
 
     public static String getShopItemId(ItemStack item) {

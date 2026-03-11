@@ -44,7 +44,7 @@ public class XpShopListener implements Listener {
         boolean gaveViaSimpleFactions = tryGiveViaSimpleFactions(player, itemId);
 
         boolean wandPurchase = XpShopCommand.ITEM_SELL_WAND.equals(itemId) || XpShopCommand.ITEM_TNT_WAND.equals(itemId);
-        if (wandPurchase && !gaveViaSimpleFactions) {
+        if (wandPurchase && !gaveViaSimpleFactions && purchasedItem == null) {
             player.sendMessage("§cCould not issue the correct SimpleFactions wand. No XP was charged.");
             return;
         }
