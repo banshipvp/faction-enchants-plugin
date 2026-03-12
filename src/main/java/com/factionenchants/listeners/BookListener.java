@@ -137,15 +137,15 @@ public class BookListener implements Listener {
                         && vpdc.has(EnchanterCommand.VANILLA_ENCH_LEVEL_KEY, PersistentDataType.INTEGER))
                         ? vpdc.get(EnchanterCommand.VANILLA_ENCH_LEVEL_KEY, PersistentDataType.INTEGER) : 1;
                 int cost = plugin.getConfig().getInt("enchanter.vanilla." + enchKey + "-cost", 25);
-                if (player.getLevel() < cost) {
-                    player.sendMessage("\u00a7cYou need \u00a7e" + cost + " XP levels \u00a7cto buy this book!");
+                if (getPlayerTotalXp(player) < cost) {
+                    player.sendMessage("\u00a7cYou need \u00a7e" + format(cost) + " XP \u00a7cto buy this book!");
                     return;
                 }
                 org.bukkit.enchantments.Enchantment ench =
                         org.bukkit.enchantments.Enchantment.getByKey(
                                 org.bukkit.NamespacedKey.minecraft(enchKey));
                 if (ench == null) return;
-                player.setLevel(player.getLevel() - cost);
+                setPlayerTotalXp(player, getPlayerTotalXp(player) - cost);
                 ItemStack vBook = new ItemStack(Material.ENCHANTED_BOOK);
                 EnchantmentStorageMeta esm = (EnchantmentStorageMeta) vBook.getItemMeta();
                 esm.addStoredEnchant(ench, level, true);
@@ -180,15 +180,15 @@ public class BookListener implements Listener {
                         && pdc.has(EnchanterCommand.VANILLA_ENCH_LEVEL_KEY, PersistentDataType.INTEGER))
                         ? pdc.get(EnchanterCommand.VANILLA_ENCH_LEVEL_KEY, PersistentDataType.INTEGER) : 1;
                 int cost = plugin.getConfig().getInt("enchanter.vanilla." + enchKey + "-cost", 25);
-                if (player.getLevel() < cost) {
-                    player.sendMessage("\u00a7cYou need \u00a7e" + cost + " XP levels \u00a7cto buy this book!");
+                if (getPlayerTotalXp(player) < cost) {
+                    player.sendMessage("\u00a7cYou need \u00a7e" + format(cost) + " XP \u00a7cto buy this book!");
                     return;
                 }
                 org.bukkit.enchantments.Enchantment ench =
                         org.bukkit.enchantments.Enchantment.getByKey(
                                 org.bukkit.NamespacedKey.minecraft(enchKey));
                 if (ench == null) return;
-                player.setLevel(player.getLevel() - cost);
+                setPlayerTotalXp(player, getPlayerTotalXp(player) - cost);
                 ItemStack vBook = new ItemStack(Material.ENCHANTED_BOOK);
                 EnchantmentStorageMeta esm = (EnchantmentStorageMeta) vBook.getItemMeta();
                 esm.addStoredEnchant(ench, level, true);
@@ -206,12 +206,12 @@ public class BookListener implements Listener {
             CustomEnchantment.EnchantTier tier;
             try { tier = CustomEnchantment.EnchantTier.valueOf(tierStr); }
             catch (Exception e) { return; }
-            int cost = plugin.getConfig().getInt("enchanter." + tier.name().toLowerCase() + "-cost", 5);
-            if (player.getLevel() < cost) {
-                player.sendMessage("\u00a7cYou need \u00a7e" + cost + " XP levels \u00a7cto buy this book!");
+            int cost = plugin.getConfig().getInt("enchanter." + tier.name().toLowerCase() + "-cost", 1000);
+            if (getPlayerTotalXp(player) < cost) {
+                player.sendMessage("\u00a7cYou need \u00a7e" + format(cost) + " XP \u00a7cto buy this book!");
                 return;
             }
-            player.setLevel(player.getLevel() - cost);
+            setPlayerTotalXp(player, getPlayerTotalXp(player) - cost);
             ItemStack book = EnchantBook.createRandomBook(tier);
             player.getInventory().addItem(book);
             String color = "\u00a7" + tier.getColor();
@@ -1028,7 +1028,7 @@ public class BookListener implements Listener {
             if (isCustomEnchantLine(line)) enchantLines.add(line);
             else otherLines.add(line);
         }
-        enchantLines.sort((a, b) -> Integer.compare(enchantTierOrder(a), enchantTierOrder(b)));
+        enchantLines.sort((a, b) -> Integer.compare(enchantTierOrder(b), enchantTierOrder(a)));
         List<String> newLore = new ArrayList<>(otherLines);
         newLore.addAll(enchantLines);
         meta.setLore(newLore);
@@ -1154,5 +1154,32 @@ public class BookListener implements Listener {
         pdc.set(EnchantBook.ENCHANT_DESTROY_RATE_KEY, PersistentDataType.INTEGER, destroy);
         result.setItemMeta(meta);
         return result;
+    }
+
+    // ── XP-point helpers ───────────────────────────────────────────────────────
+    private static int getPlayerTotalXp(org.bukkit.entity.Player player) {
+        int level = player.getLevel();
+        float progress = player.getExp();
+        int current = getTotalXpForLevel(level);
+        int toNext = player.getExpToLevel();
+        return current + Math.round(progress * toNext);
+    }
+
+    private static void setPlayerTotalXp(org.bukkit.entity.Player player, int totalXp) {
+        int safeXp = Math.max(0, totalXp);
+        player.setExp(0f);
+        player.setLevel(0);
+        player.setTotalExperience(0);
+        player.giveExp(safeXp);
+    }
+
+    private static int getTotalXpForLevel(int level) {
+        if (level <= 16) return level * level + 6 * level;
+        if (level <= 31) return (int) (2.5 * level * level - 40.5 * level + 360);
+        return (int) (4.5 * level * level - 162.5 * level + 2220);
+    }
+
+    private static String format(int value) {
+        return java.text.NumberFormat.getNumberInstance(java.util.Locale.US).format(value);
     }
 }

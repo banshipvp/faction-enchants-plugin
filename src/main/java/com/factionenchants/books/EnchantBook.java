@@ -63,12 +63,10 @@ public class EnchantBook {
         String roman = EnchantmentManager.toRoman(level);
         meta.setDisplayName(color + "\u00a7l" + name + " " + roman);
         List<String> lore = new ArrayList<>();
-        // Description (supports \n line breaks)
+        // Description (word-wrapped to ~40 chars per line)
         String desc = enchant.getDescription();
         if (!desc.isEmpty()) {
-            for (String line : desc.split("\n")) {
-                lore.add("\u00a77" + line);
-            }
+            lore.addAll(wrapDescription(desc, 40));
             lore.add("");
         }
         lore.add("\u00a78Tier: " + color + enchant.getTier().getDisplayName());
@@ -87,6 +85,28 @@ public class EnchantBook {
         pdc.set(ENCHANT_DESTROY_RATE_KEY, PersistentDataType.INTEGER, destroyRate);
         book.setItemMeta(meta);
         return book;
+    }
+
+    /**
+     * Word-wraps {@code text} at paragraph breaks (\n) and at {@code maxLen} characters per line.
+     * Each resulting line is prefixed with the grey colour code.
+     */
+    private static List<String> wrapDescription(String text, int maxLen) {
+        List<String> result = new ArrayList<>();
+        for (String paragraph : text.split("\n")) {
+            String[] words = paragraph.split(" ");
+            StringBuilder line = new StringBuilder();
+            for (String word : words) {
+                if (line.length() > 0 && line.length() + 1 + word.length() > maxLen) {
+                    result.add("\u00a77" + line);
+                    line = new StringBuilder();
+                }
+                if (line.length() > 0) line.append(' ');
+                line.append(word);
+            }
+            if (line.length() > 0) result.add("\u00a77" + line);
+        }
+        return result;
     }
 
     public static boolean isEnchantBook(ItemStack item) {

@@ -1,12 +1,47 @@
 enchanter:
-  simple-cost: 5
-  unique-cost: 8
-  elite-cost: 12
-  ultimate-cost: 18
-  legendary-cost: 25
-  soul-cost: 35
-  heroic-cost: 45
-  mastery-cost: 60
+  simple-cost: 1000
+  unique-cost: 2500
+  elite-cost: 7500
+  ultimate-cost: 15000
+  legendary-cost: 25000
+  soul-cost: 100000
+  heroic-cost: 150000
+  mastery-cost: 200000
+  vanilla:
+    sharpness-cost: 20000
+    smite-cost: 15000
+    bane_of_arthropods-cost: 15000
+    looting-cost: 30000
+    fire_aspect-cost: 20000
+    knockback-cost: 10000
+    sweeping_edge-cost: 15000
+    protection-cost: 25000
+    projectile_protection-cost: 15000
+    blast_protection-cost: 20000
+    fire_protection-cost: 15000
+    feather_falling-cost: 20000
+    unbreaking-cost: 15000
+    thorns-cost: 20000
+    depth_strider-cost: 50000
+    mending-cost: 75000
+    respiration-cost: 15000
+    aqua_affinity-cost: 10000
+    efficiency-cost: 15000
+    fortune-cost: 25000
+    silk_touch-cost: 30000
+    power-cost: 15000
+    punch-cost: 15000
+    flame-cost: 10000
+    infinity-cost: 30000
+    multishot-cost: 20000
+    quick_charge-cost: 15000
+    piercing-cost: 15000
+    loyalty-cost: 15000
+    channeling-cost: 20000
+    riptide-cost: 25000
+    impaling-cost: 15000
+    soul_speed-cost: 20000
+    swift_sneak-cost: 25000
 
 alchemist:
   combine-cost: 10

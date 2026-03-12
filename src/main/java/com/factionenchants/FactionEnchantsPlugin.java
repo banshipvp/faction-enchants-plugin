@@ -20,6 +20,7 @@ import com.factionenchants.listeners.AvengingAngelListener;
 import com.factionenchants.listeners.BookListener;
 import com.factionenchants.listeners.FatBucketListener;
 import com.factionenchants.listeners.FallenHeroListener;
+import com.factionenchants.listeners.SwordBlockListener;
 import com.factionenchants.listeners.FishingListener;
 import com.factionenchants.listeners.CombatListener;
 import com.factionenchants.listeners.EnchantListener;
@@ -106,6 +107,8 @@ public class FactionEnchantsPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new FatBucketListener(this), this);
         getServer().getPluginManager().registerEvents(new TransmogScrollListener(this), this);
         getServer().getPluginManager().registerEvents(new FallenHeroListener(this), this);
+        getServer().getPluginManager().registerEvents(new SwordBlockListener(), this);
+        getServer().getPluginManager().registerEvents(new SwordBlockListener(), this);
         if (getServer().getPluginManager().isPluginEnabled("mcMMO")) {
             getServer().getPluginManager().registerEvents(new McMMOListener(this), this);
             getLogger().info("mcMMO detected — Skilling and Nimble enchants activated.");

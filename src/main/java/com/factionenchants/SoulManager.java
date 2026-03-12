@@ -90,8 +90,12 @@ public class SoulManager {
             player.getInventory().setItem(i, item);
             player.updateInventory();
 
-            // Play a soft soul-drain sound
-            player.playSound(player.getLocation(), Sound.BLOCK_SOUL_SAND_BREAK, 0.45f, 1.8f);
+            // Play once per soul consumed, staggered by 1 tick each
+            for (int tick = 0; tick < amount; tick++) {
+                final int t = tick;
+                plugin.getServer().getScheduler().runTaskLater(plugin,
+                        () -> player.playSound(player.getLocation(), Sound.BLOCK_SOUL_SAND_BREAK, 0.45f, 1.8f), t);
+            }
 
             // Instant action bar refresh if player is holding a soul gem
             sendHeldGemHud(player);

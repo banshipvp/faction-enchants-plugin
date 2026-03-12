@@ -175,7 +175,7 @@ public class EnchanterCommand implements CommandExecutor {
         esm.setLore(Arrays.asList(
                 "",
                 "\u00a77Click to purchase",
-                "\u00a77for \u00a7a" + cost + "\u00a77 XP levels.",
+                "\u00a77for \u00a7a" + cost + "\u00a77 XP.",
                 ""
         ));
         esm.getPersistentDataContainer().set(VANILLA_ENCH_KEY,       PersistentDataType.STRING,  ench.getKey().getKey());
@@ -194,7 +194,7 @@ public class EnchanterCommand implements CommandExecutor {
                 "",
                 "\u00a77Click to purchase a",
                 color + name + "\u00a77 mystery book",
-                "\u00a77for \u00a7a" + cost + "\u00a77 XP levels.",
+                "\u00a77for \u00a7a" + cost + "\u00a77 XP.",
                 "",
                 "\u00a78Right-click the book to reveal",
                 "\u00a78your random enchant!"

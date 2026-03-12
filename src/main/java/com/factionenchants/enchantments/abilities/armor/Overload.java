@@ -7,12 +7,13 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 /**
- * Overload III — Armor enchantment (LEGENDARY).
+ * Overload — Armor enchantment (LEGENDARY).
  * Temporarily increases the wearer's max health while the armor is equipped.
- * Overload I: +2 hearts (4 HP)
- * Overload II: +4 hearts (8 HP)
- * Overload III: +3 hearts (6 HP)
- * 
+ * Overload I:   +2 hearts (+4 HP,  amplifier 0)
+ * Overload II:  +4 hearts (+8 HP,  amplifier 1)
+ * Overload III: +6 hearts (+12 HP, amplifier 2)
+ *
+ * Non-stackable: only the highest Overload level across all armor pieces applies.
  * Effects are automatically cleared when armor is removed.
  */
 public class Overload extends CustomEnchantment {
@@ -23,33 +24,27 @@ public class Overload extends CustomEnchantment {
 
     @Override
     public String getDescription() {
-        return "Temporary increase in hearts.";
+        return "Increases max hearts.\nI: +2 hearts  II: +4 hearts  III: +6 hearts.";
     }
 
     @Override
     public void onTickPassive(Player player, int level, ItemStack equipment) {
-        // Apply temporary health boost effect
-        // Overload 1: +2 hearts (amp 0 = +4 HP), Overload 2: +4 hearts (amp 1 = +8 HP), Overload 3: +3 hearts (amp 0.5 = +6 HP)
-        int amplifier = switch (level) {
-            case 1 -> 0;  // +2 hearts (4 HP)
-            case 2 -> 1;  // +4 hearts (8 HP)
-            case 3 -> 0;  // Will give +2 hearts, then add a second effect for +1 heart
-            default -> 0;
-        };
+        // Level 1 → amplifier 0 (+2 hearts), Level 2 → amplifier 1 (+4 hearts), Level 3 → amplifier 2 (+6 hearts)
+        int amplifier = level - 1;
 
-        // Apply the health boost effect (60 tick duration, refreshed every tick)
-        player.addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, 60, amplifier, true, false, false));
-
-        // For Overload III, add an additional +1 heart (2 HP) by giving Absorption
-        if (level == 3) {
-            player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 60, 0, true, false, false));
+        // Non-stackable: if a higher Overload is already active this tick, skip.
+        // Minecraft natively keeps the higher amplifier when addPotionEffect is called
+        // with a lower amp, but we skip early to avoid any race conditions.
+        PotionEffect existing = player.getPotionEffect(PotionEffectType.HEALTH_BOOST);
+        if (existing != null && existing.getAmplifier() > amplifier) {
+            return;
         }
+
+        player.addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, 60, amplifier, true, false, false));
     }
 
     @Override
     public void onArmorUnequip(Player player, ItemStack armor, int level) {
-        // Clear health boost and absorption effects when armor is removed
         player.removePotionEffect(PotionEffectType.HEALTH_BOOST);
-        player.removePotionEffect(PotionEffectType.ABSORPTION);
     }
 }

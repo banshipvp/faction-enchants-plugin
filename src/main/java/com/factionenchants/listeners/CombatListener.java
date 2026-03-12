@@ -41,6 +41,14 @@ public class CombatListener implements Listener {
                 for (Map.Entry<CustomEnchantment, Integer> e : bowEnchants.entrySet()) {
                     e.getKey().onArrowHit(shooter, target, e.getValue(), event);
                 }
+                // Combat-tag both players via SimplePvP
+                if (target instanceof Player victim) {
+                    org.bukkit.plugin.Plugin pvpPlugin = org.bukkit.Bukkit.getPluginManager().getPlugin("SimplePvP");
+                    if (pvpPlugin instanceof local.simplepvp.SimplePvPPlugin simplePvP) {
+                        simplePvP.getCombatTagManager().tag(shooter);
+                        simplePvP.getCombatTagManager().tag(victim);
+                    }
+                }
             }
         }
 
